@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">HomeActivity</string>
     <string name="MAIN_TO_HOME">com.parkingapp.homeactivity</string>
-    <string name="MAIN_TO_LOGSIGN">DaMainALogin</string>
-</resources>
+    <string name="MAIN_TO_LOGSIGN">DaMainALoginOrSignin</string>
+    <string name="LOGINSIGNIN_TO_LOGIN">DaLoginOrSigninALogin</string>
+    <string name="LOGINSIGNIN_TO_SIGNIN">DaLoginOrSigninASignin</string>
+
+
+ </resources>

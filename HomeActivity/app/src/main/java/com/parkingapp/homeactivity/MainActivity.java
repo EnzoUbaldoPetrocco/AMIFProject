@@ -8,6 +8,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import java.io.File;
@@ -19,7 +20,8 @@ import java.util.concurrent.TimeUnit;
 public class MainActivity extends AppCompatActivity {
 
     final String TAG="MainActivity";
-    Button bttMain;
+    Button bttMain=null;
+
     boolean ricordami=false;
 
     @Override
@@ -27,10 +29,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bttMain=findViewById(R.id.bttMain);
+
 
 
         //codice per vedere se la cartella RICORDAMI esiste già
         //altrimenti creo la cartella
+        //Il controllo è effettuuato suli dati nel file, il file sarà creato sempre
 
         File f=new File(createDir());
         if(f.exists())
@@ -56,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         //se TAG esiste già la cartella, intento per Activityhome
         //se no-->passo activity per login e sign in attraverso intento per login e sign in
 
-       bttMain=findViewById(R.id.bttMain);
 
 
        //al premere del bottone se ricordami è false si passa alla schermata di login
@@ -81,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
 
     //crea directory
     private String createDir(){
-        String storeDir= Environment.getExternalStorageState()+ "/RICORDAMI.txt";
+        String storeDir= Environment.getExternalStorageDirectory()+ "/RICORDAMI";
         File f= new File(storeDir);
         if(!f.exists()){
             f.mkdir();
