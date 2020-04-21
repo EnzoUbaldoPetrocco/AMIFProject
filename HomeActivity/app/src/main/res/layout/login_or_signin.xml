@@ -4,8 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:backgroundTint="#2196F3"
+    android:background="@drawable/sfondo_iniziale"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
 
 
     <ImageView
@@ -13,15 +15,15 @@
         android:layout_width="333dp"
         android:layout_height="241dp"
         android:layout_marginTop="50dp"
-        android:src="@drawable/login_or_signin_sfondo"
-        />
+        android:background="#2196F3"
+        android:src="@drawable/login_or_signin_sfondo" />
 
     <Button
         android:id="@+id/bttLogIn"
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginTop="150dp"
-        android:backgroundTint="#00BCD4"
+        android:backgroundTint="#FFFFFF"
         android:text="LOGIN" />
 
     <Button
@@ -29,7 +31,7 @@
         android:layout_width="match_parent"
         android:layout_height="66dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#00BCD4"
+        android:backgroundTint="#FFFFFF"
         android:text="SIGN IN" />
 
 </LinearLayout>

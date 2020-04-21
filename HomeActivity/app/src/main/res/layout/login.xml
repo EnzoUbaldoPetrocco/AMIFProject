@@ -4,14 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="#041055"
+    android:backgroundTint="#030B37"
+    android:backgroundTintMode="add"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_marginTop="100dp"
+        android:background="#FFFFFF"
         android:text="Inserisci le tue credenziali"
         android:textSize="30dp" />
 
@@ -19,26 +23,34 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
+        android:background="#FFFFFF"
         android:text="Username"
-        android:textSize="30dp"/>
+        android:textSize="30dp" />
 
     <EditText
         android:id="@+id/etUsername"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:hint="Inserisci Username"/>
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:hint="Inserisci Username" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
         android:text="Password"
-        android:textSize="30dp"/>
+        android:textSize="30dp" />
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:hint="Inserisci Password"/>
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:hint="Inserisci Password" />
 
     <CheckBox
         android:layout_width="match_parent"
@@ -51,9 +63,8 @@
         android:id="@+id/bttOkLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="OK"
         android:layout_marginTop="10dp"
-        />
+        android:text="OK" />
 
     <ImageButton
         android:id="@+id/bttBackLogin_to_LoginSignin"
@@ -61,6 +72,7 @@
         android:layout_height="56dp"
         android:layout_marginTop="100dp"
         android:layout_marginRight="150dp"
+        android:backgroundTint="#08409844"
         android:scaleType="fitCenter"
         android:src="@drawable/back_bottone"
         android:visibility="visible" />

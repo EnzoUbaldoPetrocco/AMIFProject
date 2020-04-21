@@ -9,12 +9,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
+        <!--main activity-->
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
+            <!--home activity-->
         </activity>
         <activity android:name=".HomeActivity">
             <intent-filter>
@@ -23,6 +26,7 @@
             </intent-filter>
         </activity>
 
+        <!--login activity-->
         <activity android:name=".LogInActivity">
         <intent-filter>
             <action android:name="DaLoginOrSigninALogin"/>
@@ -30,6 +34,7 @@
         </intent-filter>
     </activity>
 
+        <!--log/sign activity-->
         <activity android:name=".LoginOrSigninActivity">
         <intent-filter>
             <action android:name="DaMainALoginOrSignin"/>
@@ -37,6 +42,7 @@
         </intent-filter>
     </activity>
 
+        <!--signin activity-->
         <activity android:name=".SigninActivity">
             <intent-filter>
                 <action android:name="DaLoginOrSigninASignin"/>
@@ -46,6 +52,8 @@
 
 
     </application>
+
+    <!--permessi-->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 </manifest>
