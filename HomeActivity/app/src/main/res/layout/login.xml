@@ -59,11 +59,11 @@
         android:id="@+id/bttBackLogin_to_LoginSignin"
         android:layout_width="69dp"
         android:layout_height="56dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/back_bottone"
         android:layout_marginTop="100dp"
         android:layout_marginRight="150dp"
-        />
+        android:scaleType="fitCenter"
+        android:src="@drawable/back_bottone"
+        android:visibility="visible" />
 
 
 </LinearLayout>
