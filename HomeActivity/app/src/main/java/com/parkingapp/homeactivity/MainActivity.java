@@ -48,7 +48,9 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
 
-
+        }
+        else {
+            Log.e(TAG, "Cannot create download directory");
         }
 
         //se TAG esiste già la cartella, intento per Activityhome
@@ -64,13 +66,14 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
 
                if(ricordami)
-               {
-               Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
-               startActivity(i);
-               }
+                {
+                Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
+                startActivity(i);
+                }
                else
                    {
                    Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
+                   startActivity(i);
                     }
            }
        });

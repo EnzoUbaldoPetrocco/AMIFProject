@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">HomeActivity</string>
     <string name="MAIN_TO_HOME">com.parkingapp.homeactivity</string>
-    <string name="MAIN_TO_LOGSIGN">DaMainALOgin</string>
+    <string name="MAIN_TO_LOGSIGN">DaMainALogin</string>
 </resources>
