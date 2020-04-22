@@ -12,11 +12,11 @@
     tools:context=".MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="100dp"
         android:background="#FFFFFF"
-        android:text="Inserisci le tue credenziali"
+        android:text=" Inserisci le tue credenziali"
         android:textSize="30dp" />
 
     <TextView
@@ -24,7 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="100dp"
         android:background="#FFFFFF"
-        android:text="Username"
+        android:text=" Username"
         android:textSize="30dp" />
 
     <EditText
@@ -33,7 +33,7 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
-        android:hint="Inserisci Username" />
+        android:hint=" Inserisci Username" />
 
     <TextView
         android:layout_width="match_parent"
@@ -41,7 +41,7 @@
         android:layout_marginTop="5dp"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
-        android:text="Password"
+        android:text=" Password"
         android:textSize="30dp" />
 
     <EditText
@@ -50,14 +50,16 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
-        android:hint="Inserisci Password" />
+        android:hint=" Inserisci Password" />
 
     <CheckBox
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:buttonTint="#3F51B5"
+        android:buttonTint="#E10B0B"
+        android:layout_marginTop="5dp"
         android:checked="true"
-        android:text="Ricordami" />
+        android:text="Ricordami"
+        android:textColor="#808080"/>
 
     <Button
         android:id="@+id/bttOkLogin"
@@ -68,10 +70,10 @@
 
     <ImageButton
         android:id="@+id/bttBackLogin_to_LoginSignin"
-        android:layout_width="69dp"
-        android:layout_height="56dp"
+        android:layout_width="89dp"
+        android:layout_height="39dp"
         android:layout_marginTop="100dp"
-        android:layout_marginRight="150dp"
+        android:layout_marginRight="142dp"
         android:backgroundTint="#08409844"
         android:scaleType="fitCenter"
         android:src="@drawable/back_bottone"
