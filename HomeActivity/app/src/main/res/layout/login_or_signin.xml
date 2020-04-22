@@ -32,6 +32,6 @@
         android:layout_height="66dp"
         android:layout_marginTop="20dp"
         android:backgroundTint="#FFFFFF"
-        android:text="SIGN IN" />
+        android:text="SIGNIN" />
 
 </LinearLayout>

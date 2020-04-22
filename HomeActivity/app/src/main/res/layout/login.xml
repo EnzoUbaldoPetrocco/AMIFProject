@@ -32,6 +32,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
+        android:singleLine="true"
         android:backgroundTint="#FFFFFF"
         android:hint=" Inserisci Username" />
 
@@ -50,6 +51,8 @@
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
         android:backgroundTint="#FFFFFF"
+        android:singleLine="true"
+        android:password="true"
         android:hint=" Inserisci Password" />
 
     <CheckBox
