@@ -17,6 +17,8 @@ import java.sql.Time;
 import java.util.Scanner;
 import java.util.concurrent.TimeUnit;
 
+import gestione_file.GestioneFile;
+
 public class MainActivity extends AppCompatActivity {
 
     final String TAG="MainActivity";
@@ -37,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         //altrimenti creo la cartella
         //Il controllo è effettuuato suli dati nel file, il file sarà creato sempre
 
-        File f=new File(createDir());
+        File f=new File(GestioneFile.createDir());
         if(f.exists())
         {
             try {
@@ -84,18 +86,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //crea directory
-    private String createDir(){
-        String storeDir= Environment.getExternalStorageDirectory()+ "/RICORDAMI";
-        File f= new File(storeDir);
-        if(!f.exists()){
-            f.mkdir();
-            if(!f.mkdir()){
-                Log.e(TAG, "Cannot create download directory");
-                return  null;
-            }
-            else return storeDir;
-        }
-        else return storeDir;
-    }
+
 
 }
