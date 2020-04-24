@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity {
 
     final String TAG="MainActivity";
     Button bttMain=null;
+    //Variabile solo per un test, da cancellare dopo
+    boolean FLAG=true;
 
     boolean ricordami=false;
 
@@ -71,16 +73,15 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
 
-               if(ricordami)
-                {
-                Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
-                startActivity(i);
-                }
+                //   if (ricordami) {
+                       Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                       startActivity(i);
+                /*   }
                else
                    {
                    Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
                    startActivity(i);
-                    }
+                    } */
            }
        });
     }

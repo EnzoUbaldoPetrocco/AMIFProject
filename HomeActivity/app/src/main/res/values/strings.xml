@@ -5,5 +5,9 @@
     <string name="LOGINSIGNIN_TO_LOGIN">DaLoginOrSigninALogin</string>
     <string name="LOGINSIGNIN_TO_SIGNIN">DaLoginOrSigninASignin</string>
 
+    <!--Stringhe per aprire e chiudere menu a tendina hom activity!-->
+    <string name="Open">Open</string>
+    <string name="Close">Close</string>
+
 
  </resources>
