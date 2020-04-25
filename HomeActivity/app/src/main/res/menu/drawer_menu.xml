@@ -3,6 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item android:id="@+id/btMappeScaricate" android:title="Mappe scaricate" android:icon="@drawable/mappe_scaricate" app:showAsAction="never"/>
     <item android:id="@+id/btMappeDaScaricare" android:title="Scarica Mappa" android:icon="@drawable/scarica_mappa"/>
+    <item android:id="@+id/btOrario" android:title="Promemoria notifica" android:icon="@drawable/orario"/>
+    <item android:id="@+id/btParcheggio" android:title="Parcheggio" android:icon="@drawable/mio_parcheggio"/>
     <item android:id="@+id/btCittàPreferite" android:title="Città preferite" android:icon="@drawable/citta_preferite"/>
     <item android:id="@+id/btEsci" android:title="Esci" android:icon="@drawable/exit" />
 
