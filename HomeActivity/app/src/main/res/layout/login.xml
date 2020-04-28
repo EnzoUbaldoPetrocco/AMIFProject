@@ -34,6 +34,7 @@
         android:background="#FFFFFF"
         android:singleLine="true"
         android:backgroundTint="#FFFFFF"
+        android:textSize="30dp"
         android:hint=" Inserisci Username" />
 
     <TextView
@@ -53,7 +54,8 @@
         android:backgroundTint="#FFFFFF"
         android:singleLine="true"
         android:password="true"
-        android:hint=" Inserisci Password" />
+        android:textSize="30dp"
+        android:hint="Inserisci Password" />
 
     <CheckBox
         android:layout_width="match_parent"

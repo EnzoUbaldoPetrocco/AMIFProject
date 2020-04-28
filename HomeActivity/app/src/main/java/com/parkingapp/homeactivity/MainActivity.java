@@ -73,15 +73,15 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
 
-                //   if (ricordami) {
+                   if (ricordami) {
                        Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                        startActivity(i);
-                /*   }
+                   }
                else
                    {
                    Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
                    startActivity(i);
-                    } */
+                    }
            }
        });
     }
