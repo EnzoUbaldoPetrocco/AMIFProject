@@ -106,6 +106,25 @@
         android:visibility="invisible"
         android:layout_marginTop="10dp"
         android:textColor="#FFFF0000" />
+
+    <TextView
+        android:id="@+id/tvErroreUsernameOrPassword_Signin"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="I campi Username e Password non possono essere vuoti"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFF0000" />
+
+    <TextView
+        android:id="@+id/tvErroreLunghezza"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username/Password devono essere max 25 caratteri"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFF0000" />
+
     <Button
         android:id="@+id/bttRegistrati"
         android:layout_width="wrap_content"
@@ -126,7 +145,6 @@
         android:id="@+id/bttBackSignin_to_LoginSignin"
         android:layout_width="61dp"
         android:layout_height="57dp"
-        android:layout_marginTop="10dp"
         android:layout_marginRight="150dp"
         android:backgroundTint="#08409844"
         android:scaleType="fitCenter"

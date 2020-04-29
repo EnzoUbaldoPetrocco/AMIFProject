@@ -20,9 +20,11 @@ public class SigninActivity extends Activity {
     EditText etCittàProvenienza=null;
     EditText etPasswordConferma=null;
     ImageButton imBackBottone=null;
-    ProgressBar pbProgressBar=null;
+    ProgressBar pbProgressBarSignin=null;
     TextView tvErrorePassword=null;
     TextView tvErroreUsername=null;
+    TextView tvErroreUsernameOrPassword=null;
+    TextView tvErroreLunghezza=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,10 +38,12 @@ public class SigninActivity extends Activity {
         etPasswordConferma=findViewById(R.id.etSignin_Password_Conferma);
         etCittàProvenienza=findViewById(R.id.etCittàProvenienza);
         imBackBottone=findViewById(R.id.bttBackSignin_to_LoginSignin);
-        pbProgressBar=findViewById(R.id.pbSignin);
+        pbProgressBarSignin=findViewById(R.id.pbSignin);
         etUsername= findViewById(R.id.etSignin_Username);
         tvErrorePassword=findViewById(R.id.tvErrorePassword_Signin);
         tvErroreUsername=findViewById(R.id.tvErroreUsername_Signin);
+        tvErroreUsernameOrPassword=findViewById(R.id.tvErroreUsernameOrPassword_Signin);
+        tvErroreLunghezza=findViewById(R.id.tvErroreLunghezza);
 
 
 
@@ -59,13 +63,38 @@ public class SigninActivity extends Activity {
 
                 String password= etPassword.getText().toString();
                 String password_conferma= etPasswordConferma.getText().toString();
-                if (!password.equals(password_conferma))
-                {
-                    tvErrorePassword.setVisibility(View.VISIBLE);
+                String username= etUsername.getText().toString();
+
+                if(!password.equals("") && !username.equals("")) {
+
+                    tvErroreUsernameOrPassword.setVisibility(View.INVISIBLE);
+
+                    if (!password.equals(password_conferma)) {
+                        tvErrorePassword.setVisibility(View.VISIBLE);
+
+                        if(username.length()<=25 && password.length()<=25)
+                        {
+                            tvErroreLunghezza.setVisibility(View.INVISIBLE); //Fine controlli, inzio body
+
+
+
+
+
+
+                        }
+                        else
+                        {
+                            tvErroreLunghezza.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+                    else {
+                        tvErrorePassword.setVisibility(View.INVISIBLE);
+                    }
                 }
                 else
                 {
-                    tvErrorePassword.setVisibility(View.INVISIBLE);
+                    tvErroreUsernameOrPassword.setVisibility(View.VISIBLE);
                 }
             }
         });

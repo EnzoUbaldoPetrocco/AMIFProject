@@ -58,6 +58,7 @@
         android:hint="Inserisci Password" />
 
     <CheckBox
+        android:id="@+id/cbCheckBox_Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:buttonTint="#E10B0B"
@@ -66,6 +67,15 @@
         android:text="Ricordami"
         android:textColor="#808080"/>
 
+    <TextView
+        android:id="@+id/tvErroreUsernameOrPassword_Login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Username/Password errati"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"
+        android:textColor="#FFFF0000" />
+
     <Button
         android:id="@+id/bttOkLogin"
         android:layout_width="wrap_content"
@@ -73,11 +83,20 @@
         android:layout_marginTop="10dp"
         android:text="OK" />
 
+    <ProgressBar
+        android:id="@+id/pbLogin"
+        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+        android:layout_width="90dp"
+        android:layout_height="34dp"
+        android:layout_marginTop="15dp"
+        android:indeterminate="true"
+        android:visibility="invisible" />
+
     <ImageButton
         android:id="@+id/bttBackLogin_to_LoginSignin"
         android:layout_width="89dp"
         android:layout_height="39dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="20dp"
         android:layout_marginRight="142dp"
         android:backgroundTint="#08409844"
         android:scaleType="fitCenter"
