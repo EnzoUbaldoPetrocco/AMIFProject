@@ -50,6 +50,13 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".Utente">
+            <intent-filter>
+                <action android:name="DaHomeActivityAUtente"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
 
     </application>
 

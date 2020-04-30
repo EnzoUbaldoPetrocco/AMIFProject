@@ -5,9 +5,16 @@
     <string name="LOGINSIGNIN_TO_LOGIN">DaLoginOrSigninALogin</string>
     <string name="LOGINSIGNIN_TO_SIGNIN">DaLoginOrSigninASignin</string>
 
-    <!--Stringhe per aprire e chiudere menu a tendina hom activity!-->
+    <!--Stringhe per menu Home Activity !-->
+    <string name="HOME_TO_USER">DaHomeActivityAUtente</string>
+
+
+    <!--Stringhe per aprire e chiudere menu a tendina home activity!-->
     <string name="Open">Open</string>
     <string name="Close">Close</string>
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
- </resources>
+
+</resources>
