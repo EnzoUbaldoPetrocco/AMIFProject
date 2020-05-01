@@ -2,11 +2,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
     tools:context="fragment_home_activity.Utente">
 
     <!-- TODO: Update blank fragment layout -->
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:textSize="30dp"
+        android:text="Il tuo Username: " />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="85dp"
+        android:textSize="30dp"
+        android:text=""/>
 
+    <Button
+        android:id="@+id/btCambiaUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="150dp"
+        android:text="Modifica Username" />
 
+    <Button
+        android:id="@+id/btExit_Utente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="120dp"
+        android:layout_marginTop="220dp"
+        android:text="Esci dall'account" />
 
 </FrameLayout>

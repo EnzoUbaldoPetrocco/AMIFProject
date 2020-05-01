@@ -2,6 +2,7 @@ package com.parkingapp.homeactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
                  // if (ricordami) {
                        Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                        startActivity(i);
+
                   // }
           /*    else
                     {

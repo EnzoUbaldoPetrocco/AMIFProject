@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Network;
 import android.os.Bundle;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -26,6 +25,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.navigation.NavigationView;
 import com.parkingapp.homeactivity.R;
 
+import fragment_home_activity.HomeFragment;
 import fragment_home_activity.MappeScaricate;
 import fragment_home_activity.Parcheggio;
 import fragment_home_activity.PromemoriaNotifica;
@@ -51,6 +51,22 @@ public class HomeActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+
+
+        //Quest parte è identica all aprte più sotto e serve a far si che all'apertura si apra la home con i comandi per far partire l'app
+        Fragment myFragmant=null;
+        Class fragmentClass=HomeFragment.class;
+
+        try {
+            myFragmant=(Fragment) fragmentClass.newInstance();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.flcontent, myFragmant).commit();
 
 
 
@@ -82,14 +98,14 @@ public class HomeActivity extends AppCompatActivity {
 
             case R.id.btUtente:
                 fragmentClass= Utente.class;
+                break;
 
             case R.id.btHomeMenu:
-                Intent intent = new Intent(getString(R.string.MAIN_TO_HOME));
-                startActivity(intent);
-
+                fragmentClass= HomeFragment.class;
+                break;
 
                 default:
-                    fragmentClass=HomeActivity.class; //Di default torna alla HomeActivity
+                    fragmentClass=HomeFragment.class; //Di default torna alla HomeActivity
         }
         try {
             myFragmant=(Fragment) fragmentClass.newInstance();
