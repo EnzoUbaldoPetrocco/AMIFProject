@@ -1,4 +1,4 @@
-package com.parkingapp.homeactivity;
+package RichiesteConferma;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,6 +8,8 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
+import com.parkingapp.homeactivity.R;
+
 public class UscitaUtente extends Activity {
 
     Button conferma=null;
@@ -16,7 +18,7 @@ public class UscitaUtente extends Activity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.conferma_uscita_utente);
+        setContentView(R.layout.richiesta_conferma);
 
         conferma=findViewById(R.id.btConfermaUscitaUtente);
         annulla=findViewById(R.id.btAnnullaUscitaUtente);

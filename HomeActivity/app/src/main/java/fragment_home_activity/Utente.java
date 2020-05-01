@@ -84,7 +84,7 @@ public class Utente extends Fragment {
         btEsci.setOnClickListener(new View.OnClickListener() { //Passaggio a activity richiesta conferma
             @Override
             public void onClick(View v) {
-                Intent i= new Intent (getString(R.string.EXIT_ACCOUNT));
+                Intent i= new Intent (getString(R.string.EXIT_OR_DELETE));
                 startActivity(i);
             }
         });

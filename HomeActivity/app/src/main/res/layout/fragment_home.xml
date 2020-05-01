@@ -1,23 +1,24 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
-    android:layout_gravity="center_horizontal"
     tools:context="fragment_home_activity.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:text="La vera home del fragment" />
 
-    <Button
-        android:id="@+id/bttAvviaHomeFragment"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="300dp"
-        android:layout_marginLeft="160dp"
-        android:text="Avvia"/>
+<Button
+    android:id="@+id/bttAvviaHomeFragment"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Avvia"
+    android:textSize="25dp"
+    android:layout_marginTop="400dp"
+    />
 
-</FrameLayout>
+</LinearLayout>
