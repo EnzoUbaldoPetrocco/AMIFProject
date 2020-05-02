@@ -36,7 +36,6 @@ public class RichiestaConferma extends AppCompatActivity {
     Button bttConferma=null;
     Button bttAnnulla=null;
 
-    MenuItem menuItem=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,8 +62,6 @@ public class RichiestaConferma extends AppCompatActivity {
         bttConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
 
 
 
