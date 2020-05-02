@@ -144,4 +144,8 @@ public class HomeActivity extends AppCompatActivity {
        // return super.onOptionsItemSelected(item); //Per ora non ci serve
         return  false;
     }
+
+
+
+
 }

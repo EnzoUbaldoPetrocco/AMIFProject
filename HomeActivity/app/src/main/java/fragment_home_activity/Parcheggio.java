@@ -89,6 +89,7 @@ public class Parcheggio extends Fragment {
                 Intent i = new Intent("DaRichiestaConfermaAHomeActivity");
                 i.putExtra(getString(R.string.Parcheggio), "Parcheggio");
                 startActivity(i);
+
             }
         });
     }
