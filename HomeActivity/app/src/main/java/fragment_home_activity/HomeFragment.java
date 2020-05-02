@@ -72,8 +72,10 @@ public class HomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
         bttAvvia=view.findViewById(R.id.bttAvviaHomeFragment);
 
+        //avvia il task principale dell'app
         bttAvvia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

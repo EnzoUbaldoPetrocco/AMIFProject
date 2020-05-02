@@ -53,7 +53,7 @@ public class HomeActivity extends AppCompatActivity {
         setupDrawerContent(navigationView);
 
 
-        //Quest parte è identica all aprte più sotto e serve a far si che all'apertura si apra la home con i comandi per far partire l'app
+        //Quest parte è identica all parte più sotto e serve a far si che all'apertura si apra la home con i comandi per far partire l'app
         Fragment myFragmant=null;
         Class fragmentClass=HomeFragment.class;
 

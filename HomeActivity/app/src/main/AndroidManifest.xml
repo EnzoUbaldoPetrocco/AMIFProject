@@ -51,7 +51,7 @@
         </activity>
 
 
-        <activity android:name="RichiesteConferma.UscitaUtente">
+        <activity android:name="RichiesteConferma.RichiestaConferma">
             <intent-filter>
                 <action android:name="DaRichiestaConfermaAHomeActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>

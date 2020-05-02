@@ -11,8 +11,14 @@
     <string name="Close">Close</string>
 
     <!--Stringhe per chiedere conferma uscita!-->
+    <!--Alcune di queste stringhe non sappiamo ancora se ci serviranno !-->
     <string name="EXIT_OR_DELETE">DaRichiestaConfermaAHomeActivity</string>
-
+    <string name="Parcheggio">RitornoAParcheggio</string>
+    <string name="Home_Fragment">RitornoAHomeFragment</string>
+    <string name="Mappe_Scaricate">RitornoAMappeScaricate</string>
+    <string name="Utente">RitornoAUtente</string>
+    <string name="Scarica_Mappa">RitornoAScaricaMappa</string>
+    <string name="Promemoria_Notifica">RitornoAPromemoriaNotifica</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

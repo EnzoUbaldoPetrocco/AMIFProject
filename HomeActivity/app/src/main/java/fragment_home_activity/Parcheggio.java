@@ -1,5 +1,6 @@
 package fragment_home_activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -84,7 +85,9 @@ public class Parcheggio extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent(getString(R.string.EXIT_OR_DELETE));
+
+                Intent i = new Intent("DaRichiestaConfermaAHomeActivity");
+                i.putExtra(getString(R.string.Parcheggio), "Parcheggio");
                 startActivity(i);
             }
         });
