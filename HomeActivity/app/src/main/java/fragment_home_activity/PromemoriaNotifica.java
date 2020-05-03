@@ -38,6 +38,7 @@ public class PromemoriaNotifica extends Fragment {
     TextView tvOrarioNotifica=null;
     Button btOrarioNotifica=null;
     ListView  lvOrari=null;
+    Boolean premuto=false; //variabile per capire lo stato del menu con gli orari
 
 
     // TODO: Rename and change types of parameters
@@ -124,7 +125,16 @@ public class PromemoriaNotifica extends Fragment {
         btOrarioNotifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                lvOrari.setVisibility(View.VISIBLE); //Rendo visibile la lista con gli orari dosponibili
+
+                if(premuto==false) {
+                    lvOrari.setVisibility(View.VISIBLE); //Rendo visibile la lista con gli orari dosponibili
+                    premuto=true;
+                }
+                else
+                {
+                    lvOrari.setVisibility(View.INVISIBLE);
+                    premuto=false;
+                }
             }
         });
 

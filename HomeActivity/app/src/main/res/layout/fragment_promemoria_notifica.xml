@@ -21,6 +21,7 @@
         android:id="@+id/tvOrarioNotifica"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="  1 ora"
         android:layout_marginTop="150dp"
         android:textSize="30dp" />
 
