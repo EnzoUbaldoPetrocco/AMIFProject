@@ -10,6 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parkingapp.homeactivity.R;
 
@@ -29,6 +32,12 @@ public class HomeFragment extends Fragment {
     private String mParam2;
 
     Button bttAvvia=null;
+    TextView tvScegliCittà=null;
+    Button btMenu=null;
+    ListView lvCittàDestinazione=null;
+    TextView avviso1=null;
+    TextView avviso2=null;
+    Boolean premuto=false; //Parametro per capire lo stato del menu con le scelte delle città
 
 
     public HomeFragment() {
@@ -70,15 +79,49 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         bttAvvia=view.findViewById(R.id.bttAvviaHomeFragment);
+        tvScegliCittà=view.findViewById(R.id.tvCittàDestinazione);
+        avviso1=view.findViewById(R.id.tvAvviso1);
+        avviso2=view.findViewById(R.id.tvAvviso2);
+        lvCittàDestinazione=view.findViewById(R.id.lvListaCittàDestinazione);
+        btMenu=view.findViewById(R.id.btMenuCittàDestinazioneHomeFragment);
+
+        //Gestisco la visibilità menu a tendina con le città da scegliere
+        btMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(premuto==false)
+                {
+                    lvCittàDestinazione.setVisibility(View.VISIBLE);
+                    premuto=true;
+                }
+                else
+                {
+                    lvCittàDestinazione.setVisibility(View.INVISIBLE);
+                    premuto=false;
+                }
+            }
+        });
 
         //avvia il task principale dell'app
         bttAvvia.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String testo=tvScegliCittà.getText().toString();
+
+                if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
+                {
+                    avviso1.setVisibility(View.INVISIBLE);//Se la verifica è rispettata lo rimetto invisibile
+                    //Scrivere secondo controllo non appena si gestiranno le mappe scaricate
+                }
+                else
+                {
+                    avviso1.setVisibility(View.VISIBLE);
+                }
 
             }
         });

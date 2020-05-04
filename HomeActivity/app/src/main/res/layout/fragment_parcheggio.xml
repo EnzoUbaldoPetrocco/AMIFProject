@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
+    android:background="@drawable/sfondo_azzurro"
     android:orientation="vertical"
     tools:context="fragment_home_activity.Parcheggio">
 

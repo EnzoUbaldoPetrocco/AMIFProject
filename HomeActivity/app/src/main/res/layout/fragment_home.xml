@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,7 +10,57 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="La vera home del fragment" />
+        android:text="  Scegli la città di destinazione"
+        android:textColor="#000000"
+        android:textSize="25dp"
+        android:layout_marginTop="80dp"/>
+
+
+    <TextView
+        android:id="@+id/tvCittàDestinazione"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text=" ----"
+        android:layout_marginTop="150dp"
+        android:textSize="30dp" />
+
+    <Button
+        android:id="@+id/btMenuCittàDestinazioneHomeFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="35dp"
+        android:layout_marginLeft="300dp"
+        android:background="@drawable/menu_orari"
+        android:layout_alignEnd="@+id/tvOrarioNotifica"
+        android:layout_marginTop="150dp"
+        />
+
+    <ListView
+        android:id="@+id/lvListaCittàDestinazione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="200dp" />
+
+    <TextView
+        android:id="@+id/tvAvviso1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="   Scegli una città di destinazione"
+        android:textColor="#A50101"
+        android:textSize="20dp"
+        android:visibility="invisible"
+        android:layout_marginTop="300dp"/>
+
+    <TextView
+        android:id="@+id/tvAvviso2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="350dp"
+        android:visibility="invisible"
+        android:text="La città scelta non è ancora stata scaricata. Per scaricarla vai su menu -> scarica mappa (obbligatorio per avviare l'applicazione)"
+        android:textColor="#A50101"
+        android:textSize="20dp" />
 
 <Button
     android:id="@+id/bttAvviaHomeFragment"
@@ -18,7 +68,8 @@
     android:layout_height="wrap_content"
     android:text="Avvia"
     android:textSize="25dp"
-    android:layout_marginTop="400dp"
+    android:layout_marginLeft="130dp"
+    android:layout_marginTop="500dp"
     />
 
-</LinearLayout>
+</RelativeLayout>
