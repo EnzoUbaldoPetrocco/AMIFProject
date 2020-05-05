@@ -28,7 +28,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="80dp"
         android:text=" Liberare parcheggio entro:"
         android:textSize="30dp"
         android:visibility="visible"
@@ -49,7 +49,7 @@
         android:id="@+id/btEliminaParcheggio"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="110dp"
         android:text="Elimina"
         android:textSize="20dp"
         />

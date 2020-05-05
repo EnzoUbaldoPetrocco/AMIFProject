@@ -2,12 +2,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/sfondo_azzurro"
     tools:context="fragment_home_activity.MappeScaricate">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+
+<!--Il layout e l'implementazione del fragment sono rimandate a quando avremo il server!-->
+    <ListView
+        android:id="@+id/lvListaCittàDestinazione"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginTop="200dp" />
 
 </FrameLayout>

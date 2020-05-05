@@ -2,11 +2,17 @@ package fragment_home_activity;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.parkingapp.homeactivity.R;
 
@@ -24,6 +30,15 @@ public class ScaricaMappa extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    TextView tvMappe=null;
+    Button btMenuMappe=null;
+    ListView listaMappe=null;
+    ProgressBar progressBar=null;
+    Button btScarica=null;
+
+    Boolean premuto=false; //Variabile per capire lo stato del pulsante per vedere menu con mappe da scaricare
+
 
     public ScaricaMappa() {
         // Required empty public constructor
@@ -61,5 +76,20 @@ public class ScaricaMappa extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_scarica_mappa, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        btMenuMappe=view.findViewById(R.id.btMenuMappeDaScaricare);
+        btScarica=view.findViewById(R.id.btConfermaMappaDaScaricare);
+        progressBar=view.findViewById(R.id.pbMappeDaScaricare);
+        listaMappe=view.findViewById(R.id.lvListaMappeDaScaricare);
+        tvMappe=view.findViewById(R.id.tvMappeDaScaricare);
+
+
+
+
     }
 }
