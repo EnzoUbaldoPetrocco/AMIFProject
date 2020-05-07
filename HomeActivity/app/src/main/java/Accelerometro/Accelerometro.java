@@ -61,6 +61,9 @@ public class Accelerometro implements SensorEventListener {
 
     }
 
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {} //A noi non serve
 }
+
+

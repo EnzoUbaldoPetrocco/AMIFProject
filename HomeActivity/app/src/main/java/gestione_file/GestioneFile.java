@@ -1,9 +1,11 @@
 package gestione_file;
 
+import android.content.Context;
 import android.os.Environment;
 import android.util.Log;
 
 import java.io.File;
+import java.io.InputStream;
 
 public class GestioneFile {
 
@@ -22,4 +24,11 @@ public class GestioneFile {
         }
         else return storeDir;
     }
+
+    public static String[] LocalInfo()
+    {
+        File f= new File(Environment.getExternalStorageDirectory()+ "/infoLocali.txt");
+        
+    }
+
 }
