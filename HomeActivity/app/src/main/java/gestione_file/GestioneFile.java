@@ -11,8 +11,8 @@ public class GestioneFile {
 
     final static String TAG="Gestione file";
 
-    public static String createDir(){
-        String storeDir= Environment.getExternalStorageDirectory()+ "/RICORDAMI";
+    public static String createDir(String nomeDirectory){
+        String storeDir= Environment.getExternalStorageDirectory()+ nomeDirectory;
         File f= new File(storeDir);
         if(!f.exists()){
             f.mkdir();
