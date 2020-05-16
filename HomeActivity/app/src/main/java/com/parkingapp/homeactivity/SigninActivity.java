@@ -78,8 +78,8 @@ public class SigninActivity extends Activity {
 
                     tvErroreUsernameOrPassword.setVisibility(View.INVISIBLE);
 
-                    if (!password.equals(password_conferma)) {
-                        tvErrorePassword.setVisibility(View.VISIBLE);
+                    if (password.equals(password_conferma)) {
+                        tvErrorePassword.setVisibility(View.INVISIBLE);
 
                         if(username.length()<=25 && password.length()<=25)
                         {
@@ -95,6 +95,7 @@ public class SigninActivity extends Activity {
                                 {
                                     Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                                     startActivity(i);
+                                    break;
                                 }
 
                                 case 409:
@@ -122,7 +123,7 @@ public class SigninActivity extends Activity {
                     }
 
                     else {
-                        tvErrorePassword.setVisibility(View.INVISIBLE);
+                        tvErrorePassword.setVisibility(View.VISIBLE);
                     }
                 }
                 else

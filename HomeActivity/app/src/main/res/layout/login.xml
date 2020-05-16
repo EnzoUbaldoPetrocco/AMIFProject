@@ -94,13 +94,13 @@
 
     <ImageButton
         android:id="@+id/bttBackLogin_to_LoginSignin"
-        android:layout_width="89dp"
-        android:layout_height="39dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="142dp"
+        android:layout_width="61dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="23dp"
+        android:layout_marginRight="150dp"
         android:backgroundTint="#08409844"
         android:scaleType="fitCenter"
-        android:src="@drawable/back_bottone"
+        android:src="@drawable/back_bottone_verde"
         android:visibility="visible" />
 
 
