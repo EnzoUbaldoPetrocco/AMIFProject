@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
         //se TAG esiste già la cartella, intento per Activityhome
         //se no-->passo activity per login e sign in attraverso intento per login e sign in
 
-        DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
+      /*  DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
 
         TimeSeries ts1=new TimeSeries(3);
         TimeSeries ts2=new TimeSeries(3);
 
         double d=  com.dtw.FastDTW.getWarpInfoBetween(ts1, ts2, 3, distFn).getDistance();
-
+*/
 
 
 
@@ -57,20 +57,20 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
 
-               asyncTaskMainActivity= new AsyncTaskMainActivity();
-               asyncTaskMainActivity.execute();
+           //    asyncTaskMainActivity= new AsyncTaskMainActivity();
+           //    asyncTaskMainActivity.execute();
 
                // if (Variabili.ricordami==true) {
 
-               Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+           /*      Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                startActivity(i);
 
                // }
-          /*    else
+            else
                     {
-                   Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
+                */   Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
                    startActivity(i);
-                    } */
+                 //   }
 
 
 

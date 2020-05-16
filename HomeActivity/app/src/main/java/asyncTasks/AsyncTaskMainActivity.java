@@ -31,7 +31,7 @@ public class AsyncTaskMainActivity extends AsyncTask {
     }
 
     @Override
-    protected Object doInBackground() {
+    protected Object doInBackground(Object[] objects) {
 
         File f=new File(GestioneFile.createDir("/RICORDAMI"));
         if(f.exists())

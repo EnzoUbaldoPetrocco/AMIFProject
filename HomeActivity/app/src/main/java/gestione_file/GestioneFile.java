@@ -28,6 +28,7 @@ public class GestioneFile {
     public static String[] LocalInfo()
     {
         File f= new File(Environment.getExternalStorageDirectory()+ "/infoLocali.txt");
+        return null;
         
     }
 

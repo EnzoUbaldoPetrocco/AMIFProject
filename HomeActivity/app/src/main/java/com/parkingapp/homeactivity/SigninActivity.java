@@ -1,7 +1,10 @@
 package com.parkingapp.homeactivity;
 
 import android.app.Activity;
+import android.app.Application;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,7 +15,11 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import asyncTasks.AsyncTaskSigninActivity;
+
 public class SigninActivity extends Activity {
+
+    public static int codice_risultato;
 
     Button btRegistrati=null;
     EditText etUsername=null;
@@ -45,6 +52,8 @@ public class SigninActivity extends Activity {
         tvErroreUsernameOrPassword=findViewById(R.id.tvErroreUsernameOrPassword_Signin);
         tvErroreLunghezza=findViewById(R.id.tvErroreLunghezza);
 
+        final Context context=this;
+
 
 
 
@@ -75,6 +84,30 @@ public class SigninActivity extends Activity {
                         if(username.length()<=25 && password.length()<=25)
                         {
                             tvErroreLunghezza.setVisibility(View.INVISIBLE); //Fine controlli, inzio body
+
+                            AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin, context);
+                            String parametri[]={username, password};
+                            asyncTaskSigninActivity.execute(parametri);
+
+                            switch (codice_risultato)
+                            {
+                                case 200:
+                                {
+                                    Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                                    startActivity(i);
+                                }
+
+                                case 409:
+                                {
+                                    tvErroreUsername.setVisibility(View.VISIBLE);
+                                    break;
+                                }
+                                default:
+                                {
+                                    tvErroreUsername.setVisibility(View.VISIBLE);
+                                    break;
+                                }
+                            }
 
 
 

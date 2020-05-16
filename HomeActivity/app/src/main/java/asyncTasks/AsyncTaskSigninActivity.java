@@ -1,51 +1,65 @@
 package asyncTasks;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ProgressBar;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import com.parkingapp.homeactivity.HomeActivity;
+import com.parkingapp.homeactivity.SigninActivity;
 
-public class AsyncTaskSigninActivity extends AsyncTask {
+import java.io.IOException;
+
+import Server.Server;
+import Server.CreazioneJson;
+
+
+public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer> {
 
     private ProgressBar progressBar=null;
+    private Context context=null;
 
 
 
-    public AsyncTaskSigninActivity(ProgressBar pb){
+
+    public AsyncTaskSigninActivity(ProgressBar pb, Context context){
         this.progressBar=pb;
+        this.context=context;
     }
+
 
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        progressBar.setVisibility(View.VISIBLE);
+        this.progressBar.setVisibility(View.VISIBLE);
 
     }
 
-    @Override
-    protected Object doInBackground(String...strings) throws IOException {
+    @Override //Non so come ritornare il codice di risposta
+    protected Integer doInBackground(String...strings) {
 
         String username=strings[0];
         String password=strings[1];
+         Integer codice_risposta=500;
 
-          switch(Server.Server.postSignin(username,password))
-          {
-              case
-          }
+        //Creo oggetto Json da inviare
+        String data= CreazioneJson.signinJson(username, password);
 
+        try {
+             codice_risposta=(Server.postSignin(data, this.context));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-
+        SigninActivity.codice_risultato=codice_risposta;
         return null;
     }
 
     @Override
-    protected void onPostExecute(Object o) {
-        super.onPostExecute(o);
+    protected void onPostExecute(Integer i) {
+        super.onPostExecute(i);
 
         progressBar.setVisibility(View.INVISIBLE);
 
