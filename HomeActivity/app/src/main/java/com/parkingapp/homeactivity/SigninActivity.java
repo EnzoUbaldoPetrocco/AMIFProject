@@ -19,7 +19,7 @@ import asyncTasks.AsyncTaskSigninActivity;
 
 public class SigninActivity extends Activity {
 
-    public static int codice_risultato;
+    public static String codice_risultato="200";
 
     Button btRegistrati=null;
     EditText etUsername=null;
@@ -85,20 +85,21 @@ public class SigninActivity extends Activity {
                         {
                             tvErroreLunghezza.setVisibility(View.INVISIBLE); //Fine controlli, inzio body
 
-                            AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin, context);
+                            AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin,context);
                             String parametri[]={username, password};
                             asyncTaskSigninActivity.execute(parametri);
 
+                           /*
                             switch (codice_risultato)
                             {
-                                case 200:
+                                case "200":
                                 {
-                                    Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                                    startActivity(i);
+                                    Intent intent = new Intent(getString(R.string.MAIN_TO_HOME));
+                                    startActivity(intent);
                                     break;
                                 }
 
-                                case 409:
+                                case "409":
                                 {
                                     tvErroreUsername.setVisibility(View.VISIBLE);
                                     break;
@@ -110,6 +111,7 @@ public class SigninActivity extends Activity {
                                 }
                             }
 
+*/
 
 
 
