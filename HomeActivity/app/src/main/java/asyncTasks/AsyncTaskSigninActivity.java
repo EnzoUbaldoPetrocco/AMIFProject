@@ -2,6 +2,7 @@ package asyncTasks;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
@@ -12,7 +13,11 @@ import com.parkingapp.homeactivity.HomeActivity;
 import com.parkingapp.homeactivity.R;
 import com.parkingapp.homeactivity.SigninActivity;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import Server.VolleyCallback;
 
 import Server.Server;
 import Server.CreazioneJson;
@@ -44,27 +49,23 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
     @Override //Non so come ritornare il codice di risposta
     protected Integer doInBackground(String...strings) {
 
+        String url= "http://students.atmosphere.tools/v1/login";
 
-        String token= Server.postToken(context);
+        Server.makeRequest(url, new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject result) throws JSONException {
 
-        Toast.makeText(context,"token:" + token, Toast.LENGTH_LONG).show();
 
-        String username=strings[0];
-        String password=strings[1];
-         String codice_risposta="400";
+            }
 
-        //Creo oggetto Json da inviare
-        String data= CreazioneJson.signinJson(username, password);
+            @Override
+            public void onError(String result) throws Exception {}
+        }, context);
 
-        try {
-             codice_risposta=Server.post(data, "http://students.atmosphere.tools/v1/login", this.context);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        SigninActivity.codice_risultato=codice_risposta;
-        return null;
+        return  0;
     }
+
+
 
     @Override
     protected void onPostExecute(Integer i) {
