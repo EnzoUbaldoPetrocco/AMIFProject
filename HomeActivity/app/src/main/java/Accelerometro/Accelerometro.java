@@ -5,6 +5,10 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 
+import com.timeseries.TimeSeries;
+import com.util.DistanceFunction;
+import com.util.DistanceFunctionFactory;
+
 import java.util.ArrayList;
 
 public class Accelerometro implements SensorEventListener {
@@ -27,27 +31,6 @@ public class Accelerometro implements SensorEventListener {
 
 
 
-//ho deciso di scrivere la media per blocchi di N valori
-    //con questo procedimento significa che ogni volta che eseguo la media posso reinizializzare la lista
-
-   public Float[] Media(ArrayList<Float[]> accelerometerValues){
-
- Float media[]= new Float[2];
-
-    int x=0, y=0, z=0;
-    for(int i=0; i<accelerometerValues.size();i++){
-        Float Buffer[] = new Float[2];
-        Buffer=accelerometerValues.get(i);
-        for(int j=0;j<2;j++){
-            media[j]+=Buffer[j];
-            }
-        }
-       for(int k=0;k<2;k++){
-           media[k]=media[k]/accelerometerValues.size();
-    }
-    return media;
-}
-
 
     @Override //Prendiamo i valori dall'accellerometro e li mettiamo nella lista
     public void onSensorChanged(SensorEvent event) {
@@ -65,5 +48,13 @@ public class Accelerometro implements SensorEventListener {
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {} //A noi non serve
 }
+
+/*
+    DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
+
+    TimeSeries ts1=new TimeSeries(3);
+    TimeSeries ts2=new TimeSeries(3);
+
+    double d=  com.dtw.FastDTW.getWarpInfoBetween(ts1, ts2, 3, distFn).getDistance();*/
 
 

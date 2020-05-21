@@ -51,6 +51,8 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
         String url= "http://students.atmosphere.tools/v1/login";
 
+        //!!!!!!NON HAI ANCORA INVIATO NESSUN OGGETTO JSON!!!
+
         Server.makeRequest(url, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {

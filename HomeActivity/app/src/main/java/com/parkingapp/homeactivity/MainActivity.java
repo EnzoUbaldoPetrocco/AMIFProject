@@ -41,13 +41,8 @@ public class MainActivity extends AppCompatActivity {
         //se TAG esiste già la cartella, intento per Activityhome
         //se no-->passo activity per login e sign in attraverso intento per login e sign in
 
-      /*  DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
 
-        TimeSeries ts1=new TimeSeries(3);
-        TimeSeries ts2=new TimeSeries(3);
 
-        double d=  com.dtw.FastDTW.getWarpInfoBetween(ts1, ts2, 3, distFn).getDistance();
-*/
 
 
 

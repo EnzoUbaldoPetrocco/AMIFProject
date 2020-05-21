@@ -78,7 +78,6 @@ public class Server {
 
         postToken(new VolleyCallback() {
 
-
             @Override
             public void onSuccess(final JSONObject result) throws JSONException {
                 CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET,
