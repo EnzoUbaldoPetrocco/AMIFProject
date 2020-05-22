@@ -10,8 +10,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <!--SCREEN ORIENTATION = PORTRAIT PER IMPEDIRE ROTAZIONE SCHERMO, CHE SPESSO E' DANNOSA PER GLI ASYNC TASKS-->
+
         <!--main activity-->
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -19,7 +22,8 @@
 
             <!--home activity-->
         </activity>
-        <activity android:name=".HomeActivity">
+        <activity android:name=".HomeActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="com.parkingapp.homeactivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -27,7 +31,8 @@
         </activity>
 
         <!--login activity-->
-        <activity android:name=".LogInActivity">
+        <activity android:name=".LogInActivity"
+            android:screenOrientation="portrait">
         <intent-filter>
             <action android:name="DaLoginOrSigninALogin"/>
             <category android:name="android.intent.category.DEFAULT"/>
@@ -43,7 +48,8 @@
     </activity>
 
         <!--signin activity-->
-        <activity android:name=".SigninActivity">
+        <activity android:name=".SigninActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="DaLoginOrSigninASignin"/>
                 <category android:name="android.intent.category.DEFAULT"/>

@@ -17,7 +17,7 @@ public class VolleyController    {
     }
 
     public static synchronized VolleyController getInstance(Context context) {
-        // If instance is not available, create it. If available, reuse and return the object.
+        //Se l'istanza non è disponibile la crea, altrimenti la riutilizza e restituisce l'oggetto
         if (mInstance == null) {
             mInstance = new VolleyController(context);
         }
@@ -26,8 +26,9 @@ public class VolleyController    {
 
     public RequestQueue getRequestQueue() {
         if (mRequestQueue == null) {
-            // getApplicationContext() is key. It should not be activity context,
-            // or else RequestQueue won’t last for the lifetime of your app
+            //getApplicationContext() è la chiave. Non devorebbe essere il context di un'activity
+            // o altrimenti RequestQueque non durerà per tutto il tempo di vita dell'app
+
             mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;

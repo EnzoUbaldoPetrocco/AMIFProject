@@ -30,7 +30,7 @@ public class ExampleUnitTest {
         assertEquals(4, 2 + 2);
     }
 
-    @Test
+   /* @Test
     public static void AccelerometroTest () throws FileNotFoundException {
         DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
 
@@ -139,5 +139,9 @@ public class ExampleUnitTest {
 
 
         Log.i("Distanza: ", " "+ d);
+
+
     }
+    */
+
 }

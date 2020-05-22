@@ -3,6 +3,9 @@ package Server;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CreazioneJson {
 
     private static String data=null;
@@ -37,6 +40,15 @@ public class CreazioneJson {
             e.printStackTrace();
         }
         return  jsonObject;
+    }
+
+    public static Map<String, String> createJson(String[] nomi, String...strings)
+    {
+        Map<String, String> post= new HashMap<>();
+        for (int i=0; i<strings.length; i++) {
+            post.put(nomi[i], strings[i]);
+        }
+        return  post;
     }
 
 

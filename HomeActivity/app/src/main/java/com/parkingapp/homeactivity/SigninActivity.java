@@ -136,5 +136,18 @@ public class SigninActivity extends Activity {
         });
 
 
+      // PARTE SOLO TEMPORANEA PER POTER ANDARE NELLA HOME ACTIVITY, DA ELIMINARE NON APPENA IL SERVER SARA FINITO !!!!
+        btRegistrati.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+
+                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                startActivity(i);
+
+                return false;
+            }
+        });
+
+
     }
 }

@@ -8,6 +8,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -18,6 +19,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,36 +36,36 @@ public class Server {
 
             @Override
             public void onResponse(Object responseObj) {
-                String response = (String) responseObj;
-                if (!response.equals(null)) {
+                String risposta = (String) responseObj;
+                if (!risposta.equals(null)) {
 
-                    Log.e("Your Array Response", response);
+                    Log.e("Array di risposta: ", risposta);
                 } else {
-                    Log.e("Your Array Response", "Data Null");
+                    Log.e("Array di risposta: ", "Data Null");
                 }
             }
 
         }, new Response.ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("error is ", "" + error);
+            public void onErrorResponse(VolleyError errore) {
+                Log.e("ERRORE: ", "" + errore);
             }
         }) {
 
-            //This is for Headers If You Needed
+            //E' per prendere l'header
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                return params;
+                Map<String, String> parametri = new HashMap<String, String>();
+                return parametri;
             }
 
-            //Pass Your Parameters here
+            //Passi i tui parametri qui
             @Override
             protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", "parking-username");
-                params.put("password", "parking-password");
-                return params;
+                Map<String, String> parametri = new HashMap<String, String>();
+                parametri.put("username", "parking-username");
+                parametri.put("password", "parking-password");
+                return parametri;
             }
         };
         RequestQueue queue = Volley.newRequestQueue(context);
@@ -85,23 +87,23 @@ public class Server {
                         new Response.Listener() {
                             @Override
                             public void onResponse(Object responseObj) {
-                                JSONObject response = (JSONObject) responseObj;
-                                Log.v("Response", response.toString());
+                                JSONObject risposta = (JSONObject) responseObj;
+                                Log.v("Risposta", risposta.toString());
                                 try {
-                                    String ip = response.getString("ip");
+                                    String ip = risposta.getString("ip");
                                     if (ip != "null") {
-                                        callback.onSuccess(response);
+                                        callback.onSuccess(risposta);
                                     }
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
                             }
                         },
-                        //Pass response to success callback
+                        //Passo la risposta alla callback successiva
 
                         new Response.ErrorListener() {
                             @Override
-                            public void onErrorResponse(VolleyError error) {}
+                            public void onErrorResponse(VolleyError errore) {}
                         }) {
 
                     @Override
@@ -132,6 +134,70 @@ public class Server {
 
 
     }
+
+    //Metodo per la post nella signin, serve quando si registra un nuovo utente per farlo registrare sul database
+    public static int makePost(final String url_add, final VolleyCallback callback, final Context weakReference, final Map<String, String> postJson) {
+
+     final   String url=my_URL+url_add; //Creo l'URL con quello base più la nuova parte in base ala post che devo fare
+       final Context context = new WeakReference<>(weakReference).get();
+
+        postToken(new VolleyCallback() {
+
+            @Override
+            public void onSuccess(final JSONObject result) throws JSONException {
+                CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST,
+                        url, postJson,
+                        new Response.Listener() {
+                            @Override
+                            public void onResponse(Object responseObj) {
+                                JSONObject risposta = (JSONObject) responseObj;
+                                Log.v("Risposta", risposta.toString());
+                                try {
+                                    String ip = risposta.getString("ip");
+                                    if (ip != "null") {
+                                        callback.onSuccess(risposta);
+                                    }
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        },
+                        //Passo la risposta alla callback successiva
+
+                        new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError errore) {
+                                VolleyLog.d("ERRORE", "errore nella post: "+errore.toString());
+                            }
+                        }) {
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        HashMap<String, String> headers = new HashMap<String, String>();
+                        headers.put("Authorization", result.toString());
+                        return headers;
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        return params;
+                    }
+
+                };
+
+                // Request added to the RequestQueue
+                VolleyController.getInstance(context).addToRequestQueue(rq);
+            }
+
+            @Override
+            public void onError(String result) throws Exception {
+
+            }
+        }, context);
+        return 0;
+    }
+
 
 
 }

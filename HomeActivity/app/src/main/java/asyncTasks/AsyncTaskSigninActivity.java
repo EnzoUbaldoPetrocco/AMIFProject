@@ -17,6 +17,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
+import java.util.Map;
+
 import Server.VolleyCallback;
 
 import Server.Server;
@@ -30,10 +33,8 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
 
 
-
-
     public AsyncTaskSigninActivity(ProgressBar pb,Context context){
-        this.context=context;
+        this.context=new WeakReference<>(context).get();
         this.progressBar=pb;
     }
 
@@ -46,25 +47,30 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
     }
 
+
     @Override //Non so come ritornare il codice di risposta
     protected Integer doInBackground(String...strings) {
 
-        String url= "http://students.atmosphere.tools/v1/login";
+        String url= "/v1/things/";
+        String username=strings[0];
+        String password = strings[1];
 
-        //!!!!!!NON HAI ANCORA INVIATO NESSUN OGGETTO JSON!!!
+        String nomiJson[]={"_id"};
+        Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
 
-        Server.makeRequest(url, new VolleyCallback() {
+        //ABBIAMO DEI PROBLEMI A PASSARE IL CONTESTO
+        int codiceRitorno = Server.makePost(url, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
-
+                Log.i("POST ASYNC SINGNIN:", result.toString());
             }
 
             @Override
             public void onError(String result) throws Exception {}
-        }, context);
+        }, this.context, oggettoJson);
 
-        return  0;
+        return  codiceRitorno;
     }
 
 
