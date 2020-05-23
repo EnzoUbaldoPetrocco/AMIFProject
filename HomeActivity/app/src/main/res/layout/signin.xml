@@ -92,55 +92,30 @@
         />
 
     <TextView
-        android:id="@+id/tvErrorePassword_Signin"
+        android:id="@+id/tvErrore_Signin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Le password non corrispondono"
         android:visibility="invisible"
-        android:layout_marginTop="10dp"
-        android:textColor="#FFFF0000" />
-    <TextView
-        android:id="@+id/tvErroreUsername_Signin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Username già in uso, prova con un altro"
-        android:visibility="invisible"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="20dp"
         android:textColor="#FFFF0000" />
 
-    <TextView
-        android:id="@+id/tvErroreUsernameOrPassword_Signin"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="I campi Username e Password non possono essere vuoti"
-        android:visibility="invisible"
-        android:layout_marginTop="10dp"
-        android:textColor="#FFFF0000" />
-
-    <TextView
-        android:id="@+id/tvErroreLunghezza"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Username/Password devono essere max 25 caratteri"
-        android:visibility="invisible"
-        android:layout_marginTop="10dp"
-        android:textColor="#FFFF0000" />
-
-    <Button
-        android:id="@+id/bttRegistrati"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Registrati"
-        />
 
     <ProgressBar
         android:id="@+id/pbSignin"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
         android:layout_width="90dp"
         android:layout_height="34dp"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:indeterminate="true"
         android:visibility="invisible" />
+    <Button
+        android:id="@+id/bttRegistrati"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Registrati"
+        />
+
 
     <ImageButton
         android:id="@+id/bttBackSignin_to_LoginSignin"
@@ -149,6 +124,7 @@
         android:layout_marginRight="150dp"
         android:backgroundTint="#08409844"
         android:scaleType="fitCenter"
+        android:layout_marginTop="27dp"
         android:src="@drawable/back_bottone_verde"
         android:visibility="visible" />
 

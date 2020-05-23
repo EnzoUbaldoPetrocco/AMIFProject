@@ -2,6 +2,7 @@ package Server;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -26,13 +27,23 @@ import java.util.Map;
 
 public class Server {
 
+   private Context context=null;
+
+    public Server (Context mycontext)
+    {
+        this.context=mycontext;
+    }
+
    private static String my_URL = "http://students.atmosphere.tools";
 
     public static void postToken(final VolleyCallback volleyCallback, Context context){
         String url= my_URL+"/v1/login";
 
+        String nomiJson[]={"username", "password"};
+        Map<String, String> costanteJson= CreazioneJson.createJson(nomiJson, "parking-username", "parking-password");
+
         CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST,
-                url, null, new Response.Listener() {
+                url, costanteJson, new Response.Listener() {
 
             @Override
             public void onResponse(Object responseObj) {
@@ -42,6 +53,11 @@ public class Server {
                     Log.e("Array di risposta: ", risposta);
                 } else {
                     Log.e("Array di risposta: ", "Data Null");
+                }
+                try {
+                    volleyCallback.onSuccess((JSONObject)responseObj);
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
 
@@ -70,6 +86,7 @@ public class Server {
         };
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(rq);
+
 
     }
 
@@ -136,10 +153,9 @@ public class Server {
     }
 
     //Metodo per la post nella signin, serve quando si registra un nuovo utente per farlo registrare sul database
-    public static int makePost(final String url_add, final VolleyCallback callback, final Context weakReference, final Map<String, String> postJson) {
+    public static int makePost(final String url_add, final VolleyCallback callback, final Context context, final Map<String, String> postJson) {
 
      final   String url=my_URL+url_add; //Creo l'URL con quello base più la nuova parte in base ala post che devo fare
-       final Context context = new WeakReference<>(weakReference).get();
 
         postToken(new VolleyCallback() {
 

@@ -28,10 +28,7 @@ public class SigninActivity extends Activity {
     EditText etPasswordConferma=null;
     ImageButton imBackBottone=null;
     ProgressBar pbProgressBarSignin=null;
-    TextView tvErrorePassword=null;
-    TextView tvErroreUsername=null;
-    TextView tvErroreUsernameOrPassword=null;
-    TextView tvErroreLunghezza=null;
+    TextView tvErrore=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -47,10 +44,7 @@ public class SigninActivity extends Activity {
         imBackBottone=findViewById(R.id.bttBackSignin_to_LoginSignin);
         pbProgressBarSignin=findViewById(R.id.pbSignin);
         etUsername= findViewById(R.id.etSignin_Username);
-        tvErrorePassword=findViewById(R.id.tvErrorePassword_Signin);
-        tvErroreUsername=findViewById(R.id.tvErroreUsername_Signin);
-        tvErroreUsernameOrPassword=findViewById(R.id.tvErroreUsernameOrPassword_Signin);
-        tvErroreLunghezza=findViewById(R.id.tvErroreLunghezza);
+        tvErrore=findViewById(R.id.tvErrore_Signin);
 
         final Context context=this;
 
@@ -74,16 +68,15 @@ public class SigninActivity extends Activity {
                 String password_conferma= etPasswordConferma.getText().toString();
                 String username= etUsername.getText().toString();
 
+                tvErrore.setVisibility(View.INVISIBLE); //Metto invisibile il log di errore
+
                 if(!password.equals("") && !username.equals("")) {
 
-                    tvErroreUsernameOrPassword.setVisibility(View.INVISIBLE);
-
                     if (password.equals(password_conferma)) {
-                        tvErrorePassword.setVisibility(View.INVISIBLE);
 
                         if(username.length()<=25 && password.length()<=25)
                         {
-                            tvErroreLunghezza.setVisibility(View.INVISIBLE); //Fine controlli, inzio body
+                            //Fine controlli, inzio body
 
                             AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin,context);
                             String parametri[]={username, password};
@@ -120,17 +113,22 @@ public class SigninActivity extends Activity {
                         }
                         else
                         {
-                            tvErroreLunghezza.setVisibility(View.VISIBLE);
+
+                            tvErrore.setText("Username/Password devono essere max 25 caratteri");
+                            tvErrore.setVisibility(View.VISIBLE);
                         }
                     }
 
                     else {
-                        tvErrorePassword.setVisibility(View.VISIBLE);
+                        tvErrore.setText("Le password non corrispondono");
+                        tvErrore.setVisibility(View.VISIBLE);
                     }
                 }
                 else
                 {
-                    tvErroreUsernameOrPassword.setVisibility(View.VISIBLE);
+
+                    tvErrore.setText("I campi Username e Password non possono essere vuoti");
+                    tvErrore.setVisibility(View.VISIBLE);
                 }
             }
         });
