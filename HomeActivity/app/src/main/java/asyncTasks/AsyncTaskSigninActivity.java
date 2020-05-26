@@ -59,7 +59,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
        Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
 
         //ABBIAMO DEI PROBLEMI A PASSARE IL CONTESTO
-         int codiceRitorno = Server.makePost(url, new VolleyCallback() {
+         Server.makePost(url, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
