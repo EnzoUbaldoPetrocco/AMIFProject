@@ -14,7 +14,6 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,14 +24,11 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import mist.Variabili;
+
 public class Server {
 
-   private Context context=null;
 
-    public Server (Context mycontext)
-    {
-        this.context=mycontext;
-    }
 
    private static String my_URL = "http://students.atmosphere.tools";
 
@@ -64,7 +60,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError errore) {
-                Log.e("ERRORE: ", "" + errore);
+                Log.e("ERRORE-POST-TOKEN ", "" + errore);
             }
         }) {
 
@@ -159,8 +155,13 @@ public class Server {
 
         postToken(new VolleyCallback() {
 
+
+
+
             @Override
             public void onSuccess(final JSONObject result) throws JSONException {
+
+
                 CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.POST,
                         url, postJson,
                         new Response.Listener() {
