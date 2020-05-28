@@ -56,10 +56,10 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
         String password = strings[1];
 
         String nomiJson[]={"_id"};
-        Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
+       Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
 
         //ABBIAMO DEI PROBLEMI A PASSARE IL CONTESTO
-        int codiceRitorno = Server.makePost(url, new VolleyCallback() {
+         Server.makePost(url, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
@@ -69,8 +69,24 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             @Override
             public void onError(String result) throws Exception {}
         }, this.context, oggettoJson);
+        /* Server.postToken(new VolleyCallback() {
+                              @Override
+                              public void onSuccess(JSONObject result) throws JSONException {
+                                  Log.i("FUNZIONA", "La post token è andata a buon fine");
+                                  Toast.makeText(context, result.toString(), Toast.LENGTH_LONG).show();
+                              }
 
-        return  codiceRitorno;
+                              @Override
+                              public void onError(String result) throws Exception {
+                                  Log.e("POST-TOKEN", "Post token fallita");
+                                  Toast.makeText(context, result.toString(), Toast.LENGTH_LONG).show();
+
+                              }
+                          }, context
+         );*/
+
+
+        return  0;
     }
 
 

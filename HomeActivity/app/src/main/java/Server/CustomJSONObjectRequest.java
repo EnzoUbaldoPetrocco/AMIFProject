@@ -21,7 +21,7 @@ public class CustomJSONObjectRequest extends Request {
     private Map<String, String> params;
     Priority mPriority;
 
-    public CustomJSONObjectRequest(int method, String url, Map<String, String> params,
+     CustomJSONObjectRequest(int method, String url, Map<String, String> params,
                                    Listener responseListener, ErrorListener errorListener) {
         super(method, url, errorListener);
         this.listener = responseListener;
