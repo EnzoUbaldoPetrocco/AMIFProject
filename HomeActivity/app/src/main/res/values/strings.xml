@@ -4,6 +4,7 @@
     <string name="MAIN_TO_LOGSIGN">DaMainALoginOrSignin</string>
     <string name="LOGINSIGNIN_TO_LOGIN">DaLoginOrSigninALogin</string>
     <string name="LOGINSIGNIN_TO_SIGNIN">DaLoginOrSigninASignin</string>
+    <string name="HOME_FRAGMENT_TO_ESECUZIONE">DaHomeFragmentAEsecuzione</string>
 
 
     <!--Stringhe per aprire e chiudere menu a tendina home activity!-->

@@ -85,9 +85,7 @@ public class Parcheggio extends Fragment {
             @Override
             public void onClick(View v) {
 
-
                 Intent i = new Intent("DaRichiestaConfermaAHomeActivity");
-                i.putExtra(getString(R.string.Parcheggio), "Parcheggio");
                 startActivity(i);
 
             }

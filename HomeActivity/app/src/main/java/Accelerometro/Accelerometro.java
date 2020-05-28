@@ -10,13 +10,20 @@ import com.util.DistanceFunction;
 import com.util.DistanceFunctionFactory;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class Accelerometro implements SensorEventListener {
 
-    private ArrayList<Float[]> accelerometerValues = null;
+    private double[] accelerometerValues = new double[30];
+    private int counter=0;
     private SensorManager sensorManager=null; //Tutti i sensori
     private Sensor accelerometer=null;
     private SensorEventListener sel= null;
+
+    private double[] valoreRiferimento= {3.629945, 4.7222466, 3.8489187, 3.847166, 3.9240105, 3.90592, 3.8509967, 3.830742, 3.8745177, 3.8638394, 3.8468213, 3.8541284, 3.89754, 3.0880797, 3.2788496,
+                                        4.4670825, 2.0428765, 7.126476, 6.4707613, 1.4708443, -0.91515964, -3.2301805, -5.3027353, -7.8721066, -9.816314, -9.699457, -9.642139, -9.272217, -12.216041, -8.217302, -9.822078,
+                                        -9.822892, -9.54507, -9.380654, -9.367784, -9.400335, -9.371432, -9.239703, -9.43598, -9.321077};
+
 
 //sarebbe da implementare uno stop, in maniera tale che il sensori si fermi per pochi ms per eseguire la media e il match
 //dopodichè riparta.
@@ -25,8 +32,34 @@ public class Accelerometro implements SensorEventListener {
 //su internet dice che si può usare il metodo: unregisterListener, provo a implementarlo, tuttavia non sono sicuro
     //sull'utilizzo di questo metodo: ho paura che mi cancelli anche i dati
 
-    protected void onStop() {
+    private void onStop() {
         sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+    }
+
+    private void onStart() {
+        sensorManager.registerListener(sel, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private double distanza(){
+        DistanceFunction distFn = DistanceFunctionFactory.getDistFnByName("EuclideanDistance");
+
+
+        TimeSeries ts=new TimeSeries(this.accelerometerValues);
+
+        double distanza=  com.dtw.FastDTW.getWarpInfoBetween(new TimeSeries(this.valoreRiferimento), ts, 1, distFn).getDistance();
+
+        return distanza;
+    }
+
+    public boolean esegui(){
+        onStart();
+        if(distanza()<500)
+        {
+            onStop();
+            return true;
+        }
+        return false;
+
     }
 
 
@@ -35,12 +68,21 @@ public class Accelerometro implements SensorEventListener {
     @Override //Prendiamo i valori dall'accellerometro e li mettiamo nella lista
     public void onSensorChanged(SensorEvent event) {
 
-        float x, y, z;
-        x= event.values[0];
-        y= event.values[1];
-        z= event.values[2];
+        double y;
+        y= (double)event.values[1];
 
-        accelerometerValues.add(new Float[] {x, y, z});
+        if (counter >=30)
+        {
+            counter=10;
+            for (int i=0; i<10; i++)
+            {
+                accelerometerValues[i]=accelerometerValues[19+i];
+            }
+
+        }
+
+        accelerometerValues[counter]=y;
+        counter++;
 
     }
 

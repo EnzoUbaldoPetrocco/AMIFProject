@@ -1,5 +1,6 @@
 package fragment_home_activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -113,15 +114,20 @@ public class HomeFragment extends Fragment {
 
                 String testo=tvScegliCittà.getText().toString();
 
-                if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
-                {
+         //       if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
+       //         {
                     avviso1.setVisibility(View.INVISIBLE);//Se la verifica è rispettata lo rimetto invisibile
                     //Scrivere secondo controllo non appena si gestiranno le mappe scaricate
-                }
+
+
+                    //Passo all'activity di esecuzione
+                    Intent i = new Intent(getString(R.string.HOME_FRAGMENT_TO_ESECUZIONE));
+                    startActivity(i);
+          /*      }
                 else
                 {
                     avviso1.setVisibility(View.VISIBLE);
-                }
+                } */
 
             }
         });

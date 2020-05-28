@@ -47,7 +47,6 @@ public class RichiestaConferma extends AppCompatActivity {
         bttConferma=findViewById(R.id.btConfermaUscitaUtente);
         bttAnnulla=findViewById(R.id.btAnnullaUscitaUtente);
 
-        final String _s= intent.getStringExtra(getString(R.string.Parcheggio));
 
 
         bttAnnulla.setOnClickListener(new View.OnClickListener() {
@@ -63,43 +62,9 @@ public class RichiestaConferma extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-
-
-                //A seconda della stringa che gli si passa questa activity esegue
-                //un preciso task
-
-                switch (_s)
-                {
-                    case "RitornoAScaricaMappa":
-
-                        break;
-
-                    case "RitornoAMappeScaricate":
-
-                        break;
-
-                    case "Parcheggio":
-                        Log.i("OH FRATE", "OH FRATE!");
-                        break;
-
-                    case "RitornoAPromemoriaNotifica":
-
-                        break;
-
-                    case "RitornoAUtente":
-
-                        break;
-
-                    case "RitornoAHomeFragment":
-
-                        break;
-
-                    default:
+                       //Ritorno alla home fragment
                         Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                         startActivity(i);
-                }
-
-
 
             }
         });
