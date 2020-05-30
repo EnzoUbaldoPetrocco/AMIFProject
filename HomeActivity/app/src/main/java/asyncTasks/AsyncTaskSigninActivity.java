@@ -24,6 +24,7 @@ import Server.VolleyCallback;
 
 import Server.Server;
 import Server.CreazioneJson;
+import mist.Variabili;
 
 
 public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer> {
@@ -49,7 +50,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
 
     @Override //Non so come ritornare il codice di risposta
-    protected Integer doInBackground(String...strings) {
+    protected Integer doInBackground(final String...strings) {
 
         String url= "/v1/things/";
         String username=strings[0];
@@ -58,12 +59,15 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
         String nomiJson[]={"_id"};
        Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
 
-        //ABBIAMO DEI PROBLEMI A PASSARE IL CONTESTO
          Server.makePost(url, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
                 Log.i("POST ASYNC SINGNIN:", result.toString());
+
+
+
+                Variabili.salvaUsernamePassword(context, strings);
             }
 
             @Override
@@ -94,6 +98,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
     @Override
     protected void onPostExecute(Integer i) {
         super.onPostExecute(i);
+
 
         progressBar.setVisibility(View.INVISIBLE);
 

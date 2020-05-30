@@ -60,7 +60,12 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError errore) {
-                Log.e("ERRORE-POST-TOKEN ", "" + errore);
+                Log.e("ERRORE-POST-TOKEN ", "" + errore.toString());
+                try {
+                    volleyCallback.onError(errore.toString());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }) {
 
