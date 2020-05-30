@@ -15,8 +15,10 @@
         />
 
 <TextView
+        android:id="@+id/tvHeaderHomeActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="#000010"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
         android:textSize="25dp" />

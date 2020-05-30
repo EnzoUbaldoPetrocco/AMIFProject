@@ -6,14 +6,11 @@ import android.preference.PreferenceScreen;
 
 public class Variabili {
 
-    public String nomeUtente=;
-    public String password;
+    public String nomeUtente=null;
+    public String password=null;
 
    public static boolean ricordami =false;
 
-   private Context context = this.;
-
-    SharedPreferences sharedPreferences = getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
 
 
 
@@ -21,7 +18,7 @@ public class Variabili {
    //Metodo privato per il salvataggio dei dati in maniera permanente
     public static void salvaUsernamePassword(Context context, String...strings)
     {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("USERNAME_PASSWORD", Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("USERNAME", strings[0]);
@@ -36,6 +33,15 @@ public class Variabili {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("STATO", stato);
+        editor.apply();
+    }
+
+    public static void salvaPromemoriaNotifica(Context context, String orario)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("STATO", orario);
         editor.apply();
     }
 

@@ -4,12 +4,14 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Network;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -43,6 +45,11 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent i= getIntent();
 
+        //Carico dalla memoria il nome scelto come username
+        SharedPreferences sharedPreferences= getSharedPreferences("USERNAME_PASSWORD", MODE_PRIVATE);
+
+     //  String username=findViewById(R.id.tvHeaderHomeActivity);
+     //   username.setText(sharedPreferences.getString("USERNAME", "")); //Assegno sotto l'immagine la scritta dell'username
 
         drawerLayout =(DrawerLayout) findViewById(R.id.drawer);
         mToggle= new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
@@ -54,11 +61,11 @@ public class HomeActivity extends AppCompatActivity {
 
 
         //Quest parte è identica all parte più sotto e serve a far si che all'apertura si apra la home con i comandi per far partire l'app
-        Fragment myFragmant=null;
+        Fragment myFragment=null;
         Class fragmentClass=HomeFragment.class;
 
         try {
-            myFragmant=(Fragment) fragmentClass.newInstance();
+            myFragment=(Fragment) fragmentClass.newInstance();
         }
         catch (Exception e)
         {
@@ -66,7 +73,7 @@ public class HomeActivity extends AppCompatActivity {
         }
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.flcontent, myFragmant).commit();
+        fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).commit();
 
 
 
