@@ -275,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.i("SEDUTO", ""+d2seduto);
                 Log.i("SEDUTO", ""+d3seduto);
                 Log.i("SEDUTO", ""+d4seduto);
+                //--------------------------------------
 
 
                 Log.i("provaRuotatodx1", ""+d1provaRuotatodx1);
