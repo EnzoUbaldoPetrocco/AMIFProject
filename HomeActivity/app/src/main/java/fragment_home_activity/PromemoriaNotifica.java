@@ -97,10 +97,8 @@ public class PromemoriaNotifica extends Fragment {
         lvOrari=view.findViewById(R.id.lvListaOrariNotifica);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
-        String orario=sharedPreferences.getString("STATO", "");
-        if(orario!=null) {
-            tvOrarioNotifica.setText(orario);
-        }
+        String orario=sharedPreferences.getString("STATO", "1 ora");
+        tvOrarioNotifica.setText(orario);
 
         //Creo la lista con tutti gli orari disponibili
         final ArrayList<String> arrayList= new ArrayList<>();

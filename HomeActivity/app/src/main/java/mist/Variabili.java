@@ -13,8 +13,6 @@ public class Variabili {
 
 
 
-
-
    //Metodo privato per il salvataggio dei dati in maniera permanente
     public static void salvaUsernamePassword(Context context, String...strings)
     {
@@ -29,7 +27,7 @@ public class Variabili {
     //Salvo lo stato della chechBox "Ricordami"
     public static void salvaStatoCheckBox(Context context, boolean stato)
     {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("CHECKBOX", Context.MODE_WORLD_READABLE);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("CHECKBOX", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("STATO", stato);

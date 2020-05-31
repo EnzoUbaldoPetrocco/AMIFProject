@@ -85,9 +85,8 @@ public class Parcheggio extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i = new Intent("DaRichiestaConfermaAHomeActivity");
+                Intent i= new Intent (getString(R.string.ELIMINA_PARCHEGGIO));
                 startActivity(i);
-
             }
         });
     }

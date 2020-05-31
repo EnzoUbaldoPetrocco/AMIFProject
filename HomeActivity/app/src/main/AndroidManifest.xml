@@ -42,7 +42,8 @@
     </activity>
 
         <!--log/sign activity-->
-        <activity android:name=".LoginOrSigninActivity">
+        <activity android:name=".LoginOrSigninActivity"
+            android:screenOrientation="portrait">
         <intent-filter>
             <action android:name="DaMainALoginOrSignin"/>
             <category android:name="android.intent.category.DEFAULT"/>
@@ -68,9 +69,18 @@
         </activity>
 
 
-        <activity android:name="RichiesteConferma.RichiestaConferma">
+        <activity android:name="RichiesteConferma.CambiaUtente"
+            android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="DaRichiestaConfermaAHomeActivity"/>
+                <action android:name="DaUtenteACambiaUtente"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name="RichiesteConferma.EliminaParcheggio"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="DaParcheggioAEliminaParcheggio"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

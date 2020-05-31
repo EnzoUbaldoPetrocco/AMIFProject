@@ -1,6 +1,8 @@
 package fragment_home_activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -11,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.parkingapp.homeactivity.R;
 
@@ -27,6 +30,7 @@ public class Utente extends Fragment {
 
     Button btCambiaNome=null;
     Button btEsci=null;
+    TextView tvUsername=null;
 
 
 
@@ -79,6 +83,12 @@ public class Utente extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         btEsci=view.findViewById(R.id.btExit_Utente);
         btCambiaNome=view.findViewById(R.id.btCambiaUsername);
+        tvUsername=view.findViewById(R.id.tvFragmentUtente);
+
+        //Associo nome username scelto nella signin/login
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
+        String username=sharedPreferences.getString("USERNAME", "");
+        tvUsername.setText(username);
 
 
         btEsci.setOnClickListener(new View.OnClickListener() { //Passaggio a activity richiesta conferma
