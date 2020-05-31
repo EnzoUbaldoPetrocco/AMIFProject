@@ -37,6 +37,7 @@ import fragment_home_activity.Utente;
 public class HomeActivity extends AppCompatActivity {
     private ActionBarDrawerToggle mToggle=null;
     private DrawerLayout drawerLayout=null;
+    TextView tvUsername=null;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,12 +46,6 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent i= getIntent();
 
-        //Carico dalla memoria il nome scelto come username
-        SharedPreferences sharedPreferences= getSharedPreferences("USERNAME_PASSWORD", MODE_PRIVATE);
-
-     //  String username=findViewById(R.id.tvHeaderHomeActivity);
-     //   username.setText(sharedPreferences.getString("USERNAME", "")); //Assegno sotto l'immagine la scritta dell'username
-
         drawerLayout =(DrawerLayout) findViewById(R.id.drawer);
         mToggle= new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
         drawerLayout.addDrawerListener(mToggle);
@@ -58,6 +53,14 @@ public class HomeActivity extends AppCompatActivity {
         mToggle.syncState();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupDrawerContent(navigationView);
+
+        //Mi collego alla TextView sull'header
+        View headerView = navigationView.getHeaderView(0);
+        tvUsername = headerView.findViewById(R.id.tvHeaderHomeActivity);
+
+        //Carico dalla memoria il nome scelto come username
+        SharedPreferences sharedPreferences= getSharedPreferences("USERNAME_PASSWORD", MODE_PRIVATE);
+        tvUsername.setText(sharedPreferences.getString("USERNAME", "")); //Assegno sotto l'immagine la scritta dell'username
 
 
         //Quest parte è identica all parte più sotto e serve a far si che all'apertura si apra la home con i comandi per far partire l'app
