@@ -1,6 +1,7 @@
 package fragment_home_activity;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -22,6 +23,8 @@ import android.widget.TextView;
 import com.parkingapp.homeactivity.R;
 
 import java.util.ArrayList;
+
+import mist.Variabili;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -93,6 +96,10 @@ public class PromemoriaNotifica extends Fragment {
         btOrarioNotifica=view.findViewById(R.id.spOrarioNotifica);
         lvOrari=view.findViewById(R.id.lvListaOrariNotifica);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
+        String orario=sharedPreferences.getString("STATO", "1 ora");
+        tvOrarioNotifica.setText(orario);
+
         //Creo la lista con tutti gli orari disponibili
         final ArrayList<String> arrayList= new ArrayList<>();
         arrayList.add("1 ora");
@@ -108,6 +115,7 @@ public class PromemoriaNotifica extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 tvOrarioNotifica.setText("  "+arrayList.get(position) );
+                btOrarioNotifica.setBackgroundResource(R.drawable.menu_orari);
                 lvOrari.setVisibility(View.INVISIBLE); //Dopo aver premuto la lista torna invisibile
                 bttConferma.setVisibility(View.VISIBLE); //Compare il bottone per chiedere conferma
             }
@@ -116,6 +124,9 @@ public class PromemoriaNotifica extends Fragment {
         bttConferma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String orario= tvOrarioNotifica.getText().toString();
+                Variabili.salvaPromemoriaNotifica(getContext(), orario);
 
                 bttConferma.setVisibility(View.INVISIBLE); //Dato che non si passa ad altre activity lo rendo di nuovo invisibile
 
@@ -127,11 +138,13 @@ public class PromemoriaNotifica extends Fragment {
             public void onClick(View v) {
 
                 if(premuto==false) {
+                    btOrarioNotifica.setBackgroundResource(R.drawable.menu_orari_up);
                     lvOrari.setVisibility(View.VISIBLE); //Rendo visibile la lista con gli orari dosponibili
                     premuto=true;
                 }
                 else
                 {
+                    btOrarioNotifica.setBackgroundResource(R.drawable.menu_orari);
                     lvOrari.setVisibility(View.INVISIBLE);
                     premuto=false;
                 }

@@ -3,7 +3,9 @@ package com.parkingapp.homeactivity;
 import androidx.appcompat.app.AppCompatActivity;
 
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
@@ -63,19 +65,28 @@ public class MainActivity extends AppCompatActivity {
                // }
             else
                     {
-                */   Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
+                */
+
+           //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
+               SharedPreferences sharedPreferences = getSharedPreferences("CHECKBOX", Context.MODE_PRIVATE);
+               boolean stato = sharedPreferences.getBoolean("STATO", false);
+               if (!stato)
+               {
+                   Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
                    startActivity(i);
-                 //   }
+               }
 
-
-
+               else
+               {
+                   Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                   startActivity(i);
+               }
 
 
            }
        });
     }
 
-    //crea directory
 
 
 }

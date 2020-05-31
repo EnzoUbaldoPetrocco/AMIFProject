@@ -15,8 +15,8 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="100dp"
-        android:background="#FFFFFF"
         android:text=" Inserisci le tue credenziali"
+        android:textColor="#FFFFFF"
         android:textSize="30dp" />
 
     <TextView
@@ -76,13 +76,6 @@
         android:layout_marginTop="10dp"
         android:textColor="#FFFF0000" />
 
-    <Button
-        android:id="@+id/bttOkLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="OK" />
-
     <ProgressBar
         android:id="@+id/pbLogin"
         style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -91,6 +84,15 @@
         android:layout_marginTop="15dp"
         android:indeterminate="true"
         android:visibility="invisible" />
+
+
+    <Button
+        android:id="@+id/bttOkLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="OK" />
+
 
     <ImageButton
         android:id="@+id/bttBackLogin_to_LoginSignin"

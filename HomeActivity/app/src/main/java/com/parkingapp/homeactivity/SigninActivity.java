@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import asyncTasks.AsyncTaskSigninActivity;
+import mist.Variabili;
 
 public class SigninActivity extends Activity {
 
@@ -29,6 +30,7 @@ public class SigninActivity extends Activity {
     ImageButton imBackBottone=null;
     ProgressBar pbProgressBarSignin=null;
     TextView tvErrore=null;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -138,6 +140,12 @@ public class SigninActivity extends Activity {
         btRegistrati.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+
+
+                String username= etUsername.getText().toString();
+                String password= etPassword.getText().toString();
+                String strings[]={username, password};
+                Variabili.salvaUsernamePassword(context,strings);
 
                 Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                 startActivity(i);

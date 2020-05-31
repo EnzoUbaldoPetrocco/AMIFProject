@@ -1,7 +1,9 @@
 package com.parkingapp.homeactivity;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -13,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import mist.Variabili;
+
 public class LogInActivity extends Activity {
 
     Button bttOk=null;
@@ -22,6 +26,7 @@ public class LogInActivity extends Activity {
     EditText passwordLogin=null;
     ProgressBar progressBarLogin=null;
     CheckBox checkBoxLogin=null;
+    Context context=this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,11 +48,20 @@ public class LogInActivity extends Activity {
                String username=usernameLogin.getText().toString();
                String password=passwordLogin.getText().toString();
 
+
+
                 //Verifico eventuali username o password errati prima di mandare i controlli al sever
                if(!username.equals("") && !password.equals("") && username.length()<=25 && password.length()<=25)
                {
                 tvErrore.setVisibility(View.INVISIBLE);
 
+
+
+                //In seguito all'autenticazione, prima di passare alla HomeActivity salvo lo stato della checkbox
+                   Variabili.salvaStatoCheckBox(context, checkBoxLogin.isChecked());
+
+                   Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                   startActivity(i);
                }
                else
                {
