@@ -40,7 +40,7 @@ public class AsyncTaskLoginActivity extends AsyncTask<String, String, Object> {
         Variabili.salvaUsernamePassword(context, strings);
 
         boolean stato=checkBox.isChecked(); //Prendo lo stato della checkBox
-        Variabili.salvaStatoCheckBox(context, stato);
+        Variabili.salvaRicordaUtente(context, stato);
 
 
         return null;

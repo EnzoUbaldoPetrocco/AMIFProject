@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                 */
 
            //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
-               SharedPreferences sharedPreferences = getSharedPreferences("CHECKBOX", Context.MODE_PRIVATE);
+               SharedPreferences sharedPreferences = getSharedPreferences("RICORDAMI", Context.MODE_PRIVATE);
                boolean stato = sharedPreferences.getBoolean("STATO", false);
                if (!stato)
                {

@@ -27,7 +27,7 @@
         <activity android:name=".HomeActivity"
             android:screenOrientation="portrait">
             <intent-filter>
-                <action android:name="com.parkingapp.homeactivity"/>
+                <action android:name="DaMainAHomeActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

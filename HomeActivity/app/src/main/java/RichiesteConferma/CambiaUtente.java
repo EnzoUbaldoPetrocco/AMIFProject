@@ -67,7 +67,7 @@ public class CambiaUtente extends AppCompatActivity {
             public void onClick(View v) {
 
                 //Imposto la checkbox a false, così da obbligare a richiedere le credenziali
-                Variabili.salvaStatoCheckBox(context, false);
+                Variabili.salvaRicordaUtente(context, false);
 
                        //Ritorno alla richista di registrazione
                         Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));

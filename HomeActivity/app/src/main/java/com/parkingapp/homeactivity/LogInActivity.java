@@ -58,7 +58,7 @@ public class LogInActivity extends Activity {
 
 
                 //In seguito all'autenticazione, prima di passare alla HomeActivity salvo lo stato della checkbox
-                   Variabili.salvaStatoCheckBox(context, checkBoxLogin.isChecked());
+                   Variabili.salvaRicordaUtente(context, checkBoxLogin.isChecked());
 
                    Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
                    startActivity(i);
