@@ -71,7 +71,10 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             }
 
             @Override
-            public void onError(String result) throws Exception {}
+            public void onError(String result) throws Exception
+            {
+                Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
+            }
         }, this.context, oggettoJson);
         /* Server.postToken(new VolleyCallback() {
                               @Override

@@ -1,6 +1,7 @@
 package Server;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -32,7 +33,7 @@ public class Server {
 
    private static String my_URL = "http://students.atmosphere.tools";
 
-    public static void postToken(final VolleyCallback volleyCallback, Context context){
+    public static void postToken(final VolleyCallback volleyCallback, final Context context){
         String url= my_URL+"/v1/login";
 
         String nomiJson[]={"username", "password"};
@@ -51,6 +52,7 @@ public class Server {
                     Log.e("Array di risposta: ", "Data Null");
                 }
                 try {
+
                     volleyCallback.onSuccess((JSONObject)responseObj);
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -82,6 +84,7 @@ public class Server {
                 Map<String, String> parametri = new HashMap<String, String>();
                 parametri.put("username", "parking-username");
                 parametri.put("password", "parking-password");
+
                 return parametri;
             }
         };
@@ -194,7 +197,18 @@ public class Server {
                     @Override //Header della mia richiesta di Post
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", result.toString());
+                       /* SharedPreferences sharedPreferences = context.getSharedPreferences("TOKEN", Context.MODE_PRIVATE);
+                        String token = sharedPreferences.getString("TOKEN", ""); */
+
+                       //Rimuovo parti inutili dal token
+                        String risposta=result.toString();
+                        String token=risposta.substring(10, risposta.indexOf("}")-1);
+                        //Variabili.salvaToken(context, token); //Salvo il token
+
+                        Log.i("TOKEN", token);
+
+                        headers.put("Authorization", token);
+
                         return headers;
                     }
 

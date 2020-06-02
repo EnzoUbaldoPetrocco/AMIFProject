@@ -43,4 +43,13 @@ public class Variabili {
         editor.apply();
     }
 
+    public static void salvaToken(Context context, String token)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("TOKEN", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("TOKEN", token);
+        editor.apply();
+    }
+
 }

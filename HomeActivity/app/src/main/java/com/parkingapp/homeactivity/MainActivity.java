@@ -54,18 +54,6 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
 
-           //    asyncTaskMainActivity= new AsyncTaskMainActivity();
-           //    asyncTaskMainActivity.execute();
-
-               // if (Variabili.ricordami==true) {
-
-           /*      Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-               startActivity(i);
-
-               // }
-            else
-                    {
-                */
 
            //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
                SharedPreferences sharedPreferences = getSharedPreferences("RICORDAMI", Context.MODE_PRIVATE);
