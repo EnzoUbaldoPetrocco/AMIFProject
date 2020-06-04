@@ -11,10 +11,13 @@ public class AsyncTaskEsecuzione extends AsyncTask {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+
     }
 
     @Override
     protected Object doInBackground(Object[] objects) {
+
+
 
         Accelerometro accelerometro= new Accelerometro();
 

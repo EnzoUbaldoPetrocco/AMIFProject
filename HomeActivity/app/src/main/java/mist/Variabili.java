@@ -52,4 +52,24 @@ public class Variabili {
         editor.apply();
     }
 
+    public static void salvaDestinazione(Context context, String città)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("DESTINAZIONE_VIAGGIO", città);
+        editor.apply();
+    }
+
+    public static void salvaMappa(Context context, String città)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MAPPE_SCARICATE", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("MAPPE_SCARICATE", città);
+        editor.apply();
+    }
+
+
+
 }

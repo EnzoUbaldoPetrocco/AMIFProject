@@ -28,6 +28,8 @@ public class Esecuzione extends AppCompatActivity {
         bttAnnulla=findViewById(R.id.bttAnnullaEsecuzione);
         bttSalvaParcheggio= findViewById(R.id.bttSalvaParcheggio);
 
+
+
       /*  AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione();
         asyncTaskEsecuzione.execute();*/
 

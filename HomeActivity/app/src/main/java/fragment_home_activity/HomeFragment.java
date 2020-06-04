@@ -1,5 +1,6 @@
 package fragment_home_activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -16,6 +17,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parkingapp.homeactivity.R;
+
+import static mist.Variabili.salvaDestinazione;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -112,7 +115,9 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
+                Context context= getContext();
                 String testo=tvScegliCittà.getText().toString();
+                salvaDestinazione(context, testo);
 
          //       if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
        //         {
