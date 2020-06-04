@@ -2,6 +2,7 @@ package fragment_home_activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -117,10 +118,20 @@ public class HomeFragment extends Fragment {
 
                 Context context= getContext();
                 String testo=tvScegliCittà.getText().toString();
-                salvaDestinazione(context, testo);
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MAPPE_SCARICATE", Context.MODE_PRIVATE);
+                String mappa_scaricata=sharedPreferences.getString(testo, "");
 
-         //       if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
-       //         {
+                if(mappa_scaricata=="")
+                {
+                    avviso2.setVisibility(View.VISIBLE);
+                }
+
+                else {
+
+                    salvaDestinazione(context, testo);
+
+                    //       if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
+                    //         {
                     avviso1.setVisibility(View.INVISIBLE);//Se la verifica è rispettata lo rimetto invisibile
                     //Scrivere secondo controllo non appena si gestiranno le mappe scaricate
 
@@ -134,6 +145,7 @@ public class HomeFragment extends Fragment {
                     avviso1.setVisibility(View.VISIBLE);
                 } */
 
+                }
             }
         });
 

@@ -2,7 +2,9 @@ package com.parkingapp.homeactivity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,11 +14,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import asyncTasks.AsyncTaskEsecuzione;
+import mist.Variabili;
 
 public class Esecuzione extends AppCompatActivity {
 
     Button bttAnnulla=null;
     Button bttSalvaParcheggio=null;
+    Context context=this;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,13 +34,15 @@ public class Esecuzione extends AppCompatActivity {
 
 
 
-      /*  AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione();
-        asyncTaskEsecuzione.execute();*/
+       final AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione(this, bttAnnulla, bttSalvaParcheggio);
+        asyncTaskEsecuzione.execute();
 
 
         bttAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Variabili.annullaOSalvaParcheggio(context, false);
+                asyncTaskEsecuzione.cancel(true);
                 Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                 startActivity(i);
             }
@@ -47,6 +53,9 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Variabili.annullaOSalvaParcheggio(context, true);
+                asyncTaskEsecuzione.cancel(true);
 
             }
         });

@@ -38,4 +38,5 @@ dependencies {
 
     implementation files('libs/dtw.jar')
     implementation 'com.android.volley:volley:1.1.1' //Per implementare API
+    implementation 'com.google.android.gms:play-services:11.0.1' //Per ottenere geolocalizzzazione
 }

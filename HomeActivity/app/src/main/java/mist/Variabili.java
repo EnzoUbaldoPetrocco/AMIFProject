@@ -2,7 +2,13 @@ package mist;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.icu.util.LocaleData;
 import android.preference.PreferenceScreen;
+
+import java.sql.Date;
+import java.sql.Time;
+import java.time.Instant;
+import java.time.LocalTime;
 
 public class Variabili {
 
@@ -66,7 +72,26 @@ public class Variabili {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MAPPE_SCARICATE", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("MAPPE_SCARICATE", città);
+        editor.putString(città, città);
+        editor.apply();
+    }
+
+    public static void salvaParcheggio(Context context, String città, String viaParcheggio)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("CITTA", città);
+        editor.putString("VIA", viaParcheggio);
+        editor.apply();
+    }
+
+    public static void annullaOSalvaParcheggio(Context context, boolean stato)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("SCELTA", stato);
         editor.apply();
     }
 
