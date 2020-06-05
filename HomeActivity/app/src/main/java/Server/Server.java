@@ -15,6 +15,7 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -234,6 +235,32 @@ public class Server {
         }, context);
     }
 
+    //Metodo per le chiamate dell'API di Google Maps per il reverse geocoding
+    //Problemi di conversione double a String
+    public static void callReverseGeocoding(Context context, double[] coordinate, final VolleyCallback volleyCallback)
+    {
+        String indirizzo_p1 ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+        String indirizzo_p2="&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
+        String url=indirizzo_p1+coordinate[0]+","+coordinate[1]+indirizzo_p2;
 
+        CustomJSONObjectRequest rq= new CustomJSONObjectRequest(Request.Method.GET,
+                url, null, new Response.Listener() {
+            @Override
+            public void onResponse(Object response) {
 
+                try {
+                    volleyCallback.onSuccess((JSONObject)response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("CHIAMATA MAPS API", error.toString());
+            }
+        });
+        RequestQueue queue = Volley.newRequestQueue(context);
+        queue.add(rq);
+    }
 }

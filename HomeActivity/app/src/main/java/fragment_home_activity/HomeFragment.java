@@ -139,13 +139,13 @@ public class HomeFragment extends Fragment {
                     //Passo all'activity di esecuzione
                     Intent i = new Intent(getString(R.string.HOME_FRAGMENT_TO_ESECUZIONE));
                     startActivity(i);
-          /*      }
-                else
+               }
+            /*     else
                 {
                     avviso1.setVisibility(View.VISIBLE);
                 } */
 
-                }
+        //        }
             }
         });
 

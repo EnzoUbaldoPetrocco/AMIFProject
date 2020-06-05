@@ -3,6 +3,7 @@ package Posizione;
 import android.app.Activity;
 import android.content.Context;
 import android.location.Location;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
@@ -21,6 +22,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import Server.VolleyCallback;
+
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class Posizione {
@@ -30,7 +33,7 @@ public class Posizione {
     private  String indirizzo_p2="&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
 
     private URL url;
-    private String coordinate=null;
+    private double[] coordinate=new double[2];
 
     public Context context;
 
@@ -49,8 +52,8 @@ public class Posizione {
             public void onSuccess(Location location) {
 
                 if (location != null) {
-                    coordinate = location.toString();
-                    coordinate=coordinate.substring(coordinate.indexOf("fused"), coordinate.indexOf("acc")); //Prendo solo la parte con le coordinate
+                  Posizione.this.coordinate[0]=location.getLatitude();
+                  Posizione.this.coordinate[1]=location.getLongitude();
                 }
             }
         });
@@ -62,7 +65,8 @@ public class Posizione {
         String via=null;
         prendiPosizione();//Aggiorno le coordinate
         try{
-            String url_s=indirizzo_p1+coordinate+indirizzo_p2;
+            String coordinate_s=coordinate[0]+","+coordinate[1];
+            String url_s=indirizzo_p1+coordinate_s+indirizzo_p2;
             url= new URL(url_s);
 
             HttpURLConnection connection= (HttpURLConnection) url.openConnection(); //Cast a url
@@ -87,10 +91,11 @@ public class Posizione {
 
     public String nomeCittà()
     {
-        String città=null;
+        final String[] città = {null};
         prendiPosizione();
-        try{
-            String url_s=indirizzo_p1+coordinate+indirizzo_p2;
+        /*try{
+            String coordinate_s=this.coordinate[0]+","+this.coordinate[1];
+            String url_s=indirizzo_p1+coordinate_s+indirizzo_p2;
             url= new URL(url_s);
 
             HttpURLConnection connection= (HttpURLConnection) url.openConnection(); //Cast a url
@@ -99,6 +104,7 @@ public class Posizione {
             JSONArray address_components = results.getJSONArray(0);
             JSONObject route = address_components.getJSONObject(5);
             città = route.getString("long_name");
+
         }
 
         catch (MalformedURLException e) {
@@ -107,9 +113,25 @@ public class Posizione {
             e.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        return città;
+        Server.Server.callReverseGeocoding(context, this.coordinate, new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject response) throws JSONException {
+                JSONArray results = response.getJSONArray("results");
+                JSONArray address_components = results.getJSONArray(0);
+                JSONObject route = address_components.getJSONObject(5);
+                città[0] = route.getString("long_name");
+            }
+
+            @Override
+            public void onError(String errore) throws Exception {
+
+                Log.e("Posizione chiamata API", errore);
+            }
+        });
+
+        return città[0];
     }
 
 

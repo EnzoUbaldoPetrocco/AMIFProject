@@ -1,9 +1,14 @@
 package com.parkingapp.homeactivity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 
+import android.Manifest;
+import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -18,10 +23,15 @@ import com.util.DistanceFunctionFactory;
 import asyncTasks.AsyncTaskMainActivity;
 import mist.Variabili;
 
+import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+import static android.Manifest.permission.MANAGE_OWN_CALLS;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
+
 public class MainActivity extends AppCompatActivity {
 
     final String TAG="MainActivity";
     Button bttMain=null;
+    Context context=this;
     boolean FLAG=true;
     AsyncTaskMainActivity asyncTaskMainActivity=null;
     //Variabile solo per un test, da cancellare dopo
@@ -33,18 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         bttMain=findViewById(R.id.bttMain);
 
-
-
-        //codice per vedere se la cartella RICORDAMI esiste già
-        //altrimenti creo la cartella
-        //Il controllo è effettuuato suli dati nel file, il file sarà creato sempre
-
-
-        //se TAG esiste già la cartella, intento per Activityhome
-        //se no-->passo activity per login e sign in attraverso intento per login e sign in
-
-
-
+        //Controllo che i permessi siano abilitati all'avvio dell'app
+        ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE}, 1);
 
 
 
@@ -54,20 +54,18 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onClick(View v) {
 
-
-           //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
-               SharedPreferences sharedPreferences = getSharedPreferences("RICORDAMI", Context.MODE_PRIVATE);
-               boolean stato = sharedPreferences.getBoolean("STATO", false);
-               if (!stato)
-               {
-                   Intent i= new Intent(getString(R.string.MAIN_TO_LOGSIGN));
-                   startActivity(i);
-               }
-
-               else
-               {
-                   Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                   startActivity(i);
+               //Se i permessi non ci sono li richiedo ogni volta che prova a far iniziare l'app
+               if(requestPermission(ACCESS_FINE_LOCATION)&&requestPermission(WRITE_EXTERNAL_STORAGE)) {
+                   //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
+                   SharedPreferences sharedPreferences = getSharedPreferences("RICORDAMI", Context.MODE_PRIVATE);
+                   boolean stato = sharedPreferences.getBoolean("STATO", false);
+                   if (!stato) {
+                       Intent i = new Intent(getString(R.string.MAIN_TO_LOGSIGN));
+                       startActivity(i);
+                   } else {
+                       Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                       startActivity(i);
+                   }
                }
 
 
@@ -75,6 +73,38 @@ public class MainActivity extends AppCompatActivity {
        });
     }
 
+    //Chiedo all'utente di attivare tutti i permessi per l'applicazione
+    private boolean requestPermission(final String permission)
+    {
+        final boolean[] permesso = {true};//Valore per capire se il permesso è abilitato, array perchè se no non lo prende dopo
 
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this, permission)){
+            permesso[0]=false;
+
+            new AlertDialog.Builder(this)
+                    .setTitle("Permessi obbligatori")
+                    .setMessage("I permessi sono necessari per il corretto funzionamento dell'applicazione")
+                    .setPositiveButton("Concedi permessi", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            ActivityCompat.requestPermissions((Activity)context, new String[]{ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE}, 1);
+                            permesso[0]=true;
+                        }
+                    })
+                    .setNegativeButton("Nega", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            permesso[0] =false;
+                            dialog.dismiss();
+                        }
+                    })
+                    .create().show();
+        }
+        else
+        {
+            ActivityCompat.requestPermissions(this, new String[]{permission}, 1);
+        }
+        return permesso[0];
+    }
 
 }
