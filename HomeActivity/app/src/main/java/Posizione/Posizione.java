@@ -134,6 +134,12 @@ public class Posizione {
         return città[0];
     }
 
+    public boolean èFermo()
+    {
+        double[] confronto=this.coordinate;
+        prendiPosizione();
+        return confronto[0] == this.coordinate[0] && confronto[1] == this.coordinate[1];
+    }
 
     private  void requestPermission()
     {

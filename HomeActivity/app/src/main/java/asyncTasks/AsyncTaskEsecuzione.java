@@ -33,6 +33,10 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected Object doInBackground(Object[] objects) {
 
         boolean fine= false;
+        boolean esecuzione=true;
+
+        boolean città=false;
+
         SharedPreferences sharedPreferences = context.getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
         String nome_città=sharedPreferences.getString("DESTINAZIONE_VIAGGIO", "");
 
@@ -40,22 +44,27 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         Accelerometro accelerometro= new Accelerometro();
         Posizione posizione = new Posizione(context);
         String città_attuale= posizione.nomeCittà();
-        while (nome_città==città_attuale)
-        {
-            città_attuale=posizione.nomeCittà();
-            try {
-                wait(30000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+
+        while (esecuzione) {
+
+            while(posizione.èFermo()) {
+
+                if (nome_città == posizione.nomeCittà()) {
+                    try {
+                        wait(30000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                while (!fine) {
+                    fine = accelerometro.esegui();
+                }
+                String via = posizione.nomeVia();
+                Variabili.salvaParcheggio(context, città_attuale, via);
             }
         }
-
-        while(!fine)
-        {
-            fine = accelerometro.esegui();
-        }
-        String via=posizione.nomeVia();
-        Variabili.salvaParcheggio(context,città_attuale, via);
 
         return null;
     }

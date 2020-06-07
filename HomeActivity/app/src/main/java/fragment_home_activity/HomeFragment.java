@@ -1,14 +1,21 @@
 package fragment_home_activity;
 
+import android.app.AlertDialog;
+import android.app.usage.NetworkStatsManager;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -116,12 +123,28 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Context context= getContext();
-                String testo=tvScegliCittà.getText().toString();
+                Context context = getContext();
+                String testo = tvScegliCittà.getText().toString();
                 SharedPreferences sharedPreferences = getActivity().getSharedPreferences("MAPPE_SCARICATE", Context.MODE_PRIVATE);
-                String mappa_scaricata=sharedPreferences.getString(testo, "");
+                String mappa_scaricata = sharedPreferences.getString(testo, "");
 
-                if(mappa_scaricata=="")
+                final LocationManager manager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+                final ConnectivityManager connectivityManager = (ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+                NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+
+                //Controllo che l'utente abbia attivato il GPS e la connessione dati
+                if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+                    buildAlertMessageNoGps(context);
+                }
+
+              else  if(activeNetworkInfo==null || !activeNetworkInfo.isConnected())
+                {
+                    buildAlertMessageNoInternet(context);
+                }
+                //Avvio l'esecuzione solo se i sensori sono attivi
+                else {
+            /*    if(mappa_scaricata=="")
                 {
                     avviso2.setVisibility(View.VISIBLE);
                 }
@@ -135,19 +158,61 @@ public class HomeFragment extends Fragment {
                     avviso1.setVisibility(View.INVISIBLE);//Se la verifica è rispettata lo rimetto invisibile
                     //Scrivere secondo controllo non appena si gestiranno le mappe scaricate
 
-
+*/
                     //Passo all'activity di esecuzione
                     Intent i = new Intent(getString(R.string.HOME_FRAGMENT_TO_ESECUZIONE));
                     startActivity(i);
-               }
+                }
             /*     else
                 {
                     avviso1.setVisibility(View.VISIBLE);
-                } */
+                }
 
         //        }
+            }*/
             }
         });
 
+    }
+
+    //Se l'utente ha connessione dati o GPS spenti si attiva una finestra per chiedergli di attivarli, sensore serve per capire il tipo
+    private void buildAlertMessageNoGps(Context context) {
+
+            final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setMessage("È necessario abilitare il GPS per un corretto funzionamento dell'applicazione")
+                    .setCancelable(false)
+                    .setPositiveButton("Abilita", new DialogInterface.OnClickListener() {
+                        public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+
+                                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+                        }
+                    })
+                    .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                        public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                            dialog.cancel();
+                        }
+                    });
+            final AlertDialog alert = builder.create();
+            alert.show();
+    }
+
+    private void buildAlertMessageNoInternet(Context context) {
+
+        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setMessage("È necessario abilitare la connessione dati per un corretto funzionamento dell'applicazione")
+                .setCancelable(false)
+                .setPositiveButton("Abilita", new DialogInterface.OnClickListener() {
+                    public void onClick(@SuppressWarnings("unused") final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+
+                        startActivity(new Intent(Settings.ACTION_NETWORK_OPERATOR_SETTINGS));
+                    }
+                })
+                .setNegativeButton("Annulla", new DialogInterface.OnClickListener() {
+                    public void onClick(final DialogInterface dialog, @SuppressWarnings("unused") final int id) {
+                        dialog.cancel();
+                    }
+                });
+        final AlertDialog alert = builder.create();
+        alert.show();
     }
 }
