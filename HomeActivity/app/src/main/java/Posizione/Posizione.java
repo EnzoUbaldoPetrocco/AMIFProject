@@ -1,7 +1,10 @@
 package Posizione;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
 import android.util.Log;
 
@@ -29,31 +32,35 @@ import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 public class Posizione {
 
     //Indirizzo per il reverse geocoding (latlng=40.714224,-73.961452&key=)
-    private String indirizzo_p1 ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
-    private  String indirizzo_p2="&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
+    private String indirizzo_p1 = "https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+    private String indirizzo_p2 = "&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
 
     private URL url;
-    private double[] coordinate=new double[2];
+    private double[] coordinate = new double[2];
 
     public Context context;
 
-    public Posizione (Context context)
-    {
-        this.context=context;
+    public Posizione(Context context) {
+        this.context = context;
     }
 
-    public void prendiPosizione()
-    {
+    @SuppressLint("MissingPermission")
+    public void prendiPosizione() {
         requestPermission();//Richiedo permesso localizzazione all'utente
-        FusedLocationProviderClient client= LocationServices.getFusedLocationProviderClient(context);
+        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
 
-        client.getLastLocation().addOnSuccessListener((Activity)context,new OnSuccessListener<Location>() {
+        if(ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
+        {
+            return;
+        }
+
+        client.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
             @Override
             public void onSuccess(Location location) {
 
                 if (location != null) {
-                  Posizione.this.coordinate[0]=location.getLatitude();
-                  Posizione.this.coordinate[1]=location.getLongitude();
+                    Posizione.this.coordinate[0] = location.getLatitude();
+                    Posizione.this.coordinate[1] = location.getLongitude();
                 }
             }
         });

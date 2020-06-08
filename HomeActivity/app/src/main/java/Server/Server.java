@@ -221,10 +221,17 @@ public class Server {
                         return params;
                     }
 
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
                 };
 
                 // Request added to the RequestQueue
                 VolleyController.getInstance(context).addToRequestQueue(rq);
+                /*RequestQueue queue = Volley.newRequestQueue(context);
+                queue.add(rq);*/
             }
 
             @Override //Quello che succede se l'header non torna come deve dalla postToken
