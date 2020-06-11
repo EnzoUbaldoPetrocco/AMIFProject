@@ -43,15 +43,15 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
         Accelerometro accelerometro= new Accelerometro();
         Posizione posizione = new Posizione(context);
-        String città_attuale= posizione.nomeCittà();
+       // String città_attuale= posizione.nomeCittà();
 
-        while (esecuzione) {
+     /*   while (esecuzione) {
 
             while(posizione.èFermo()) {
 
                 if (nome_città == posizione.nomeCittà()) {
                     try {
-                        wait(30000);
+                        wait(180000);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -63,7 +63,14 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                 }
                 String via = posizione.nomeVia();
                 Variabili.salvaParcheggio(context, città_attuale, via);
+                Variabili.salvaCoordinate(context, posizione.coordinate);
             }
+        } */
+
+     int k=2;
+     while(k!=1)
+        {
+            k++;
         }
 
         return null;
@@ -79,6 +86,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         if(scelta) {
             Posizione posizione = new Posizione(context);
             Variabili.salvaParcheggio(context, posizione.nomeCittà(), posizione.nomeVia());
+            Variabili.salvaCoordinate(context, posizione.coordinate);
         }
     }
 

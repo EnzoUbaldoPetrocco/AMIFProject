@@ -36,7 +36,7 @@ public class Posizione {
     private String indirizzo_p2 = "&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
 
     private URL url;
-    private double[] coordinate = new double[2];
+    public double[] coordinate = new double[2];
 
     public Context context;
 

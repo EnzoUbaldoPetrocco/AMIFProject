@@ -97,67 +97,6 @@ public class Server {
     }
 
 
-
-    // Custom JSON Request Handler
-    public static void makeRequest(final String url, final VolleyCallback callback, final Context context) {
-
-        postToken(new VolleyCallback() {
-
-            @Override
-            public void onSuccess(final JSONObject result) throws JSONException {
-                CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET,
-                        url, null,
-                        new Response.Listener() {
-                            @Override
-                            public void onResponse(Object responseObj) {
-                                JSONObject risposta = (JSONObject) responseObj;
-                                Log.v("Risposta", risposta.toString());
-                                try {
-                                    String ip = risposta.getString("ip");
-                                    if (ip != "null") {
-                                        callback.onSuccess(risposta);
-                                    }
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        },
-                        //Passo la risposta alla callback successiva
-
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError errore) {}
-                        }) {
-
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        HashMap<String, String> headers = new HashMap<String, String>();
-                        headers.put("Authorization", result.toString());
-                        return headers;
-                    }
-
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        return params;
-                    }
-
-                };
-
-                // Request added to the RequestQueue
-                VolleyController.getInstance(context).addToRequestQueue(rq);
-            }
-
-            @Override
-            public void onError(String result) throws Exception {
-
-            }
-        }, context);
-
-    }
-
-
-
     //Metodo per la post nella signin, serve quando si registra un nuovo utente per farlo registrare sul database
     public static void makePost(final String url_add, final VolleyCallback callback, final Context context, final Map<String, String> postJson) {
 
@@ -194,6 +133,11 @@ public class Server {
                             @Override
                             public void onErrorResponse(VolleyError errore) {
                                 VolleyLog.d("ERRORE", "errore nella post: "+errore.toString());
+                                try {
+                                    callback.onError(errore.toString());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }) {
 
@@ -217,13 +161,8 @@ public class Server {
 
                     @Override //Corpo di quello che sto postando
                     protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
+                        Map<String, String> params = postJson;
                         return params;
-                    }
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
                     }
 
                 };
@@ -244,7 +183,7 @@ public class Server {
 
     //Metodo per le chiamate dell'API di Google Maps per il reverse geocoding
     //Problemi di conversione double a String
-    public static void callReverseGeocoding(Context context, double[] coordinate, final VolleyCallback volleyCallback)
+    public static void callReverseGeocoding(Context context, final double[] coordinate, final VolleyCallback volleyCallback)
     {
         String indirizzo_p1 ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
         String indirizzo_p2="&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";

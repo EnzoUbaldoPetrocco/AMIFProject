@@ -49,14 +49,6 @@ public class Variabili {
         editor.apply();
     }
 
-    public static void salvaToken(Context context, String token)
-    {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("TOKEN", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("TOKEN", token);
-        editor.apply();
-    }
 
     public static void salvaDestinazione(Context context, String città)
     {
@@ -95,6 +87,18 @@ public class Variabili {
         editor.apply();
     }
 
+    public static void salvaCoordinate(Context context, double[] coordinate)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
+
+        String latitudine=String.valueOf(coordinate[0]);
+        String longitudine=String.valueOf(coordinate[1]);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("LATITUDINE", latitudine);
+        editor.putString("LONGITUDINE", longitudine);
+        editor.apply();
+    }
 
 
 }

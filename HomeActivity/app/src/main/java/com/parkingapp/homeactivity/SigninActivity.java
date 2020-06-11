@@ -31,6 +31,8 @@ public class SigninActivity extends Activity {
     ProgressBar pbProgressBarSignin=null;
     TextView tvErrore=null;
 
+    private static boolean codice=false;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -80,37 +82,15 @@ public class SigninActivity extends Activity {
                         {
                             //Fine controlli, inzio body
 
-                            AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin,context);
+                            AsyncTaskSigninActivity asyncTaskSigninActivity= new AsyncTaskSigninActivity(pbProgressBarSignin,tvErrore ,context);
                             String parametri[]={username, password};
                             asyncTaskSigninActivity.execute(parametri);
 
-                           /*
-                            switch (codice_risultato)
+                            if(codice==true)
                             {
-                                case "200":
-                                {
-                                    Intent intent = new Intent(getString(R.string.MAIN_TO_HOME));
-                                    startActivity(intent);
-                                    break;
-                                }
-
-                                case "409":
-                                {
-                                    tvErroreUsername.setVisibility(View.VISIBLE);
-                                    break;
-                                }
-                                default:
-                                {
-                                    tvErroreUsername.setVisibility(View.VISIBLE);
-                                    break;
-                                }
+                                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                                startActivity(i);
                             }
-
-*/
-
-
-
-
 
                         }
                         else
@@ -134,26 +114,10 @@ public class SigninActivity extends Activity {
                 }
             }
         });
-
-
-      // PARTE SOLO TEMPORANEA PER POTER ANDARE NELLA HOME ACTIVITY, DA ELIMINARE NON APPENA IL SERVER SARA FINITO !!!!
-        btRegistrati.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-
-
-                String username= etUsername.getText().toString();
-                String password= etPassword.getText().toString();
-                String strings[]={username, password};
-                Variabili.salvaUsernamePassword(context,strings);
-
-                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                startActivity(i);
-
-                return false;
-            }
-        });
-
-
     }
+
+    public static void ritornoDaAsyncTask(boolean valore)
+{
+    codice=valore;
+}
 }

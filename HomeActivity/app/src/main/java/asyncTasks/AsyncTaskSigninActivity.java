@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parkingapp.homeactivity.HomeActivity;
@@ -31,12 +32,14 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
     private Context context=null;
     private ProgressBar progressBar=null;
+    private TextView messaggioErrore=null;
 
 
 
-    public AsyncTaskSigninActivity(ProgressBar pb,Context context){
+    public AsyncTaskSigninActivity(ProgressBar pb,TextView errore,Context context){
         this.context=new WeakReference<>(context).get();
         this.progressBar=pb;
+        this.messaggioErrore=errore;
     }
 
 
@@ -63,9 +66,11 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
-                Log.i("POST ASYNC SINGNIN:", result.toString());
+                //Log.i("POST ASYNC SINGNIN:", result.toString());
+                Log.i("BODY", result.toString());
 
 
+                SigninActivity.ritornoDaAsyncTask(true);
 
                 Variabili.salvaUsernamePassword(context, strings);
             }
@@ -74,24 +79,15 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             public void onError(String result) throws Exception
             {
                 Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
+                if(result=="400")
+                {
+                    messaggioErrore.setText("Potresti dover scegliere un altro username");
+                    messaggioErrore.setVisibility(View.VISIBLE);
+                }
+
+
             }
         }, this.context, oggettoJson);
-        /* Server.postToken(new VolleyCallback() {
-                              @Override
-                              public void onSuccess(JSONObject result) throws JSONException {
-                                  Log.i("FUNZIONA", "La post token è andata a buon fine");
-                                  Toast.makeText(context, result.toString(), Toast.LENGTH_LONG).show();
-                              }
-
-                              @Override
-                              public void onError(String result) throws Exception {
-                                  Log.e("POST-TOKEN", "Post token fallita");
-                                  Toast.makeText(context, result.toString(), Toast.LENGTH_LONG).show();
-
-                              }
-                          }, context
-         );*/
-
 
         return  0;
     }
