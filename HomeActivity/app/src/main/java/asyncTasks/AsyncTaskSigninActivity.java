@@ -10,7 +10,11 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
 import com.android.volley.NoConnectionError;
+import com.android.volley.ParseError;
+import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.parkingapp.homeactivity.HomeActivity;
@@ -55,7 +59,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
     }
 
 
-    @Override //Non so come ritornare il codice di risposta
+    @Override
     protected Integer doInBackground(final String...strings) {
 
         String url= "/v1/things/";
@@ -76,22 +80,30 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
                 Variabili.salvaUsernamePassword(context, strings);
             }
 
-            @Override
-            public void onError(VolleyError result) throws Exception
+            @Override//Non restituisce numeri, ma la gestice così
+            public void onError(VolleyError error) throws Exception
             {
                 Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
-                if(result.toString().equals("com.android.volley.ClientError")) //Non restituisce numeri, ma la gestice così
+                if(error instanceof ServerError || error instanceof AuthFailureError)
                 {
-                    messaggioErrore.setText(" Potresti dover scegliere un altro username");
+                    messaggioErrore.setText(" Username già in uso, prova con un altro");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
 
-                else if(result instanceof TimeoutError || result instanceof NoConnectionError)
+                else if(error instanceof TimeoutError || error instanceof NoConnectionError)
+                {
+                    messaggioErrore.setText(" Connessione ad internet assente, verifica la tua  connessione dati");
+                    messaggioErrore.setVisibility(View.VISIBLE);
+                }
+                else if(error instanceof NetworkError)
                 {
                     messaggioErrore.setText(" Errore di connessione, riprova");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
 
+              else if (error instanceof ParseError) {
+                 Log.e("ParseError", "Errore server asyncTask signin activity");
+             }
 
             }
         }, this.context, oggettoJson);
