@@ -66,7 +66,7 @@ public class Server {
             public void onErrorResponse(VolleyError errore) {
                 Log.e("ERRORE-POST-TOKEN ", "" + errore.toString());
                 try {
-                    volleyCallback.onError(errore.toString());
+                    volleyCallback.onError(errore);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -134,7 +134,7 @@ public class Server {
                             public void onErrorResponse(VolleyError errore) {
                                 VolleyLog.d("ERRORE", "errore nella post: "+errore.toString());
                                 try {
-                                    callback.onError(errore.toString());
+                                    callback.onError(errore);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -174,8 +174,9 @@ public class Server {
             }
 
             @Override //Quello che succede se l'header non torna come deve dalla postToken
-            public void onError(String result) throws Exception {
+            public void onError(VolleyError result) throws Exception {
                 Log.e("ERRORE makePost", "Errore nel ritorno dalla callback della postToken");
+                callback.onError(result);
 
             }
         }, context);
@@ -204,6 +205,11 @@ public class Server {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("CHIAMATA MAPS API", error.toString());
+                try {
+                    volleyCallback.onError(error);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         });
         RequestQueue queue = Volley.newRequestQueue(context);

@@ -10,6 +10,9 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.NoConnectionError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
 import com.parkingapp.homeactivity.HomeActivity;
 import com.parkingapp.homeactivity.R;
 import com.parkingapp.homeactivity.SigninActivity;
@@ -66,9 +69,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
-                //Log.i("POST ASYNC SINGNIN:", result.toString());
-                Log.i("BODY", result.toString());
-
+                Log.i("POST ASYNC SINGNIN:", result.toString());
 
                 SigninActivity.ritornoDaAsyncTask(true);
 
@@ -76,12 +77,18 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
             }
 
             @Override
-            public void onError(String result) throws Exception
+            public void onError(VolleyError result) throws Exception
             {
                 Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
-                if(result=="400")
+                if(result.toString().equals("com.android.volley.ClientError")) //Non restituisce numeri, ma la gestice così
                 {
-                    messaggioErrore.setText("Potresti dover scegliere un altro username");
+                    messaggioErrore.setText(" Potresti dover scegliere un altro username");
+                    messaggioErrore.setVisibility(View.VISIBLE);
+                }
+
+                else if(result instanceof TimeoutError || result instanceof NoConnectionError)
+                {
+                    messaggioErrore.setText(" Errore di connessione, riprova");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
 
@@ -98,9 +105,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
     protected void onPostExecute(Integer i) {
         super.onPostExecute(i);
 
-
         progressBar.setVisibility(View.INVISIBLE);
-
 
     }
 }

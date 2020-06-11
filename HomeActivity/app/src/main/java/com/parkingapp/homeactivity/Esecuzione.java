@@ -14,6 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
+import com.android.volley.VolleyError;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -91,9 +93,9 @@ public class Esecuzione extends AppCompatActivity {
                     }
 
                     @Override
-                    public void onError(String errore) throws Exception {
+                    public void onError(VolleyError errore) throws Exception {
 
-                        Log.e("BottoneSalva Coordinate", errore);
+                        Log.e("BottoneSalva Coordinate", errore.toString());
                     }
                 }, context, bodyJson);
 

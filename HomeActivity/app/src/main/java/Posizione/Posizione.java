@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
+import com.android.volley.VolleyError;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -132,9 +133,9 @@ public class Posizione {
             }
 
             @Override
-            public void onError(String errore) throws Exception {
+            public void onError(VolleyError errore) throws Exception {
 
-                Log.e("Posizione chiamata API", errore);
+                Log.e("Posizione chiamata API", errore.toString());
             }
         });
 
