@@ -78,6 +78,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
                 SigninActivity.ritornoDaAsyncTask(true);
 
                 Variabili.salvaUsernamePassword(context, strings);
+                Variabili.salvaPromemoriaNotifica(context, "1 ora");
             }
 
             @Override//Non restituisce numeri, ma la gestice così
