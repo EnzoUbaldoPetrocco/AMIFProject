@@ -97,7 +97,7 @@ public class Server {
     }
 
 
-    //Metodo per la post nella signin, serve quando si registra un nuovo utente per farlo registrare sul database
+    //Metodo per POST API atmosphere
     public static void makePost(final String url_add, final VolleyCallback callback, final Context context, final Map<String, String> postJson) {
 
      final   String url=my_URL+url_add; //Creo l'URL con quello base più la nuova parte in base ala post che devo fare
@@ -181,6 +181,72 @@ public class Server {
             }
         }, context);
     }
+
+    public static void makeGet(final String url_add, final VolleyCallback callback, final Context context)
+    {
+       final String url=my_URL+url_add;
+       postToken(new VolleyCallback() {
+           @Override
+           public void onSuccess(final JSONObject result) throws JSONException {
+
+               CustomJSONObjectRequest rq = new CustomJSONObjectRequest(Request.Method.GET,
+                       url, null, new Response.Listener() {
+                   @Override
+                   public void onResponse(Object response) {
+
+                       JSONObject risposta = (JSONObject) response;
+                       Log.i("Risposta", risposta.toString());
+                       try {
+                           callback.onSuccess(risposta);
+                       }
+                       catch (Exception e) {
+                           e.printStackTrace();
+                           Log.e("ERRORE makeGet", "Errore nella callBack");
+                       }
+                   }
+               }, new Response.ErrorListener() {
+                   @Override
+                   public void onErrorResponse(VolleyError error) {
+                       Log.e("ERRORE GET", error.toString());
+                       try {
+                           callback.onError(error);
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                       }
+                   }
+
+               }){
+
+                   @Override //Header della mia richiesta di GET
+                   public Map<String, String> getHeaders() throws AuthFailureError {
+                       HashMap<String, String> headers = new HashMap<String, String>();
+
+                       //Rimuovo parti inutili dal token
+                       String risposta=result.toString();
+                       String token=risposta.substring(10, risposta.indexOf("}")-1);
+
+                       Log.i("TOKEN", token);
+
+                       headers.put("Authorization", token);
+
+                       return headers;
+                   }
+
+               };
+
+               VolleyController.getInstance(context).addToRequestQueue(rq);
+           }
+
+           @Override
+           public void onError(VolleyError error) throws Exception {
+               Log.e("ERRORE makeGET", "Errore nel ritorno dalla callback della postToken");
+               callback.onError(error);
+           }
+
+       }, context);
+    }
+
+
 
     //Metodo per le chiamate dell'API di Google Maps per il reverse geocoding
     //Problemi di conversione double a String

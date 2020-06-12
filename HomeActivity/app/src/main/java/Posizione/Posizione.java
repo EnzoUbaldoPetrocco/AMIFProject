@@ -101,27 +101,6 @@ public class Posizione {
     {
         final String[] città = {null};
         prendiPosizione();
-        /*try{
-            String coordinate_s=this.coordinate[0]+","+this.coordinate[1];
-            String url_s=indirizzo_p1+coordinate_s+indirizzo_p2;
-            url= new URL(url_s);
-
-            HttpURLConnection connection= (HttpURLConnection) url.openConnection(); //Cast a url
-            JSONObject response = (JSONObject)connection.getContent();
-            JSONArray results = response.getJSONArray("results");
-            JSONArray address_components = results.getJSONArray(0);
-            JSONObject route = address_components.getJSONObject(5);
-            città = route.getString("long_name");
-
-        }
-
-        catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
 
         Server.Server.callReverseGeocoding(context, this.coordinate, new VolleyCallback() {
             @Override

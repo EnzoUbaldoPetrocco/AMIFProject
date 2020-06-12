@@ -67,7 +67,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
         String password = strings[1];
 
         String nomiJson[]={"_id"};
-       Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username);
+       Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username+"_"+password);
 
          Server.makePost(url, new VolleyCallback() {
             @Override
@@ -86,18 +86,18 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
                 Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
                 if(error instanceof ServerError || error instanceof AuthFailureError)
                 {
-                    messaggioErrore.setText(" Username già in uso, prova con un altro");
+                    messaggioErrore.setText("Username già in uso, prova con un altro");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
 
                 else if(error instanceof TimeoutError || error instanceof NoConnectionError)
                 {
-                    messaggioErrore.setText(" Connessione ad internet assente, verifica la tua  connessione dati");
+                    messaggioErrore.setText("Connessione ad internet assente");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
                 else if(error instanceof NetworkError)
                 {
-                    messaggioErrore.setText(" Errore di connessione, riprova");
+                    messaggioErrore.setText("Errore di connessione, riprova");
                     messaggioErrore.setVisibility(View.VISIBLE);
                 }
 

@@ -43,9 +43,9 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
         Accelerometro accelerometro= new Accelerometro();
         Posizione posizione = new Posizione(context);
-       // String città_attuale= posizione.nomeCittà();
+        String città_attuale= posizione.nomeCittà();
 
-     /*   while (esecuzione) {
+        while (esecuzione) {
 
             while(posizione.èFermo()) {
 
@@ -65,7 +65,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                 Variabili.salvaParcheggio(context, città_attuale, via);
                 Variabili.salvaCoordinate(context, posizione.coordinate);
             }
-        } */
+        }
 
      int k=2;
      while(k!=1)

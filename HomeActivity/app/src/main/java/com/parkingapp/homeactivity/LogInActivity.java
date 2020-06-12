@@ -15,6 +15,8 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
+import asyncTasks.AsyncTaskLoginActivity;
+import asyncTasks.AsyncTaskSigninActivity;
 import mist.Variabili;
 
 public class LogInActivity extends Activity {
@@ -28,10 +30,14 @@ public class LogInActivity extends Activity {
     CheckBox checkBoxLogin=null;
     Context context=this;
 
+    private static boolean codice=false;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
+
+        codice=false;//Inizializzo a false dentro l'override per evitare falsi positivi
 
         Intent i= getIntent();
         bttBack=findViewById(R.id.bttBackLogin_to_LoginSignin); //Per tornare indiero alla schermata scelta login/signin
@@ -49,25 +55,27 @@ public class LogInActivity extends Activity {
                String password=passwordLogin.getText().toString();
 
 
-
                 //Verifico eventuali username o password errati prima di mandare i controlli al sever
                if(!username.equals("") && !password.equals("") && username.length()<=25 && password.length()<=25)
                {
                 tvErrore.setVisibility(View.INVISIBLE);
 
+                   AsyncTaskLoginActivity asyncTaskLoginActivity= new AsyncTaskLoginActivity(context, progressBarLogin, checkBoxLogin, tvErrore);
+                   String parametri[]={username, password};
+                   asyncTaskLoginActivity.execute(parametri);
 
+                if(codice) {
 
-                //In seguito all'autenticazione, prima di passare alla HomeActivity salvo lo stato della checkbox
-                   Variabili.salvaRicordaUtente(context, checkBoxLogin.isChecked());
+                    Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                    startActivity(i);
+                }
 
-                   Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                   startActivity(i);
-               }
+             }
                else
                {
+                   tvErrore.setText("Username/Password errati");
                    tvErrore.setVisibility(View.VISIBLE);
                }
-
 
             }
         });
@@ -79,5 +87,9 @@ public class LogInActivity extends Activity {
                 startActivity(intent);
             }
         });
+    }
+    public static void ritornoDaAsyncTask(boolean valore)
+    {
+        codice=valore;
     }
 }

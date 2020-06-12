@@ -20,7 +20,6 @@ import mist.Variabili;
 
 public class SigninActivity extends Activity {
 
-    public static String codice_risultato="200";
 
     Button btRegistrati=null;
     EditText etUsername=null;
@@ -39,6 +38,8 @@ public class SigninActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
+        codice=false;//Inizializzo a false dentro l'override per evitare falsi positivi
+
         Intent i= getIntent();
 
         btRegistrati=findViewById(R.id.bttRegistrati);
@@ -51,10 +52,6 @@ public class SigninActivity extends Activity {
         tvErrore=findViewById(R.id.tvErrore_Signin);
 
         final Context context=this;
-
-
-
-
 
         imBackBottone.setOnClickListener(new View.OnClickListener() {
             @Override

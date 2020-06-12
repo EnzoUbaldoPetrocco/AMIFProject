@@ -71,8 +71,8 @@
         android:id="@+id/tvErroreUsernameOrPassword_Login"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Username/Password errati"
         android:visibility="invisible"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
         android:textColor="#FFFF0000" />
 
