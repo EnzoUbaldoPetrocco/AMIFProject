@@ -2,6 +2,7 @@ package fragment_home_activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -80,6 +81,13 @@ public class Parcheggio extends Fragment {
         tvLuogoParcheggio=view.findViewById(R.id.tvPosizioneParcheggio);
         tvOrarioParcheggio=view.findViewById(R.id.tvOrarioParcheggio);
 
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
+        String luogo_parcheggio=sharedPreferences.getString("PARCHEGGIO", "Nessun parcheggio salvato");
+        sharedPreferences=getActivity().getSharedPreferences("ORARIO_PARCHEGGIO", Context.MODE_PRIVATE);
+        String orario_parcheggio=sharedPreferences.getString("ORARIO_PARCHEGGIO", "");
+
+        tvLuogoParcheggio.setText(luogo_parcheggio);
+        tvOrarioParcheggio.setText(orario_parcheggio);
 
         bttElimina.setOnClickListener(new View.OnClickListener() {
             @Override

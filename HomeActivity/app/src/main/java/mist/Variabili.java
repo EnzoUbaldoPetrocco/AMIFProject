@@ -5,18 +5,8 @@ import android.content.SharedPreferences;
 import android.icu.util.LocaleData;
 import android.preference.PreferenceScreen;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.time.Instant;
-import java.time.LocalTime;
 
 public class Variabili {
-
-    public String nomeUtente=null;
-    public String password=null;
-
-   public static boolean ricordami =false;
-
 
 
    //Metodo privato per il salvataggio dei dati in maniera permanente
@@ -68,35 +58,40 @@ public class Variabili {
         editor.apply();
     }
 
-    public static void salvaParcheggio(Context context, String città, String viaParcheggio)
+    public static void salvaParcheggio(Context context, String città_via)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("CITTA", città);
-        editor.putString("VIA", viaParcheggio);
+        editor.putString("PARCHEGGIO", città_via);
         editor.apply();
     }
 
-    public static void annullaOSalvaParcheggio(Context context, boolean stato)
+  /*  public static void annullaOSalvaParcheggio(Context context, boolean stato)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("SCELTA", stato);
         editor.apply();
-    }
+    } */
 
-    public static void salvaCoordinate(Context context, double[] coordinate)
+    public static void salvaCoordinate(Context context, float[] coordinate)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
 
-        String latitudine=String.valueOf(coordinate[0]);
-        String longitudine=String.valueOf(coordinate[1]);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putFloat("LATITUDINE", coordinate[0]);
+        editor.putFloat("LONGITUDINE", coordinate[1]);
+        editor.apply();
+    }
+
+    public static void salvaOrarioParcheggio(Context context, String orario)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("ORARIO_PARCHEGGIO", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("LATITUDINE", latitudine);
-        editor.putString("LONGITUDINE", longitudine);
+        editor.putString("ORARIO_PARCHEGGIO", orario);
         editor.apply();
     }
 

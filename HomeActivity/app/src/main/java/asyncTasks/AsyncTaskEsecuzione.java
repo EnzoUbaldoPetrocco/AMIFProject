@@ -5,6 +5,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.widget.Button;
 
+import com.parkingapp.homeactivity.Esecuzione;
+
 import Accelerometro.Accelerometro;
 import Posizione.Posizione;
 import mist.Variabili;
@@ -37,19 +39,20 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
         boolean città=false;
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
-        String nome_città=sharedPreferences.getString("DESTINAZIONE_VIAGGIO", "");
-
-
         Accelerometro accelerometro= new Accelerometro();
         Posizione posizione = new Posizione(context);
-        String città_attuale= posizione.nomeCittà();
+
+        //0:nome intero, 1 città, 2 via
+        String posizione_via_città[]=posizione.nomeViaECittà();
+        String nome_intero=posizione_via_città[0];
+        String città_attuale= posizione_via_città[1];
+        String via=posizione_via_città[2];
 
         while (esecuzione) {
 
             while(posizione.èFermo()) {
 
-                if (nome_città == posizione.nomeCittà()) {
+                if (città_attuale == posizione.nomeViaECittà()[1]) {
                     try {
                         wait(180000);
                     } catch (InterruptedException e) {
@@ -61,8 +64,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                 while (!fine) {
                     fine = accelerometro.esegui();
                 }
-                String via = posizione.nomeVia();
-                Variabili.salvaParcheggio(context, città_attuale, via);
+                Variabili.salvaParcheggio(context, nome_intero);
                 Variabili.salvaCoordinate(context, posizione.coordinate);
             }
         }
@@ -80,12 +82,12 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onCancelled() {
         super.onCancelled();
 
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
-        boolean scelta=sharedPreferences.getBoolean("SCELTA", false);
+       // SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
+       // boolean scelta=sharedPreferences.getBoolean("SCELTA", false);
 
-        if(scelta) {
+        if(Esecuzione.scelta) {
             Posizione posizione = new Posizione(context);
-            Variabili.salvaParcheggio(context, posizione.nomeCittà(), posizione.nomeVia());
+            Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
             Variabili.salvaCoordinate(context, posizione.coordinate);
         }
     }

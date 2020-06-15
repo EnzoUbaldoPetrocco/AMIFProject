@@ -20,10 +20,10 @@
         android:id="@+id/tvPosizioneParcheggio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="  ----"
+        android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:textSize="30dp"
-        />
+        android:textColor="#D0FFFFFF"
+        android:textSize="23dp" />
 
     <TextView
         android:layout_width="match_parent"
@@ -40,9 +40,10 @@
         android:id="@+id/tvOrarioParcheggio"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="  ----"
         android:layout_marginTop="10dp"
-        android:textSize="30dp"
+        android:textColor="#D0FFFFFF"
+        android:layout_marginLeft="5dp"
+        android:textSize="23dp"
         />
 
     <Button
@@ -52,6 +53,7 @@
         android:layout_marginTop="110dp"
         android:text="Elimina"
         android:textSize="20dp"
+        android:backgroundTint="#FFFFFF"
         />
 
 

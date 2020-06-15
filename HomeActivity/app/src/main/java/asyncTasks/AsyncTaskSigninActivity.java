@@ -77,8 +77,11 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
                 SigninActivity.ritornoDaAsyncTask(true);
 
+                //Inizializzo tutte le variabili che voglio per un account nuovo
                 Variabili.salvaUsernamePassword(context, strings);
                 Variabili.salvaPromemoriaNotifica(context, "1 ora");
+                Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
+                Variabili.salvaOrarioParcheggio(context, "");
             }
 
             @Override//Non restituisce numeri, ma la gestice così
