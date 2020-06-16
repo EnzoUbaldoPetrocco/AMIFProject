@@ -35,7 +35,7 @@ public class Posizione {
 
     //Indirizzo per il reverse geocoding (latlng=40.714224,-73.961452&key=)
 
-    public float[] coordinate = new float[2];
+    public double[] coordinate = new double[2];
 
     public Context context;
 
@@ -58,8 +58,8 @@ public class Posizione {
             public void onSuccess(Location location) {
 
                 if (location != null) {
-                    Posizione.this.coordinate[0] = (float)location.getLatitude();
-                    Posizione.this.coordinate[1] = (float)location.getLongitude();
+                    Posizione.this.coordinate[0] = location.getLatitude();
+                    Posizione.this.coordinate[1] = location.getLongitude();
                 }
             }
         });
@@ -137,7 +137,7 @@ public class Posizione {
 
     public boolean èFermo()
     {
-        float[] confronto=this.coordinate;
+        double[] confronto=this.coordinate;
         prendiPosizione();
         return confronto[0] == this.coordinate[0] && confronto[1] == this.coordinate[1];
     }

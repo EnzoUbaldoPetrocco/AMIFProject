@@ -34,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
     Context context=this;
     boolean FLAG=true;
     AsyncTaskMainActivity asyncTaskMainActivity=null;
+    boolean aggiornamento_concluso=false;
     //Variabile solo per un test, da cancellare dopo
 
     @Override
@@ -46,6 +47,8 @@ public class MainActivity extends AppCompatActivity {
         //Controllo che i permessi siano abilitati all'avvio dell'app
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE}, 1);
 
+        //All'avvio aggiorno i dati della mia applicazione con quelli presenti sul server
+        aggiornamento_concluso=Variabili.aggiornaPosizione(context);
 
 
        //al premere del bottone se ricordami è false si passa alla schermata di login
@@ -63,8 +66,12 @@ public class MainActivity extends AppCompatActivity {
                        Intent i = new Intent(getString(R.string.MAIN_TO_LOGSIGN));
                        startActivity(i);
                    } else {
-                       Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                       startActivity(i);
+
+                       //Aggiorno i  parametri andando a prendeere dal server
+                       if(aggiornamento_concluso) {
+                           Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                           startActivity(i);
+                       }
                    }
                }
 

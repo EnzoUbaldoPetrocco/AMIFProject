@@ -1,9 +1,27 @@
 package mist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.icu.util.LocaleData;
 import android.preference.PreferenceScreen;
+import android.util.Log;
+import android.view.View;
+
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkError;
+import com.android.volley.NoConnectionError;
+import com.android.volley.ServerError;
+import com.android.volley.TimeoutError;
+import com.android.volley.VolleyError;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import Server.VolleyCallback;
+
+import Server.Server;
 
 
 public class Variabili {
@@ -76,13 +94,13 @@ public class Variabili {
         editor.apply();
     } */
 
-    public static void salvaCoordinate(Context context, float[] coordinate)
+    public static void salvaCoordinate(Context context, double[] coordinate)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putFloat("LATITUDINE", coordinate[0]);
-        editor.putFloat("LONGITUDINE", coordinate[1]);
+        editor.putString("LATITUDINE", String.valueOf(coordinate[0]));
+        editor.putString("LONGITUDINE", String.valueOf(coordinate[1]));
         editor.apply();
     }
 
@@ -95,5 +113,75 @@ public class Variabili {
         editor.apply();
     }
 
+
+    //METODI PER AGGIORNARE I DATI IN MEMORIA IN BASE AI VALORI DEL SERVER
+
+    public static boolean aggiornaPosizione(final Context context)
+    {
+        String urlp1="/v1/measurements?filter={\"thing\":\"";
+        String urlp2="\"}&limit=10&page=1";
+
+         SharedPreferences sharedPreferences =context.getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
+        String username=sharedPreferences.getString("USERNAME", "")+"_"+sharedPreferences.getString("PASSWORD", "");
+
+         Server.makeGet(urlp1 + username + urlp2, new VolleyCallback() {
+            @Override
+            public void onSuccess(JSONObject result) throws JSONException {
+
+                JSONArray docs =result.getJSONArray("docs");
+                JSONObject docs_0=docs.getJSONObject(0);
+                JSONObject location = docs_0.getJSONObject("location");
+                JSONArray coordinates=location.getJSONArray("coordinates");
+
+                final double[] coordinate={coordinates.getDouble(0), coordinates.getDouble(1)};
+
+               SharedPreferences sharedPreferences1 =context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
+                String[] coordinate_salvate_s={sharedPreferences1.getString("LATITUDINE", ""), sharedPreferences1.getString("LONGITUDINE", "")};
+
+                assert coordinate_salvate_s[0] != null;
+                assert coordinate_salvate_s[1] != null;
+                double[] coordinate_salvate={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+
+                if(coordinate_salvate!=coordinate)
+                {
+                    Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {
+                        @Override
+                        public void onSuccess(JSONObject response) throws JSONException {
+                            JSONArray results = response.getJSONArray("results");
+                            JSONObject formatted_address = results.getJSONObject(1);
+                            String città_via = formatted_address.getString("formatted_address");
+                            Log.i("NOME CITTA_VIA", città_via);
+
+                            Variabili.salvaParcheggio(context, città_via);
+                            Variabili.salvaCoordinate(context, coordinate);
+                        }
+
+                        @Override
+                        public void onError(VolleyError error) throws Exception {
+
+                            Log.e("REVERSE GEOCODING", "Errore nel reverse geocoding dell'aggiornamento Posizione in Variabili");
+                        }
+                    });
+                }
+            }
+
+            //Se succede un errore carichiamo il dato dalla memoria e accettiamo di non aggiornarlo
+            @Override
+            public void onError(VolleyError error) throws Exception {
+                if(error instanceof ServerError || error instanceof AuthFailureError)
+                {
+                    Log.e("CARICAMENTO POSIZIONE", "utente non trovato");
+                }
+
+                else if(error instanceof TimeoutError || error instanceof NetworkError)
+                {
+                    Log.e("CARICAMENTO POSIZIONE", "errore internet");
+                }
+
+            }
+        }, context);
+
+         return true;
+    }
 
 }
