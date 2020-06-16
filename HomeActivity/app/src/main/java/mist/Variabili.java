@@ -136,7 +136,8 @@ public class Variabili {
                 final double[] coordinate={coordinates.getDouble(0), coordinates.getDouble(1)};
 
                SharedPreferences sharedPreferences1 =context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
-                String[] coordinate_salvate_s={sharedPreferences1.getString("LATITUDINE", ""), sharedPreferences1.getString("LONGITUDINE", "")};
+               //Metto a default valori impossibili, così forzo ad aggiornarsi col server se non abbiamo parcheggi salvati
+                String[] coordinate_salvate_s={sharedPreferences1.getString("LATITUDINE", "1000000"), sharedPreferences1.getString("LONGITUDINE", "1000000")};
 
                 assert coordinate_salvate_s[0] != null;
                 assert coordinate_salvate_s[1] != null;

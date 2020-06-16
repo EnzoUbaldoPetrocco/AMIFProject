@@ -63,6 +63,7 @@ public class AsyncTaskLoginActivity extends AsyncTask<String, String, Object> {
 
               Variabili.salvaUsernamePassword(context, strings);
               Variabili.salvaRicordaUtente(context, checkBox.isChecked());
+              Variabili.aggiornaPosizione(context);
 
           }
           @Override
