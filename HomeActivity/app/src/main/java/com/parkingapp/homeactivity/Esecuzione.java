@@ -5,11 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -48,7 +50,6 @@ public class Esecuzione extends AppCompatActivity {
     TextView tvErrore=null;
     Context context=this;
 
-    public static boolean scelta=false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +64,7 @@ public class Esecuzione extends AppCompatActivity {
 
 
        final AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione(this, bttAnnulla, bttSalvaParcheggio);
+       final Posizione posizione=new Posizione(context);
         asyncTaskEsecuzione.execute();
 
 
@@ -71,6 +73,9 @@ public class Esecuzione extends AppCompatActivity {
             public void onClick(View v) {
               //  Variabili.annullaOSalvaParcheggio(context, false);
                 asyncTaskEsecuzione.cancel(true);
+                //Smetto di aggiornare costantemente la mia posizione
+                posizione.locationManager.removeUpdates(posizione.locationListener);
+
                 Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                 startActivity(i);
             }
@@ -88,7 +93,7 @@ public class Esecuzione extends AppCompatActivity {
                 //scelta=true;
 
                 //Salvo i dati prima di cancellare l'async task
-                 Posizione posizione=new Posizione(context);
+                posizione.prendiPosizione();
                  double[] coordinate=posizione.coordinate;
                  Variabili.salvaCoordinate(context,coordinate);
                 asyncTaskEsecuzione.cancel(true);
@@ -147,6 +152,7 @@ public class Esecuzione extends AppCompatActivity {
 
                 */
 
+                Toast.makeText(context, coordinate[0]+", "+coordinate[1], Toast.LENGTH_LONG).show();
 
 
                /* Map<String, String> post= new HashMap<>();
@@ -199,6 +205,7 @@ public class Esecuzione extends AppCompatActivity {
                 }, context, jsonPost);
 
 
+                posizione.locationManager.removeUpdates(posizione.locationListener);
             }
         });
 

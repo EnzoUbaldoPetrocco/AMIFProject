@@ -5,12 +5,18 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+
+
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.os.Bundle;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
 import com.android.volley.VolleyError;
+
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -36,8 +42,34 @@ public class Posizione {
     //Indirizzo per il reverse geocoding (latlng=40.714224,-73.961452&key=)
 
     public double[] coordinate = new double[2];
-
     public Context context;
+    public LocationManager locationManager;
+
+
+    //Generico modo per aggiornare le coordinate
+    public final LocationListener locationListener = new LocationListener() {
+        public void onLocationChanged(Location location) {
+            Posizione.this.coordinate[0] = location.getLatitude();
+            Posizione.this.coordinate[1] = location.getLongitude();
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+
 
     public Posizione(Context context) {
         this.context = context;
@@ -46,26 +78,16 @@ public class Posizione {
     @SuppressLint("MissingPermission")
     public void prendiPosizione() {
         requestPermission();//Richiedo permesso localizzazione all'utente
-        FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
 
-        if(ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
-        {
-            return;
-        }
+        locationManager= (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        //Le coordinate effettive che vengono restituite sono le ultime note, così che se un aggiornamento fallisce abbiamo comunque valori attendibili
+        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        assert location != null;
+        Posizione.this.coordinate[0] = location.getLatitude();
+        Posizione.this.coordinate[1] = location.getLongitude();
 
 
-            client.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
-                @Override
-                public void onSuccess(Location location) {
-
-                    if (location != null) {
-                        Posizione.this.coordinate[0] = location.getLatitude();
-                        Posizione.this.coordinate[1] = location.getLongitude();
-                    }
-                }
-            });
-
-        return;
     }
 
 
