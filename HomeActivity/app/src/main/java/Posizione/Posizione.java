@@ -44,13 +44,13 @@ public class Posizione {
     }
 
     @SuppressLint("MissingPermission")
-    public boolean prendiPosizione() {
+    public void prendiPosizione() {
         requestPermission();//Richiedo permesso localizzazione all'utente
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
 
         if(ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            return true;
+            return;
         }
 
 
@@ -65,7 +65,7 @@ public class Posizione {
                 }
             });
 
-        return  true;
+        return;
     }
 
 
@@ -149,4 +149,6 @@ public class Posizione {
     {
         ActivityCompat.requestPermissions((Activity)context, new String[]{ACCESS_FINE_LOCATION}, 1);
     }
+
+
 }

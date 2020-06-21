@@ -70,7 +70,6 @@ public class Esecuzione extends AppCompatActivity {
             @Override
             public void onClick(View v) {
               //  Variabili.annullaOSalvaParcheggio(context, false);
-                scelta=false;
                 asyncTaskEsecuzione.cancel(true);
                 Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                 startActivity(i);
@@ -93,6 +92,16 @@ public class Esecuzione extends AppCompatActivity {
                  double[] coordinate=posizione.coordinate;
                  Variabili.salvaCoordinate(context,coordinate);
                 asyncTaskEsecuzione.cancel(true);
+
+
+                Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
+
+                String[] coordinateInStringhe = new String[2];
+                coordinateInStringhe[0]= String.format("%f", posizione.coordinate[0]);
+                coordinateInStringhe[1]= String.format("%f", posizione.coordinate[1]);
+                Log.i("esecuzioneSalva", posizione.coordinate[0]+ "spazio" + posizione.coordinate[1]);
+
+
 
                 //Recupero username e password per capire di chi è l'account
                 SharedPreferences sharedPreferences=getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);

@@ -3,6 +3,7 @@ package asyncTasks;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.util.Log;
 import android.widget.Button;
 
 import com.parkingapp.homeactivity.Esecuzione;
@@ -83,14 +84,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onCancelled() {
         super.onCancelled();
 
-       // SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
-       // boolean scelta=sharedPreferences.getBoolean("SCELTA", false);
 
-        if(Esecuzione.scelta) {
-            Posizione posizione = new Posizione(context);
-            Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
-            Variabili.salvaCoordinate(context, posizione.coordinate);
-        }
     }
 
 
