@@ -64,7 +64,7 @@ public class Server {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError errore) {
-                Log.e("ERRORE-POST-TOKEN ", "" + errore.toString());
+                Log.e("ERRORE POST-TOKEN ", "" + errore.toString());
                 try {
                     volleyCallback.onError(errore);
                 } catch (Exception e) {
@@ -169,8 +169,7 @@ public class Server {
 
                 // Request added to the RequestQueue
                 VolleyController.getInstance(context).addToRequestQueue(rq);
-                /*RequestQueue queue = Volley.newRequestQueue(context);
-                queue.add(rq);*/
+
             }
 
             @Override //Quello che succede se l'header non torna come deve dalla postToken

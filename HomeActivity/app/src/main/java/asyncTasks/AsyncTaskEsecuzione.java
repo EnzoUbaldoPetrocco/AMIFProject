@@ -48,7 +48,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         String città_attuale= posizione_via_città[1];
         String via=posizione_via_città[2];
 
-        while (esecuzione) {
+      /*  while (esecuzione) {
 
             while(posizione.èFermo()) {
 
@@ -67,7 +67,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                 Variabili.salvaParcheggio(context, nome_intero);
                 Variabili.salvaCoordinate(context, posizione.coordinate);
             }
-        }
+        } */
 
      int k=2;
      while(k!=1)
@@ -78,6 +78,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         return null;
     }
 
+    //NON FUNZIONA TANTO VALE FARGLI FARE QUESTE COSE IN ESECUZIONE
     @Override
     protected void onCancelled() {
         super.onCancelled();
@@ -91,6 +92,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
             Variabili.salvaCoordinate(context, posizione.coordinate);
         }
     }
+
+
 
     @Override
     protected void onPostExecute(Object o) {

@@ -44,25 +44,28 @@ public class Posizione {
     }
 
     @SuppressLint("MissingPermission")
-    public void prendiPosizione() {
+    public boolean prendiPosizione() {
         requestPermission();//Richiedo permesso localizzazione all'utente
         FusedLocationProviderClient client = LocationServices.getFusedLocationProviderClient(context);
 
         if(ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
-            return;
+            return true;
         }
 
-        client.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
 
-                if (location != null) {
-                    Posizione.this.coordinate[0] = location.getLatitude();
-                    Posizione.this.coordinate[1] = location.getLongitude();
+            client.getLastLocation().addOnSuccessListener((Activity) context, new OnSuccessListener<Location>() {
+                @Override
+                public void onSuccess(Location location) {
+
+                    if (location != null) {
+                        Posizione.this.coordinate[0] = location.getLatitude();
+                        Posizione.this.coordinate[1] = location.getLongitude();
+                    }
                 }
-            }
-        });
+            });
+
+        return  true;
     }
 
 

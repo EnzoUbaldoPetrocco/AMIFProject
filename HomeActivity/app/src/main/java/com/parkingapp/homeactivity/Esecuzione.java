@@ -23,10 +23,15 @@ import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
+
+import Posizione.Posizione;
 import Server.VolleyCallback;
 
 import Server.CreazioneJson;
@@ -80,30 +85,64 @@ public class Esecuzione extends AppCompatActivity {
 
               //  Variabili.annullaOSalvaParcheggio(context, true);
                 scelta=true;
+                 Posizione posizione=new Posizione(context);
                 asyncTaskEsecuzione.cancel(true);
 
+                //Recupero username e password per capire di chi è l'account
                 SharedPreferences sharedPreferences=getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
                 String username=sharedPreferences.getString("USERNAME", "");
+                String password=sharedPreferences.getString("PASSWORD", "");
 
                 sharedPreferences=getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
-                float latitudine = sharedPreferences.getFloat("LATITUDINE", 0);
-                float longitudine = sharedPreferences.getFloat("LONGITUDINE", 0);
 
-                String coordinatesInString= "[ " + latitudine + "," + longitudine + " ]";
-                String[] location={"type", "coordinates"};
-                String[] fieldLocation= {"Point", coordinatesInString};
-                Map<String, String> locationField= CreazioneJson.createJson(location,fieldLocation);
+                String[] coordinate_salvate_s = {sharedPreferences.getString("LATITUDINE", "1000000"), sharedPreferences.getString("LONGITUDINE", "1000000")};
 
-                String[] nomiJson={"thing", "feature", "device", "location", "samples"};
-                String[] campiJson = {username, "parking", "parking-app", String.valueOf(locationField), " [ { \"values\": 1588147128 } ] "};
-               Map<String, String> bodyJson= CreazioneJson.createJson(nomiJson, campiJson);
+                double[] coordinate_d={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+
+                String coordinatesInString= "[ " + Double.valueOf(coordinate_salvate_s[0]) + ", " + Double.valueOf(coordinate_salvate_s[1]) + " ]";
+              /*  String[] location={"type"};
+                String[] fieldLocation= {"Point"};
+                Map<String, String> locationField= CreazioneJson.createJson(location,fieldLocation);*/
+
+              String location_string="{\"type\": \"Point\",\"coordinates\": "+coordinatesInString+"}";
+
+                Map<String, Object> values= new HashMap<>();
+                values.put("values", 1588147128);
+
+                JSONObject valuesJson= new JSONObject(values);
+
+                String[] samples=new String[]{valuesJson.toString()};
+
+
+                String[] nomiJson={"thing", "feature", "device"};
+                String[] campiJson = {username+"_"+password, "parking", "parking-app"};
+
+                Map<String, String> bodyJson= CreazioneJson.createJson(nomiJson, campiJson);
+
+                bodyJson.put("location", location_string);
+                bodyJson.put("samples", Arrays.toString(samples));
+
+
+
+
+
+               /* Map<String, String> post= new HashMap<>();
+                post.put("thing",username+"_"+password);
+                post.put("feature","parking");
+                post.put("device","parking-app");
+                post.put("location",locationField[0]);
+                post.put("location",locationField[1]);
+                */
+
 
                 Server.makePost("/v1/measurements  ", new VolleyCallback() {
                     @Override
                     public void onSuccess(JSONObject result) throws JSONException {
 
-                        //Aggiungere parte in cui dalle coordinate prendiamo il nome ela città di provenienza, così da salvarlo in locale
+                        //Aggiungere parte in cui dalle coordinate prendiamo il nome e la città di provenienza, così da salvarlo in locale
                         //e farlo apparire in "Parcheggio"
+
+                        Variabili.aggiornaPosizione(context);
 
                         Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                         startActivity(i);
