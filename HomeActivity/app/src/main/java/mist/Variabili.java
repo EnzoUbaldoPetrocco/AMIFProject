@@ -146,7 +146,7 @@ public class Variabili {
                     assert coordinate_salvate_s[1] != null;
                     double[] coordinate_salvate = {Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
 
-                    if (coordinate_salvate != coordinate) {
+                    if (coordinate_salvate[0] != coordinate[0] && coordinate_salvate[1]!=coordinate[1]) {
                         Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {
                             @Override
                             public void onSuccess(JSONObject response) throws JSONException {

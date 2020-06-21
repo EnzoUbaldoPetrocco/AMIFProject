@@ -27,8 +27,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import Posizione.Posizione;
@@ -84,8 +86,12 @@ public class Esecuzione extends AppCompatActivity {
                 tvErrore.setVisibility(View.INVISIBLE);//Inizializzo sempre il mio log di errore a invisible
 
               //  Variabili.annullaOSalvaParcheggio(context, true);
-                scelta=true;
+                //scelta=true;
+
+                //Salvo i dati prima di cancellare l'async task
                  Posizione posizione=new Posizione(context);
+                 double[] coordinate=posizione.coordinate;
+                 Variabili.salvaCoordinate(context,coordinate);
                 asyncTaskEsecuzione.cancel(true);
 
                 //Recupero username e password per capire di chi è l'account
@@ -93,28 +99,36 @@ public class Esecuzione extends AppCompatActivity {
                 String username=sharedPreferences.getString("USERNAME", "");
                 String password=sharedPreferences.getString("PASSWORD", "");
 
-                sharedPreferences=getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
+                //sharedPreferences=getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
 
-                String[] coordinate_salvate_s = {sharedPreferences.getString("LATITUDINE", "1000000"), sharedPreferences.getString("LONGITUDINE", "1000000")};
+               // String[] coordinate_salvate_s = {sharedPreferences.getString("LATITUDINE", "1000000"), sharedPreferences.getString("LONGITUDINE", "1000000")};
 
-                double[] coordinate_d={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+              //  double[] coordinate_d={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
 
-                String coordinatesInString= "[ " + Double.valueOf(coordinate_salvate_s[0]) + ", " + Double.valueOf(coordinate_salvate_s[1]) + " ]";
+               // String coordinatesInString= "[ " + Double.valueOf(coordinate[0]) + ", " + Double.valueOf(coordinate[1]) + " ]";
               /*  String[] location={"type"};
                 String[] fieldLocation= {"Point"};
                 Map<String, String> locationField= CreazioneJson.createJson(location,fieldLocation);*/
 
-              String location_string="{\"type\": \"Point\",\"coordinates\": "+coordinatesInString+"}";
-
-                Map<String, Object> values= new HashMap<>();
-                values.put("values", 1588147128);
-
-                JSONObject valuesJson= new JSONObject(values);
-
-                String[] samples=new String[]{valuesJson.toString()};
+             // String location_string="{\"type\": \"Point\",\"coordinates\": "+coordinatesInString+"}";
 
 
-                String[] nomiJson={"thing", "feature", "device"};
+
+                String[] nomi={"thing", "feature", "device", "location", "samples"};
+                String[] parametri={username+"_"+password,"parking","parking-app","{\"type\":\"Point\",\"coordinates\": [ "+ coordinate[0]+ ", "+coordinate[1] +" ]}","[ { \"values\": 1588147128 } ]"};
+
+
+                Map<String, String> jsonPost= CreazioneJson.createJson(nomi, parametri);
+
+              //  jsonPost.put("samples", values.toArray());
+
+
+               // JSONObject valuesJson= new JSONObject(values);
+
+              //  String[] samples=new String[]{valuesJson.toString()};
+
+
+               /* String[] nomiJson={"thing", "feature", "device"};
                 String[] campiJson = {username+"_"+password, "parking", "parking-app"};
 
                 Map<String, String> bodyJson= CreazioneJson.createJson(nomiJson, campiJson);
@@ -122,7 +136,7 @@ public class Esecuzione extends AppCompatActivity {
                 bodyJson.put("location", location_string);
                 bodyJson.put("samples", Arrays.toString(samples));
 
-
+                */
 
 
 
@@ -173,7 +187,7 @@ public class Esecuzione extends AppCompatActivity {
                             Log.e("ParseError", "Errore server, ESECUZIONE");
                         }
                     }
-                }, context, bodyJson);
+                }, context, jsonPost);
 
 
             }
