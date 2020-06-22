@@ -64,7 +64,8 @@ public class Esecuzione extends AppCompatActivity {
 
 
        final AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione(this, bttAnnulla, bttSalvaParcheggio);
-       final Posizione posizione=new Posizione(context);
+       final Posizione posizione = new Posizione(context);
+       posizione.aggiornaGPS(10000, 1);
         asyncTaskEsecuzione.execute();
 
 
@@ -74,7 +75,7 @@ public class Esecuzione extends AppCompatActivity {
               //  Variabili.annullaOSalvaParcheggio(context, false);
                 asyncTaskEsecuzione.cancel(true);
                 //Smetto di aggiornare costantemente la mia posizione
-                posizione.locationManager.removeUpdates(posizione.locationListener);
+                posizione.fermaAggiornamentoGPS();
 
                 Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                 startActivity(i);
@@ -89,17 +90,12 @@ public class Esecuzione extends AppCompatActivity {
 
                 tvErrore.setVisibility(View.INVISIBLE);//Inizializzo sempre il mio log di errore a invisible
 
-              //  Variabili.annullaOSalvaParcheggio(context, true);
-                //scelta=true;
-
                 //Salvo i dati prima di cancellare l'async task
                 posizione.prendiPosizione();
                  double[] coordinate=posizione.coordinate;
                  Variabili.salvaCoordinate(context,coordinate);
                 asyncTaskEsecuzione.cancel(true);
 
-
-                Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
 
                 String[] coordinateInStringhe = new String[2];
                 coordinateInStringhe[0]= String.format("%f", posizione.coordinate[0]);
@@ -173,6 +169,8 @@ public class Esecuzione extends AppCompatActivity {
 
                         Variabili.aggiornaPosizione(context);
 
+                        posizione.fermaAggiornamentoGPS();
+                        Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
                         Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
                         startActivity(i);
                     }
@@ -204,8 +202,6 @@ public class Esecuzione extends AppCompatActivity {
                     }
                 }, context, jsonPost);
 
-
-                posizione.locationManager.removeUpdates(posizione.locationListener);
             }
         });
 

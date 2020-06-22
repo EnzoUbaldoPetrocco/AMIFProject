@@ -8,7 +8,6 @@ import android.content.pm.PackageManager;
 
 
 import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,7 @@ import androidx.core.app.ActivityCompat;
 import com.android.volley.VolleyError;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import android.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.parkingapp.homeactivity.Esecuzione;
@@ -37,20 +37,21 @@ import Server.VolleyCallback;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
+
 public class Posizione {
 
     //Indirizzo per il reverse geocoding (latlng=40.714224,-73.961452&key=)
 
     public double[] coordinate = new double[2];
     public Context context;
-    public LocationManager locationManager;
+    public LocationManager locationManager=null;
 
 
     //Generico modo per aggiornare le coordinate
-    public final LocationListener locationListener = new LocationListener() {
+   private final LocationListener locationListener = new LocationListener() {
         public void onLocationChanged(Location location) {
-            Posizione.this.coordinate[0] = location.getLatitude();
-            Posizione.this.coordinate[1] = location.getLongitude();
+            coordinate[0] = location.getLatitude();
+            coordinate[1] = location.getLongitude();
         }
 
         @Override
@@ -70,22 +71,34 @@ public class Posizione {
     };
 
 
-
     public Posizione(Context context) {
         this.context = context;
     }
 
-    @SuppressLint("MissingPermission")
+
     public void prendiPosizione() {
         requestPermission();//Richiedo permesso localizzazione all'utente
 
-        locationManager= (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+
         assert locationManager != null;
+        if (ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
         //Le coordinate effettive che vengono restituite sono le ultime note, così che se un aggiornamento fallisce abbiamo comunque valori attendibili
         Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         assert location != null;
-        Posizione.this.coordinate[0] = location.getLatitude();
-        Posizione.this.coordinate[1] = location.getLongitude();
+        this.coordinate[0] = location.getLatitude();
+        this.coordinate[1] = location.getLongitude();
 
 
     }
@@ -117,9 +130,8 @@ public class Posizione {
 
     } */
 
-  //Il metodo è in grado di restituire una stringa in formato  "formatted_address": "Via Magenta, 42, 16043 Chiavari GE, Italy"
-    public String[] nomeViaECittà()
-    {
+    //Il metodo è in grado di restituire una stringa in formato  "formatted_address": "Via Magenta, 42, 16043 Chiavari GE, Italy"
+    public String[] nomeViaECittà() {
         final String[] città_via = {null, null, null};
         prendiPosizione();
 
@@ -138,14 +150,14 @@ public class Posizione {
                 results = response.getJSONArray("results");
                 JSONArray address_components = results.getJSONArray(0);
                 JSONObject città = address_components.getJSONObject(2);
-                città_via[1]=città.getString("long_name");
+                città_via[1] = città.getString("long_name");
                 Log.i("NOME CITTA", città_via[1]);
 
                 //Prendo nome Via
                 results = response.getJSONArray("results");
                 address_components = results.getJSONArray(0);
                 JSONObject via = address_components.getJSONObject(1);
-                città_via[2]=città.getString("long_name");
+                città_via[2] = città.getString("long_name");
                 Log.i("NOME VIA", città_via[2]);
 
             }
@@ -160,16 +172,41 @@ public class Posizione {
         return città_via;
     }
 
-    public boolean èFermo()
-    {
-        double[] confronto=this.coordinate;
+    public boolean èFermo() {
+        double[] confronto = this.coordinate;
         prendiPosizione();
         return confronto[0] == this.coordinate[0] && confronto[1] == this.coordinate[1];
     }
 
-    private  void requestPermission()
+    private void requestPermission() {
+        ActivityCompat.requestPermissions((Activity) context, new String[]{ACCESS_FINE_LOCATION}, 1);
+    }
+
+
+    public void aggiornaGPS(long tempo, float distanza) { //Mi faccio dare tempo e distanza così da poter modificare dinamicamente
+        // la precisione all'interno del codice
+
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+
+        if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, tempo, distanza, locationListener);
+    }
+
+
+    public void fermaAggiornamentoGPS()
     {
-        ActivityCompat.requestPermissions((Activity)context, new String[]{ACCESS_FINE_LOCATION}, 1);
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
+        assert locationManager != null;
+        locationManager.removeUpdates(locationListener);
     }
 
 
