@@ -126,11 +126,25 @@ public class Esecuzione extends AppCompatActivity {
                 String[] nomi_location={"type", "coordinates"};
                 String[] nomi_samples= {"values"};
 
-                try {
-                    JSONObject location=CreazioneJson.createJSONObject(nomi_location, "Point", coordinate);
-                    JSONObject samples=CreazioneJson.createJSONObject(nomi_samples, 1588147128);
+                JSONObject location=new JSONObject();
+                JSONObject samples=new JSONObject();
+                JSONArray coordinatesArray= new JSONArray();
+                JSONArray samplesArray=new JSONArray();
+                JSONObject jsonPost=new JSONObject();
 
-                    JSONObject jsonPost = CreazioneJson.createJSONObject(nomi_jsonObject, username+"_"+password, "parking", "parking-app", location, new JSONArray(samples));
+                try {
+                    coordinatesArray.put(coordinate[0]);
+                    coordinatesArray.put(coordinate[1]);
+                    location=CreazioneJson.createJSONObject(nomi_location, "Point", coordinatesArray);
+                    samples=CreazioneJson.createJSONObject(nomi_samples, 1588147128);
+                    samplesArray.put(samples);
+                    jsonPost = CreazioneJson.createJSONObject(nomi_jsonObject, username+"_"+password, "parking", "parking-app", location, samplesArray);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
 
 
 
@@ -206,11 +220,8 @@ public class Esecuzione extends AppCompatActivity {
                             Log.e("ParseError", "Errore server, ESECUZIONE");
                         }
                     }
-                }, context, (Map<String, String>) jsonPost);
+                }, context, (Map) jsonPost);
 
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
 
             }
         });

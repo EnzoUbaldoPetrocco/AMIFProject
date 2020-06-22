@@ -48,10 +48,12 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         //Posizione posizione = new Posizione(context);
 
         //0:nome intero, 1 città, 2 via
-        String posizione_via_città[]=posizione.nomeViaECittà();
+     /*   String posizione_via_città[]=posizione.nomeViaECittà();
         String nome_intero=posizione_via_città[0];
         String città_attuale= posizione_via_città[1];
         String via=posizione_via_città[2];
+
+      */
 
       /*  while (esecuzione) {
 
