@@ -18,18 +18,22 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     Context context;
     Button annulla;
     Button registraParcheggio;
+     Posizione posizione=null;
 
-    public AsyncTaskEsecuzione(Context context, Button annulla, Button registraParcheggio)
+     //Mi faccio passare anche un oggetto posizione così è sempre lo stesso e posso decidere come modificare la precisione del GPS
+    public AsyncTaskEsecuzione(Context context, Button annulla, Button registraParcheggio, Posizione posizione)
     {
         this.context=context;
         this.annulla=annulla;
         this.registraParcheggio=registraParcheggio;
+        this.posizione=posizione;
     }
 
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
 
+        posizione.aggiornaGPS(10000, 1);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         boolean città=false;
 
         Accelerometro accelerometro= new Accelerometro();
-        Posizione posizione = new Posizione(context);
+        //Posizione posizione = new Posizione(context);
 
         //0:nome intero, 1 città, 2 via
         String posizione_via_città[]=posizione.nomeViaECittà();
@@ -92,7 +96,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     @Override
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
+        posizione.fermaAggiornamentoGPS();
     }
-
 
 }

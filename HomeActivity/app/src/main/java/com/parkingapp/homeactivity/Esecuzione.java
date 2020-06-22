@@ -62,10 +62,8 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio= findViewById(R.id.bttSalvaParcheggio);
         tvErrore=findViewById(R.id.tvEsecuzione);
 
-
-       final AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione(this, bttAnnulla, bttSalvaParcheggio);
        final Posizione posizione = new Posizione(context);
-       posizione.aggiornaGPS(10000, 1);
+       final AsyncTaskEsecuzione asyncTaskEsecuzione= new AsyncTaskEsecuzione(this, bttAnnulla, bttSalvaParcheggio, posizione);
         asyncTaskEsecuzione.execute();
 
 
