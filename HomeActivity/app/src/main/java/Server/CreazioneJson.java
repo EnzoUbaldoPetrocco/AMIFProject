@@ -38,6 +38,14 @@ public class CreazioneJson {
         return  post;
     }
 
+    public static JSONObject createJSONObject(String[] nomi, Object...objects) throws JSONException {
+        JSONObject post= new JSONObject();
+        for (int i=0; i<objects.length; i++) {
+            post.put(nomi[i], objects[i]);
+        }
+        return  post;
+    }
+
 
 }
 

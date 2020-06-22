@@ -83,7 +83,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         return null;
     }
 
-    //NON FUNZIONA TANTO VALE FARGLI FARE QUESTE COSE IN ESECUZIONE
     @Override
     protected void onCancelled() {
         super.onCancelled();
