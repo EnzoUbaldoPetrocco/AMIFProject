@@ -29,6 +29,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -42,6 +44,7 @@ import Server.CreazioneJson;
 import Server.Server;
 import asyncTasks.AsyncTaskEsecuzione;
 import mist.Variabili;
+import Server.HttpConnectionNoVolley;
 
 public class Esecuzione extends AppCompatActivity {
 
@@ -49,6 +52,7 @@ public class Esecuzione extends AppCompatActivity {
     Button bttSalvaParcheggio=null;
     TextView tvErrore=null;
     Context context=this;
+    JSONObject postMes= null;
 
 
     @Override
@@ -138,6 +142,22 @@ public class Esecuzione extends AppCompatActivity {
                     location=CreazioneJson.createJSONObject(nomi_location, "Point", coordinatesArray);
                     samples=CreazioneJson.createJSONObject(nomi_samples, 1588147128);
                     samplesArray.put(samples);
+                    //String locationString = location.toString();
+                    //String samplesArrayString= samplesArray.toString();
+
+
+                    //provo a creare qui il JSONObject da passare alla classe httpconnectionnovolley che poi aggiungerà il token nelle
+                    //autorizzazioni e infine aggiungerà al corpo questo JSON
+                    JSONObject locationObj= new JSONObject();
+                    locationObj.put("type", "Point");
+                    locationObj.put("coordinates", coordinatesArray);
+                    postMes = new JSONObject();
+                    postMes.put("thing", username+"_"+password);
+                    postMes.put("feature", "parking");
+                    postMes.put("device", "parking-app");
+                    postMes.put("location", locationObj);
+                    postMes.put("samples", samplesArray);
+
                     jsonPost = CreazioneJson.createJSONObject(nomi_jsonObject, username+"_"+password, "parking", "parking-app", location, samplesArray);
 
                 } catch (JSONException e) {
@@ -180,22 +200,31 @@ public class Esecuzione extends AppCompatActivity {
                 */
 
 
-                Server.makePost("/v1/measurements  ", new VolleyCallback() {
+             /*   Server.makePost("/v1/measurements", new VolleyCallback() {
                     @Override
-                    public void onSuccess(JSONObject result) throws JSONException {
+                    public void onSuccess(JSONObject result) throws JSONException { */
 
                         //Aggiungere parte in cui dalle coordinate prendiamo il nome e la città di provenienza, così da salvarlo in locale
                         //e farlo apparire in "Parcheggio"
 
-                        Variabili.aggiornaPosizione(context);
+                HttpConnectionNoVolley  hcnv = new HttpConnectionNoVolley();
+                try {
+                    hcnv.makePostMesur(context, postMes );
+                    Log.i ("provatofareconnession", "no volley");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                Variabili.aggiornaPosizione(context);
 
                         posizione.fermaAggiornamentoGPS();
                         Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
                         Intent i= new Intent(getString(R.string.MAIN_TO_HOME));
-                        startActivity(i);
-                    }
+                        startActivity(i);  }
+                    });
 
-                    @Override
+                  /*  @Override
                     public void onError(VolleyError error) throws Exception {
 
                         Log.e("BottoneSalva Coordinate", error.toString());
@@ -224,23 +253,8 @@ public class Esecuzione extends AppCompatActivity {
 
 
             }
-        });
+        }); */
 
-     /*   private void startForeground() {
-            Intent notificationIntent = new Intent(this, Esecuzione.class);
-
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
-                    notificationIntent, 0);
-
-            startForeground(NOTIF_ID, new NotificationCompat.Builder(this,
-                    NOTIF_CHANNEL_ID) // don't forget create a notification channel first
-                    .setOngoing(true)
-                    .setSmallIcon(R.drawable.ic_notification)
-                    .setContentTitle(getString(R.string.app_name))
-                    .setContentText("Service is running background")
-                    .setContentIntent(pendingIntent)
-                    .build());
-        }*/
 
 
     }

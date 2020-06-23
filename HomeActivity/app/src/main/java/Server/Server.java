@@ -56,7 +56,7 @@ public class Server {
                 try {
 
                     volleyCallback.onSuccess((JSONObject)responseObj);
-                } catch (JSONException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }
@@ -261,7 +261,7 @@ public class Server {
 
                 try {
                     volleyCallback.onSuccess((JSONObject)response);
-                } catch (JSONException e) {
+                } catch (JSONException | IOException e) {
                     e.printStackTrace();
                 }
             }

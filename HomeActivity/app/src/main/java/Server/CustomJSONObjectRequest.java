@@ -19,6 +19,7 @@ public class CustomJSONObjectRequest extends Request {
 
     private Listener listener;
     private Map<String, String> params;
+    private JSONObject parameters;
     Priority mPriority;
 
      CustomJSONObjectRequest(int method, String url, Map<String, String> params,
@@ -32,6 +33,9 @@ public class CustomJSONObjectRequest extends Request {
             throws com.android.volley.AuthFailureError {
         return params;
     };
+
+
+
 
     @Override
     protected Response parseNetworkResponse(NetworkResponse response) {
