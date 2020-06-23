@@ -129,40 +129,47 @@ public class Variabili {
             public void onSuccess(JSONObject result) throws JSONException {
 
                 JSONArray docs =result.getJSONArray("docs");
-                JSONObject docs_0=docs.getJSONObject(0);
-                JSONObject location = docs_0.getJSONObject("location");
-                JSONArray coordinates=location.getJSONArray("coordinates");
 
-                final double[] coordinate={coordinates.getDouble(0), coordinates.getDouble(1)};
+                if(docs.length()!=0) { //Controllo per verificare che ci sia un parcheggio salvato, se docs è vuoto non c'è parcheggio per quell'utente
 
-               SharedPreferences sharedPreferences1 =context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
-               //Metto a default valori impossibili, così forzo ad aggiornarsi col server se non abbiamo parcheggi salvati
-                String[] coordinate_salvate_s={sharedPreferences1.getString("LATITUDINE", "1000000"), sharedPreferences1.getString("LONGITUDINE", "1000000")};
+                    JSONObject docs_0 = docs.getJSONObject(0);
+                    JSONObject location = docs_0.getJSONObject("location");
+                    JSONArray coordinates = location.getJSONArray("coordinates");
 
-                assert coordinate_salvate_s[0] != null;
-                assert coordinate_salvate_s[1] != null;
-                double[] coordinate_salvate={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+                    final double[] coordinate = {coordinates.getDouble(0), coordinates.getDouble(1)};
 
-                if(coordinate_salvate!=coordinate)
+                    SharedPreferences sharedPreferences1 = context.getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
+                    //Metto a default valori impossibili, così forzo ad aggiornarsi col server se non abbiamo parcheggi salvati
+                    String[] coordinate_salvate_s = {sharedPreferences1.getString("LATITUDINE", "1000000"), sharedPreferences1.getString("LONGITUDINE", "1000000")};
+
+                    assert coordinate_salvate_s[0] != null;
+                    assert coordinate_salvate_s[1] != null;
+                    double[] coordinate_salvate = {Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+
+                    if (coordinate_salvate[0] != coordinate[0] && coordinate_salvate[1]!=coordinate[1]) {
+                        Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {
+                            @Override
+                            public void onSuccess(JSONObject response) throws JSONException {
+                                JSONArray results = response.getJSONArray("results");
+                                JSONObject formatted_address = results.getJSONObject(1);
+                                String città_via = formatted_address.getString("formatted_address");
+                                Log.i("NOME CITTA_VIA", città_via);
+
+                                Variabili.salvaParcheggio(context, città_via);
+                                Variabili.salvaCoordinate(context, coordinate);
+                            }
+
+                            @Override
+                            public void onError(VolleyError error) throws Exception {
+
+                                Log.e("REVERSE GEOCODING", "Errore nel reverse geocoding dell'aggiornamento Posizione in Variabili");
+                            }
+                        });
+                    }
+                }
+                else
                 {
-                    Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {
-                        @Override
-                        public void onSuccess(JSONObject response) throws JSONException {
-                            JSONArray results = response.getJSONArray("results");
-                            JSONObject formatted_address = results.getJSONObject(1);
-                            String città_via = formatted_address.getString("formatted_address");
-                            Log.i("NOME CITTA_VIA", città_via);
-
-                            Variabili.salvaParcheggio(context, città_via);
-                            Variabili.salvaCoordinate(context, coordinate);
-                        }
-
-                        @Override
-                        public void onError(VolleyError error) throws Exception {
-
-                            Log.e("REVERSE GEOCODING", "Errore nel reverse geocoding dell'aggiornamento Posizione in Variabili");
-                        }
-                    });
+                    Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
                 }
             }
 

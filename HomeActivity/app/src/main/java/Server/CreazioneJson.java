@@ -38,6 +38,45 @@ public class CreazioneJson {
         return  post;
     }
 
+    public static JSONObject createJSONObject(String[] nomi, Object...objects) throws JSONException {
+        JSONObject post= new JSONObject();
+        for (int i=0; i<objects.length; i++) {
+            post.put(nomi[i], objects[i]);
+        }
+        return  post;
+    }
+
+    class NestedMap<String, V> {
+
+        private final HashMap<String, NestedMap> child;
+        private V value;
+
+        public NestedMap() {
+            child = new HashMap<>();
+            value = null;
+        }
+
+        public boolean hasChild(String k) {
+            return this.child.containsKey(k);
+        }
+
+        public NestedMap<String, V> getChild(String k) {
+            return this.child.get(k);
+        }
+
+        public void makeChild(String k) {
+            this.child.put(k, new NestedMap());
+        }
+
+        public V getValue() {
+            return value;
+        }
+
+        public void setValue(V v) {
+            value = v;
+        }
+    }
+
 
 }
 
