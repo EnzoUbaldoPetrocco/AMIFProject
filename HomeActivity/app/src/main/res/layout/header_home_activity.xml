@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:orientation="vertical"
-    android:background="@drawable/sfondo_header">
+    android:background="#1186a1">
 
     <ImageView
         android:layout_marginTop="30dp"
@@ -18,9 +18,10 @@
         android:id="@+id/tvHeaderHomeActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="#000010"
+        android:textColor="#ffffff"
+        android:textStyle="bold"
         android:layout_marginLeft="10dp"
         android:layout_marginTop="10dp"
-        android:textSize="25dp" />
+        android:textSize="30dp" />
 
 </LinearLayout>

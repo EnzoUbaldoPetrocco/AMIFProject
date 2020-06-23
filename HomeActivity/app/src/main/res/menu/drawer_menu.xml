@@ -2,6 +2,7 @@
 <menu xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
     <item android:id="@+id/btUtente" android:title="Profilo utente" android:icon="@drawable/user_icon"/>
     <item android:id="@+id/btMappeScaricate" android:title="Mappe scaricate" android:icon="@drawable/mappe_scaricate" />
     <item android:id="@+id/btMappeDaScaricare" android:title="Scarica Mappa" android:icon="@drawable/scarica_mappa"/>

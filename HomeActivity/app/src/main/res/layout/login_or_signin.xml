@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="#2196F3"
-    android:background="@drawable/sfondo_iniziale"
+    android:background="#ffffff"
+
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
@@ -13,25 +13,32 @@
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="333dp"
-        android:layout_height="241dp"
-        android:layout_marginTop="50dp"
-        android:background="#2196F3"
-        android:src="@drawable/login_or_signin_sfondo" />
+        android:layout_height="441dp"
+        android:layout_marginTop="20dp"
+
+        android:src="@drawable/logorsign" />
 
     <Button
         android:id="@+id/bttLogIn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="66dp"
-        android:layout_marginTop="150dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="ACCEDI" />
+        android:backgroundTint="#009db3"
+        android:text="ACCEDI"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:background="@drawable/custom_button"/>
 
     <Button
         android:id="@+id/bttSignIn"
-        android:layout_width="match_parent"
+        android:layout_width="350dp"
         android:layout_height="66dp"
         android:layout_marginTop="20dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="REGISTRATI" />
+        android:backgroundTint="#009db3"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:background="@drawable/custom_button"
+        android:text="REGISTRATI"
+
+    />
 
 </LinearLayout>

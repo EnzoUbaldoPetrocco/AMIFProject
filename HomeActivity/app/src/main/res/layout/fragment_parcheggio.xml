@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
-    android:background="@drawable/sfondo_azzurro"
+    android:background="#ffffff"
     android:orientation="vertical"
     tools:context="fragment_home_activity.Parcheggio">
 
@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30dp"
-        android:textColor="#000000"
+        android:textColor="#00447d"
         android:layout_marginTop="40dp"
         android:text=" Il tuo ultimo parcheggio: " />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="5dp"
         android:layout_marginTop="10dp"
-        android:textColor="#D0FFFFFF"
+        android:textColor="#1186a1"
         android:textSize="23dp" />
 
     <TextView
@@ -32,7 +32,8 @@
         android:text=" Liberare parcheggio entro:"
         android:textSize="30dp"
         android:visibility="visible"
-        android:textColor="#000000"
+        android:textColor="#00447d"
+
         />
     <!--Si potrebbe rendere invisibile se non ci sono lavaggi dove ha parcheggiato!-->
 
@@ -41,19 +42,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="#D0FFFFFF"
+        android:textColor="#1186a1"
         android:layout_marginLeft="5dp"
         android:textSize="23dp"
         />
 
     <Button
         android:id="@+id/btEliminaParcheggio"
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="210dp"
         android:text="Elimina"
+        android:textColor="#ffffff"
         android:textSize="20dp"
-        android:backgroundTint="#FFFFFF"
+        android:background="@drawable/custom_button"
+        android:backgroundTint="#0b839f"
         />
 
 

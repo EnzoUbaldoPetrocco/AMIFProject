@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center_horizontal"
-    android:background="#041055"
+    android:background="#ffffff"
     tools:context=".MainActivity">
 
 
@@ -17,7 +17,7 @@
         android:layout_marginTop="30dp"
         android:text=" Esecuzione..."
         android:textSize="40dp"
-        android:textColor="#FFFFFF"
+        android:textColor="#00447d"
         />
 
     <ProgressBar
@@ -28,17 +28,21 @@
 
     <Button
         android:id="@+id/bttSalvaParcheggio"
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="40dp"
+        android:background="@drawable/custom_button"
+        android:textColor="#ffffff"
         android:text="Salva parcheggio"/>
 
     <Button
         android:id="@+id/bttAnnullaEsecuzione"
-        android:layout_width="wrap_content"
+        android:layout_width="380dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
+        android:background="@drawable/custom_button"
         android:text="Annulla"
+        android:textColor="#ffffff"
         />
 
     <TextView

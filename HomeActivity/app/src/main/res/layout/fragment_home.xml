@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center_horizontal"
     android:orientation="vertical"
+    android:background="@drawable/bg6"
     tools:context="fragment_home_activity.HomeFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -11,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="  Scegli la città di destinazione"
-        android:textColor="#000000"
+        android:textColor="#00447d"
         android:textSize="25dp"
         android:layout_marginTop="80dp"/>
 
@@ -21,6 +22,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text=" ----"
+        android:textColor="#1186a1"
         android:layout_marginTop="150dp"
         android:textSize="30dp" />
 
@@ -65,13 +67,15 @@
 
 <Button
     android:id="@+id/bttAvviaHomeFragment"
-    android:layout_width="wrap_content"
+    android:layout_width="380dp"
     android:layout_height="wrap_content"
     android:text="Avvia"
     android:textSize="25dp"
-    android:layout_marginLeft="130dp"
+    android:layout_marginLeft="15dp"
     android:layout_marginTop="500dp"
-    android:backgroundTint="#FFFFFF"
+    android:backgroundTint="#0b839f"
+    android:textColor="#ffffff"
+    android:background="@drawable/custom_button"
     />
 
 
