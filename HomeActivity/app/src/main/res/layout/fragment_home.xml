@@ -71,7 +71,7 @@
     android:layout_height="wrap_content"
     android:text="Avvia"
     android:textSize="25dp"
-    android:layout_marginLeft="15dp"
+    android:layout_centerHorizontal="true"
     android:layout_marginTop="500dp"
     android:backgroundTint="#0b839f"
     android:textColor="#ffffff"

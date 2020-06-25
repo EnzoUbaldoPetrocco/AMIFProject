@@ -28,7 +28,6 @@ public class Utente extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button btCambiaNome=null;
     Button btEsci=null;
     TextView tvUsername=null;
 
@@ -82,7 +81,6 @@ public class Utente extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         btEsci=view.findViewById(R.id.btExit_Utente);
-        btCambiaNome=view.findViewById(R.id.btCambiaUsername);
         tvUsername=view.findViewById(R.id.tvFragmentUtente);
 
         //Associo nome username scelto nella signin/login
@@ -99,12 +97,5 @@ public class Utente extends Fragment {
             }
         });
 
-        //Passaggio a activity per cambiare username
-        btCambiaNome.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 }

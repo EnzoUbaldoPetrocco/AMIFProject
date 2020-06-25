@@ -94,7 +94,7 @@
         android:textColor="#ffffff"
         android:layout_marginTop="70dp"
         android:textSize="30dp"
-        android:text="OK" />
+        android:text="ACCEDI" />
 
 
     <ImageButton

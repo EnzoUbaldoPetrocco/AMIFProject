@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
@@ -165,6 +166,37 @@ public class Server {
                         return params;
                     }
 
+                    //Tentativi per far passare JSONObject
+                  /*  @Override
+                    public byte[] getBody() throws AuthFailureError {
+
+                        Map<String, String> params = getParams();
+                        if (params != null && params.size() > 0) {
+                            return encodeParameters(params, getParamsEncoding());
+                        }
+                        return null;
+
+                    }
+
+
+                    private byte[] encodeParameters(Map<String, String> params, String paramsEncoding) {
+                        StringBuilder encodedParams = new StringBuilder();
+                        try {
+                            for (Map.Entry<String, String> entry : params.entrySet()) {
+                                encodedParams.append(URLEncoder.encode(entry.getKey(), paramsEncoding));
+                                encodedParams.append('=');
+                                encodedParams.append(URLEncoder.encode(entry.getValue(), paramsEncoding));
+                                encodedParams.append('&');
+                            }
+                            return encodedParams.toString().getBytes(paramsEncoding);
+                        } catch (UnsupportedEncodingException uee) {
+                            throw new RuntimeException("Encoding not supported: " + paramsEncoding, uee);
+                        }
+                    }
+
+                   */
+
+
                 };
 
                 // Request added to the RequestQueue
@@ -279,4 +311,13 @@ public class Server {
         RequestQueue queue = Volley.newRequestQueue(context);
         queue.add(rq);
     }
+
+
+
+
+
+
 }
+
+
+

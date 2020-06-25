@@ -249,7 +249,7 @@ public class Esecuzione extends AppCompatActivity {
                             Log.e("ParseError", "Errore server, ESECUZIONE");
                         }
                     }
-                }, context, (Map) jsonPost);
+                }, context, (Map<String, String>)jsonPost);
 
 
             }
