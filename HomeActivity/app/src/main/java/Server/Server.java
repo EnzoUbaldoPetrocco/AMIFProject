@@ -279,7 +279,6 @@ public class Server {
 
 
     //Metodo per le chiamate dell'API di Google Maps per il reverse geocoding
-    //Problemi di conversione double a String
     public static void callReverseGeocoding(Context context, final double[] coordinate, final VolleyCallback volleyCallback)
     {
         String indirizzo_p1 ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";

@@ -28,7 +28,7 @@
             android:id="@+id/btConfermaUscitaUtente"
             android:layout_width="80dp"
             android:layout_height="80dp"
-            android:layout_marginLeft="@dimen/cast_libraries_material_featurehighlight_center_horizontal_offset"
+            android:layout_marginLeft="25dp"
             android:layout_marginTop="350dp"
             android:background="@drawable/conferma_bottone" />
 

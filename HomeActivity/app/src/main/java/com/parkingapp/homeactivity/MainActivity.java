@@ -16,11 +16,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.timeseries.TimeSeries;
-import com.util.DistanceFunction;
-import com.util.DistanceFunctionFactory;
-
-import asyncTasks.AsyncTaskMainActivity;
 import mist.Variabili;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -32,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
     final String TAG="MainActivity";
     Button bttMain=null;
     Context context=this;
-    boolean FLAG=true;
-    AsyncTaskMainActivity asyncTaskMainActivity=null;
     //Variabile solo per un test, da cancellare dopo
 
     @Override

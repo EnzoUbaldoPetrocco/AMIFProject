@@ -104,60 +104,30 @@ public class Posizione {
     }
 
 
-  /*  public String nomeVia()
-    {
-        final String[] via={null};
-        prendiPosizione();//Aggiorno le coordinate
-
-        Server.callReverseGeocoding(context, this.coordinate, new VolleyCallback() {
-            @Override
-            public void onSuccess(JSONObject response) throws JSONException {
-
-                JSONArray results = response.getJSONArray("results");
-                JSONArray address_components = results.getJSONArray(0);
-                JSONObject route = address_components.getJSONObject(0);
-                via[0] = route.getString("long_name");
-            }
-
-            @Override
-            public void onError(VolleyError error) throws Exception {
-
-            }
-        });
-
-
-        return via[0];
-
-    } */
-
     //Il metodo è in grado di restituire una stringa in formato  "formatted_address": "Via Magenta, 42, 16043 Chiavari GE, Italy"
     public String[] nomeViaECittà() {
         final String[] città_via = {null, null, null};
         prendiPosizione();
 
-        Server.callReverseGeocoding(context, this.coordinate, new VolleyCallback() {
+        Server.callReverseGeocoding(this.context, this.coordinate, new VolleyCallback() {
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
 
                 //Prendo nome intero
                 JSONArray results = response.getJSONArray("results");
                 JSONObject formatted_address = results.getJSONObject(1);
-                //JSONObject route = address_components.getJSONObject(5);
                 città_via[0] = formatted_address.getString("formatted_address");
                 Log.i("NOME CITTA_VIA", città_via[0]);
 
                 //Prendo nome Città
-                results = response.getJSONArray("results");
                 JSONArray address_components = results.getJSONArray(0);
                 JSONObject città = address_components.getJSONObject(2);
                 città_via[1] = città.getString("long_name");
                 Log.i("NOME CITTA", città_via[1]);
 
                 //Prendo nome Via
-                results = response.getJSONArray("results");
-                address_components = results.getJSONArray(0);
                 JSONObject via = address_components.getJSONObject(1);
-                città_via[2] = città.getString("long_name");
+                città_via[2] = via.getString("long_name");
                 Log.i("NOME VIA", città_via[2]);
 
             }
@@ -171,6 +141,7 @@ public class Posizione {
 
         return città_via;
     }
+
 
     public boolean èFermo() {
         double[] confronto = this.coordinate;

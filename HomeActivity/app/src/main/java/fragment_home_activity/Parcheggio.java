@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parkingapp.homeactivity.R;
 
@@ -33,6 +34,7 @@ public class Parcheggio extends Fragment {
     private String mParam2;
 
     Button bttElimina=null;
+    Button bttMostraSullaMappa=null;
     TextView tvLuogoParcheggio=null;
     TextView tvOrarioParcheggio=null;
 
@@ -78,11 +80,12 @@ public class Parcheggio extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         bttElimina= view.findViewById(R.id.btEliminaParcheggio);
+        bttMostraSullaMappa=view.findViewById(R.id.btMostraSullaMappa);
         tvLuogoParcheggio=view.findViewById(R.id.tvPosizioneParcheggio);
         tvOrarioParcheggio=view.findViewById(R.id.tvOrarioParcheggio);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
-        String luogo_parcheggio=sharedPreferences.getString("PARCHEGGIO", "Nessun parcheggio salvato");
+        final String luogo_parcheggio=sharedPreferences.getString("PARCHEGGIO", "Nessun parcheggio salvato");
         sharedPreferences=getActivity().getSharedPreferences("ORARIO_PARCHEGGIO", Context.MODE_PRIVATE);
         String orario_parcheggio=sharedPreferences.getString("ORARIO_PARCHEGGIO", "");
 
@@ -93,8 +96,29 @@ public class Parcheggio extends Fragment {
             @Override
             public void onClick(View v) {
 
-                Intent i= new Intent (getString(R.string.ELIMINA_PARCHEGGIO));
-                startActivity(i);
+                if(luogo_parcheggio.equals("Nessun parcheggio salvato"))
+                {
+                    Toast.makeText(getContext(), "Nessun parcheggio salvato", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent i = new Intent(getString(R.string.ELIMINA_PARCHEGGIO));
+                    startActivity(i);
+                }
+            }
+        });
+
+        bttMostraSullaMappa.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if(luogo_parcheggio.equals("Nessun parcheggio salvato"))
+                {
+                    Toast.makeText(getContext(), "Nessun parcheggio da mostrare", Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                    startActivity(i);
+                }
             }
         });
     }

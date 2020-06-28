@@ -85,14 +85,6 @@ public class Variabili {
         editor.apply();
     }
 
-  /*  public static void annullaOSalvaParcheggio(Context context, boolean stato)
-    {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("SCELTA", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean("SCELTA", stato);
-        editor.apply();
-    } */
 
     public static void salvaCoordinate(Context context, double[] coordinate)
     {
@@ -144,7 +136,7 @@ public class Variabili {
 
                     assert coordinate_salvate_s[0] != null;
                     assert coordinate_salvate_s[1] != null;
-                    double[] coordinate_salvate = {Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
+                    double[] coordinate_salvate = {Double.parseDouble(coordinate_salvate_s[0]), Double.parseDouble(coordinate_salvate_s[1])};
 
                     if (coordinate_salvate[0] != coordinate[0] && coordinate_salvate[1]!=coordinate[1]) {
                         Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {

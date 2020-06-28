@@ -14,6 +14,10 @@
 
         <!--SCREEN ORIENTATION = PORTRAIT PER IMPEDIRE ROTAZIONE SCHERMO, CHE SPESSO E' DANNOSA PER GLI ASYNC TASKS-->
 
+        <!--Il meta data serve per la chiave API -->
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="@string/API_KEY"/>
+
         <!--main activity-->
         <activity android:name=".MainActivity"
             android:screenOrientation="portrait">
@@ -81,6 +85,14 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="DaParcheggioAEliminaParcheggio"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".MostraParcheggio"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="DaParcheggioAMostraSullaMappa"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>

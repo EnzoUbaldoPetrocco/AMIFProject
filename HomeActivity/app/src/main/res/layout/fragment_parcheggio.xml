@@ -48,10 +48,22 @@
         />
 
     <Button
-        android:id="@+id/btEliminaParcheggio"
+        android:id="@+id/btMostraSullaMappa"
         android:layout_width="380dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="210dp"
+        android:layout_marginTop="150dp"
+        android:text="Mostra sulla mappa"
+        android:textColor="#ffffff"
+        android:textSize="20dp"
+        android:background="@drawable/custom_button"
+        android:backgroundTint="#0b839f"
+        />
+
+    <Button
+        android:id="@+id/btEliminaParcheggio"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
         android:text="Elimina"
         android:textColor="#ffffff"
         android:textSize="20dp"
