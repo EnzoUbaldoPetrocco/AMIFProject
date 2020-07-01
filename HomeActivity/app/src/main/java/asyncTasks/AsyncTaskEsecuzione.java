@@ -74,7 +74,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
             }
         };
         
-
+/*
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
       while (esecuzione_città)
       {
@@ -150,18 +150,24 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
 
 
+ */
 
 
-/*
+
+
+
+
      int k=2;
      while(k!=1)
         {
             k++;
         }
- */
+
         return null;
 
     }
+
+
 
     @Override
     protected void onCancelled() {

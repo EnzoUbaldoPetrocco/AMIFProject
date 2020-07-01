@@ -46,36 +46,6 @@ public class CreazioneJson {
         return  post;
     }
 
-    class NestedMap<String, V> {
-
-        private final HashMap<String, NestedMap> child;
-        private V value;
-
-        public NestedMap() {
-            child = new HashMap<>();
-            value = null;
-        }
-
-        public boolean hasChild(String k) {
-            return this.child.containsKey(k);
-        }
-
-        public NestedMap<String, V> getChild(String k) {
-            return this.child.get(k);
-        }
-
-        public void makeChild(String k) {
-            this.child.put(k, new NestedMap());
-        }
-
-        public V getValue() {
-            return value;
-        }
-
-        public void setValue(V v) {
-            value = v;
-        }
-    }
 
 
 }

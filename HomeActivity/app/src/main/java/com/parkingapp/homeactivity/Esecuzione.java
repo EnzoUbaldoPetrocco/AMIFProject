@@ -24,12 +24,14 @@ import com.android.volley.ParseError;
 import com.android.volley.ServerError;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -47,6 +49,7 @@ import Server.CreazioneJson;
 import Server.Server;
 import asyncTasks.AsyncTaskEsecuzione;
 import mist.Variabili;
+import Server.Callback;
 import Server.HttpConnectionNoVolley;
 
 public class Esecuzione extends AppCompatActivity {
@@ -69,9 +72,10 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio = findViewById(R.id.bttSalvaParcheggio);
         tvErrore = findViewById(R.id.tvEsecuzione);
 
-        Variabili.salvaDestinazione(context, "Chiavari");
-        final Posizione posizione = new Posizione(context);
-        final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(context, bttAnnulla, bttSalvaParcheggio, posizione);
+      //  this.context=getApplicationContext();
+        Variabili.salvaDestinazione(this.context, "Chiavari");
+        final Posizione posizione = new Posizione(this.context);
+        final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
          asyncTaskEsecuzione.execute();
 
 
@@ -98,8 +102,7 @@ public class Esecuzione extends AppCompatActivity {
 
                 //Salvo i dati prima di cancellare l'async task
                 posizione.prendiPosizione();
-                double[] coordinate = posizione.coordinate;
-                Variabili.salvaCoordinate(context, coordinate);
+                final double[] coordinate = posizione.coordinate;
                 asyncTaskEsecuzione.cancel(true);
 
 
@@ -114,152 +117,73 @@ public class Esecuzione extends AppCompatActivity {
                 String username = sharedPreferences.getString("USERNAME", "");
                 String password = sharedPreferences.getString("PASSWORD", "");
 
-                //sharedPreferences=getSharedPreferences("COORDINATE", Context.MODE_PRIVATE);
-
-                // String[] coordinate_salvate_s = {sharedPreferences.getString("LATITUDINE", "1000000"), sharedPreferences.getString("LONGITUDINE", "1000000")};
-
-                //  double[] coordinate_d={Double.valueOf(coordinate_salvate_s[0]), Double.valueOf(coordinate_salvate_s[1])};
-
-                // String coordinatesInString= "[ " + Double.valueOf(coordinate[0]) + ", " + Double.valueOf(coordinate[1]) + " ]";
-              /*  String[] location={"type"};
-                String[] fieldLocation= {"Point"};
-                Map<String, String> locationField= CreazioneJson.createJson(location,fieldLocation);*/
-
-                // String location_string="{\"type\": \"Point\",\"coordinates\": "+coordinatesInString+"}";
-
-
-                String[] nomi_jsonObject = {"thing", "feature", "device", "location", "samples"};
-                String[] nomi_location = {"type", "coordinates"};
-                String[] nomi_samples = {"values"};
-
-                JSONObject location = new JSONObject();
-                JSONObject samples = new JSONObject();
-                JSONArray coordinatesArray = new JSONArray();
-                JSONArray samplesArray = new JSONArray();
-                JSONObject jsonPost = new JSONObject();
-
-                Map<String, String> postJson = new HashMap<>();
+                String[] nomiJson={"thing", "feature", "device", "location", "samples"};
+                JSONObject location=new JSONObject();
 
                 try {
-                    coordinatesArray.put(coordinate[0]);
-                    coordinatesArray.put(coordinate[1]);
-                    location = CreazioneJson.createJSONObject(nomi_location, "Point", coordinatesArray);
-                    samples = CreazioneJson.createJSONObject(nomi_samples, 1588147128);
-                    samplesArray.put(samples);
-                    //String locationString = location.toString();
-                    //String samplesArrayString= samplesArray.toString();
-
-
-                    //provo a creare qui il JSONObject da passare alla classe httpconnectionnovolley che poi aggiungerà il token nelle
-                    //autorizzazioni e infine aggiungerà al corpo questo JSON
-                    JSONObject locationObj = new JSONObject();
-                    locationObj.put("type", "Point");
-                    locationObj.put("coordinates", coordinatesArray);
-                   /* postMes = new JSONObject();
-                    postMes.put("thing", username+"_"+password);
-                    postMes.put("feature", "parking");
-                    postMes.put("device", "parking-app");
-                    postMes.put("location", locationObj);
-                    postMes.put("samples", samplesArray);
-
- */
-
-                    postJson.put("thing", username + "_" + password);
-                    postJson.put("feature", "parking");
-                    postJson.put("device", "parking-app");
-                    postJson.put("location", locationObj.toString());
-                    postJson.put("samples", samplesArray.toString());
-
-
-                    //  jsonPost = CreazioneJson.createJSONObject(nomi_jsonObject, username+"_"+password, "parking", "parking-app", location, samplesArray);
-
+                    location.put("type", "Point");
+                    location.put("coordinates", coordinate[0]);
+                    location.accumulate("coordinates", coordinate[1]);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
-
-                //  jsonPost.put("samples", values.toArray());
-
-
-                // JSONObject valuesJson= new JSONObject(values);
-
-                //  String[] samples=new String[]{valuesJson.toString()};
-
-
-               /* String[] nomiJson={"thing", "feature", "device"};
-                String[] campiJson = {username+"_"+password, "parking", "parking-app"};
-
-                Map<String, String> bodyJson= CreazioneJson.createJson(nomiJson, campiJson);
-
-                bodyJson.put("location", location_string);
-                bodyJson.put("samples", Arrays.toString(samples));
-
-                */
-
-                Toast.makeText(context, coordinate[0] + ", " + coordinate[1], Toast.LENGTH_LONG).show();
-
-
-               /* Map<String, String> post= new HashMap<>();
-                post.put("thing",username+"_"+password);
-                post.put("feature","parking");
-                post.put("device","parking-app");
-                post.put("location",locationField[0]);
-                post.put("location",locationField[1]);
-                */
-             /* HttpConnectionNoVolley  hcnv = new HttpConnectionNoVolley();
+                JSONArray samples= new JSONArray();
                 try {
-                    hcnv.makePostMesur(context, postMes );
-                    Log.i ("provatofareconnession", "no volley");
-                } catch (IOException e) {
+                    samples.put(CreazioneJson.createJSONObject(new String[]{"values"}, 1588147128));
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
 
+                JSONObject postJson=new JSONObject();
+                try {
+                    postJson=CreazioneJson.createJSONObject(nomiJson, username+"_"+password, "parking", "parking-app", location, samples);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                */
+                Toast.makeText(context, coordinate[0]+","+coordinate[1], Toast.LENGTH_LONG).show();
 
-                Server.makePost("/v1/measurements", new VolleyCallback() {
-                    @Override
-                    public void onSuccess(JSONObject result) throws JSONException {
+                try {
+                    Server.Post("/v1/measurements ", new Callback() {
+                        @Override
+                        public void onSuccess(JSONObject result) throws JSONException, IOException {
 
-                        //Aggiungere parte in cui dalle coordinate prendiamo il nome e la città di provenienza, così da salvarlo in locale
-                        //e farlo apparire in "Parcheggio"
+                            posizione.fermaAggiornamentoGPS();
+                            posizione.nomeViaECittà();
+                            String[] nomeCittà_via=posizione.nomeCittà_via;
+                            if(nomeCittà_via[0]!=null) {
+                                Variabili.salvaParcheggio(context, nomeCittà_via[0]);
+                                Variabili.salvaCoordinate(context, coordinate);
 
-
-                        Variabili.aggiornaPosizione(context);
-
-                        posizione.fermaAggiornamentoGPS();
-                        Variabili.salvaParcheggio(context, posizione.nomeViaECittà()[0]);
-                        Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                        startActivity(i);
-
-                    }
-
-                    ;
-
-                    @Override
-                    public void onError(VolleyError error) throws Exception {
-
-                        Log.e("BottoneSalva Coordinate", error.toString());
-                        if (error instanceof ServerError || error instanceof AuthFailureError) {
-                            tvErrore.setText("Si è verificato un errore, riprova");
-                            tvErrore.setVisibility(View.VISIBLE);
-                        } else if (error instanceof TimeoutError || error instanceof NoConnectionError) {
-                            tvErrore.setText("Connessione a internet assente");
-                            tvErrore.setVisibility(View.VISIBLE);
-                        } else if (error instanceof NetworkError) {
-                            tvErrore.setText("Errore di connessione, riprova");
-                            tvErrore.setVisibility(View.VISIBLE);
-                        } else if (error instanceof ParseError) {
-                            Log.e("ParseError", "Errore server, ESECUZIONE");
+                                Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                                startActivity(i);
+                            }
                         }
-                    }
-                }, context, postJson);
 
+                        @Override
+                        public void onError(ANError error) throws Exception {
 
+                            if(error.getErrorCode()==400 || error.getErrorCode()==403)
+                            {
+                                tvErrore.setText("Si è verificato un errore, riprova");
+                                Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
+                            }
+                            else if(error.getErrorCode()==500)
+                            {
+                                tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
+                                Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
+                            }
+                        }
+                    }, context, postJson);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         });
 
 
-
     }
 }
+
+

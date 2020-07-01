@@ -14,6 +14,9 @@ import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.androidnetworking.AndroidNetworking;
+import com.androidnetworking.error.ANError;
+import com.androidnetworking.interfaces.JSONObjectRequestListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -166,8 +169,9 @@ public class Server {
                         return params;
                     }
 
+                    /*
                     //Tentativi per far passare JSONObject
-                  /*  @Override
+                    @Override
                     public byte[] getBody() throws AuthFailureError {
 
                         Map<String, String> params = getParams();
@@ -194,7 +198,9 @@ public class Server {
                         }
                     }
 
-                   */
+
+
+                     */
 
 
                 };
@@ -312,8 +318,186 @@ public class Server {
     }
 
 
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // NUOVE CHIAMATE PER API
+
+    private static void Token(final Callback callback, Context context) throws JSONException {
+        String url= my_URL+"/v1/login";
+
+        String nomiJson[]={"username", "password"};
+        JSONObject costanteJson= CreazioneJson.createJSONObject(nomiJson, "parking-username", "parking-password");
+
+        AndroidNetworking.initialize(context);
+
+        AndroidNetworking.post(url)
+                .addJSONObjectBody(costanteJson)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            callback.onSuccess(response);
+                            Log.i("TOKEN", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                        try {
+                            callback.onError(anError);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
 
+    public static void Post(final String url_add, final Callback callback, final Context context, final JSONObject postJson) throws JSONException {
+        final String url=my_URL+url_add;
+
+        Token(new Callback() {
+            @Override
+            public void onSuccess(JSONObject result) throws JSONException, IOException {
+
+                String risposta=result.toString();
+                String token=risposta.substring(10, risposta.indexOf("}")-1);
+
+                AndroidNetworking.initialize(context);
+
+                AndroidNetworking.post(url)
+                        .addJSONObjectBody(postJson)
+                        .addHeaders("Authorization", token)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    callback.onSuccess(response);
+                                    Log.i("Risposta Post", response.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+
+                                try {
+                                    callback.onError(anError);
+                                    Log.e("Errore Post", anError.toString());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(ANError error) throws Exception {
+
+                callback.onError(error);
+                Log.e("POST", "Errore ritorno Token dalla post");
+            }
+        }, context);
+    }
+
+
+    public static void GET(final String url_add, final Callback callback, final Context context) throws JSONException {
+
+        final String url=my_URL+url_add;
+
+        Token(new Callback() {
+            @Override
+            public void onSuccess(JSONObject result) throws JSONException, IOException {
+
+                String risposta=result.toString();
+                String token=risposta.substring(10, risposta.indexOf("}")-1);
+
+                AndroidNetworking.initialize(context);
+                AndroidNetworking.get(url)
+                        .addHeaders("Authorization", token)
+                        .build()
+                        .getAsJSONObject(new JSONObjectRequestListener() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                try {
+                                    callback.onSuccess(response);
+                                    Log.i("Risposta Get", response.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                            @Override
+                            public void onError(ANError anError) {
+
+                                try {
+                                    callback.onError(anError);
+                                    Log.e("Errore Get", anError.toString());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+            }
+
+            @Override
+            public void onError(ANError error) throws Exception {
+
+                callback.onError(error);
+                Log.e("GET", "Errore ritorno Token dalla GET");
+            }
+        }, context);
+    }
+
+
+    public static void reverseGeocoding(final double[] coordinate, final Callback callback, Context context)
+    {
+        String indirizzo_p1 ="https://maps.googleapis.com/maps/api/geocode/json?latlng=";
+        String indirizzo_p2="&key=AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg";
+        String url=indirizzo_p1+coordinate[0]+","+coordinate[1]+indirizzo_p2;
+
+        AndroidNetworking.initialize(context);
+
+        AndroidNetworking.get(url)
+                .build()
+                .getAsJSONObject(new JSONObjectRequestListener() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            callback.onSuccess(response);
+                            Log.i("Ritorno Geocoding", response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(ANError anError) {
+
+                        try {
+                            callback.onError(anError);
+                            Log.e("Errore Geocoding", anError.toString());
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
+    }
 
 
 }

@@ -16,6 +16,7 @@ import androidx.core.app.ActivityCompat;
 
 import com.android.volley.VolleyError;
 
+import com.androidnetworking.error.ANError;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import android.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
@@ -25,6 +26,7 @@ import com.parkingapp.homeactivity.Esecuzione;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import Server.Callback;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -45,6 +47,7 @@ public class Posizione {
     public double[] coordinate = new double[2];
     public Context context;
     public LocationManager locationManager=null;
+    public String[] nomeCittà_via={null, null, null};
 
 
     //Generico modo per aggiornare le coordinate
@@ -105,41 +108,43 @@ public class Posizione {
 
 
     //Il metodo è in grado di restituire una stringa in formato  "formatted_address": "Via Magenta, 42, 16043 Chiavari GE, Italy"
-    public String[] nomeViaECittà() {
-        final String[] città_via = {null, null, null};
+    public void nomeViaECittà() {
+       // final String[] città_via = {null, null, null};
         prendiPosizione();
 
-        Server.callReverseGeocoding(this.context, this.coordinate, new VolleyCallback() {
+        Server.reverseGeocoding(this.coordinate, new Callback() {
+
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
 
                 //Prendo nome intero
                 JSONArray results = response.getJSONArray("results");
                 JSONObject formatted_address = results.getJSONObject(1);
-                città_via[0] = formatted_address.getString("formatted_address");
-                Log.i("NOME CITTA_VIA", città_via[0]);
+                nomeCittà_via[0] = formatted_address.getString("formatted_address");
+                Log.i("NOME CITTA_VIA", nomeCittà_via[0]);
 
                 //Prendo nome Città
-                JSONArray address_components = results.getJSONArray(0);
+                JSONObject oggetto_riposta = results.getJSONObject(0);
+                JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
                 JSONObject città = address_components.getJSONObject(2);
-                città_via[1] = città.getString("long_name");
-                Log.i("NOME CITTA", città_via[1]);
+                nomeCittà_via[1] = città.getString("long_name");
+                Log.i("NOME CITTA", nomeCittà_via[1]);
 
                 //Prendo nome Via
                 JSONObject via = address_components.getJSONObject(1);
-                città_via[2] = via.getString("long_name");
-                Log.i("NOME VIA", città_via[2]);
+                nomeCittà_via[2] = via.getString("long_name");
+                Log.i("NOME VIA", nomeCittà_via[2]);
 
             }
 
             @Override
-            public void onError(VolleyError errore) throws Exception {
+            public void onError(ANError errore) throws Exception {
 
                 Log.e("Città chiamata API", errore.toString());
             }
-        });
+        }, this.context);
 
-        return città_via;
+      //  return città_via;
     }
 
 
