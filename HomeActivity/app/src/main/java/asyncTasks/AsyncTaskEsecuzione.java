@@ -44,8 +44,10 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //Il GPS si aggiorna ogni 10 minuti e dopo almeno 400 metri di distanza
-        posizione.aggiornaGPS(600000, 400);
+        //Gli faccio aggiornare la posizione prendendone almeno una nota
+        posizione.aggiornaGPS(500, 1);
+        posizione.prendiPosizione();
+
         SharedPreferences sharedPreferences = context.getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
         città_destinazione = sharedPreferences.getString("DESTINAZIONE_VIAGGIO", "");
     }
@@ -58,12 +60,15 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         boolean esecuzione_sensore=true;
 
 
+        //Il GPS si aggiorna ogni 10 minuti e dopo almeno 400 metri di distanza
+        posizione.aggiornaGPS(600000, 400);
+
         Accelerometro accelerometro= new Accelerometro();
-        //Posizione posizione = new Posizione(context);
 
         //0:nome intero, 1 città, 2 via
         String[] posizione_via_città={null, null, null};
         String città_attuale;
+
 
         //Utilizzo un timer per tenere il tempo che devo aspetare prima di nuovi controlli
         Timer myTimer= new Timer();
@@ -73,12 +78,14 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                 //Non faccio nulla
             }
         };
+
         
-/*
+
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
       while (esecuzione_città)
       {
-          città_attuale=posizione.nomeViaECittà()[1];
+          posizione.nomeViaECittà();
+          città_attuale=posizione.nomeCittà_via[1];
 
           if(città_attuale.equals(città_destinazione))
           {
@@ -96,7 +103,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                       {
                           if(accelerometro.esegui()&&posizione.èFermo())
                           {
-                              posizione_via_città=posizione.nomeViaECittà();
+                              posizione.nomeViaECittà();
+                              posizione_via_città=posizione.nomeCittà_via;
 
                               //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
                               //per avere un sistema più robusto
@@ -147,10 +155,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
           }
 
       }
-
-
-
- */
 
 
 

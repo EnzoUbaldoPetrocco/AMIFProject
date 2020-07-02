@@ -17,13 +17,6 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
 import com.androidnetworking.error.ANError;
 
 import org.json.JSONArray;
@@ -31,15 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
-import java.lang.reflect.Array;
-import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+
 
 import Accelerometro.Accelerometro;
 import Posizione.Posizione;
@@ -50,7 +35,6 @@ import Server.Server;
 import asyncTasks.AsyncTaskEsecuzione;
 import mist.Variabili;
 import Server.Callback;
-import Server.HttpConnectionNoVolley;
 
 public class Esecuzione extends AppCompatActivity {
 
@@ -58,7 +42,6 @@ public class Esecuzione extends AppCompatActivity {
     Button bttSalvaParcheggio=null;
     TextView tvErrore=null;
     Context context=this;
-    JSONObject postMes= null;
 
 
     @Override
@@ -106,9 +89,6 @@ public class Esecuzione extends AppCompatActivity {
                 asyncTaskEsecuzione.cancel(true);
 
 
-                String[] coordinateInStringhe = new String[2];
-                coordinateInStringhe[0] = String.format("%f", posizione.coordinate[0]);
-                coordinateInStringhe[1] = String.format("%f", posizione.coordinate[1]);
                 Log.i("esecuzioneSalva", posizione.coordinate[0] + "spazio" + posizione.coordinate[1]);
 
 

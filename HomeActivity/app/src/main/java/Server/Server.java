@@ -340,9 +340,7 @@ public class Server {
                         try {
                             callback.onSuccess(response);
                             Log.i("TOKEN", response.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
                     }
@@ -371,7 +369,6 @@ public class Server {
                 String token=risposta.substring(10, risposta.indexOf("}")-1);
 
                 AndroidNetworking.initialize(context);
-
                 AndroidNetworking.post(url)
                         .addJSONObjectBody(postJson)
                         .addHeaders("Authorization", token)
@@ -382,9 +379,7 @@ public class Server {
                                 try {
                                     callback.onSuccess(response);
                                     Log.i("Risposta Post", response.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
+                                } catch (JSONException | IOException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -433,9 +428,7 @@ public class Server {
                                 try {
                                     callback.onSuccess(response);
                                     Log.i("Risposta Get", response.toString());
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                } catch (IOException e) {
+                                } catch (JSONException | IOException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -470,7 +463,6 @@ public class Server {
         String url=indirizzo_p1+coordinate[0]+","+coordinate[1]+indirizzo_p2;
 
         AndroidNetworking.initialize(context);
-
         AndroidNetworking.get(url)
                 .build()
                 .getAsJSONObject(new JSONObjectRequestListener() {
@@ -479,9 +471,7 @@ public class Server {
                         try {
                             callback.onSuccess(response);
                             Log.i("Ritorno Geocoding", response.toString());
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        } catch (IOException e) {
+                        } catch (JSONException | IOException e) {
                             e.printStackTrace();
                         }
                     }
