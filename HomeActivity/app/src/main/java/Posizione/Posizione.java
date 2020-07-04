@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 
+import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -82,6 +83,9 @@ public class Posizione {
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
+       Criteria criteria = new Criteria();
+       String bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+
 
         assert locationManager != null;
         if (ActivityCompat.checkSelfPermission(context, ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -96,10 +100,15 @@ public class Posizione {
         }
 
         //Le coordinate effettive che vengono restituite sono le ultime note, così che se un aggiornamento fallisce abbiamo comunque valori attendibili
-        Location location = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        assert location != null;
-        this.coordinate[0] = location.getLatitude();
-        this.coordinate[1] = location.getLongitude();
+        Location location = locationManager.getLastKnownLocation(bestProvider);
+        if(location!=null) {
+            this.coordinate[0] = location.getLatitude();
+            this.coordinate[1] = location.getLongitude();
+        }
+        else
+        {
+            aggiornaGPS(1,0);
+        }
 
 
     }

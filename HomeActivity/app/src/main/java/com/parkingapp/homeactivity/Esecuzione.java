@@ -24,6 +24,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 import Accelerometro.Accelerometro;
@@ -57,6 +59,19 @@ public class Esecuzione extends AppCompatActivity {
       //  this.context=getApplicationContext();
         Variabili.salvaDestinazione(this.context, "Chiavari");
         final Posizione posizione = new Posizione(this.context);
+        //Gli faccio prendere la posizione almeno una volta
+        posizione.aggiornaGPS(500, 1);
+
+        Timer timerAggiornamento= new Timer();
+        TimerTask timerTaskAggiornamento=new TimerTask() {
+            @Override
+            public void run() {
+                //Non faccio nulla
+            }
+        };
+
+        timerAggiornamento.scheduleAtFixedRate(timerTaskAggiornamento, 1000, 1000);
+        posizione.prendiPosizione();
         final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
          asyncTaskEsecuzione.execute();
 
@@ -70,8 +85,9 @@ public class Esecuzione extends AppCompatActivity {
                 //Smetto di aggiornare costantemente la mia posizione
                 posizione.fermaAggiornamentoGPS();
 
-                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                startActivity(i);
+                Intent i = new Intent(context.getString(R.string.MAIN_TO_HOME));
+                context.startActivity(i);
+
             }
         });
 

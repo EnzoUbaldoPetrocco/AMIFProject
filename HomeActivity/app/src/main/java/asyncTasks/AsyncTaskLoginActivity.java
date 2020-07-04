@@ -1,6 +1,7 @@
 package asyncTasks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import com.androidnetworking.error.ANError;
 import com.parkingapp.homeactivity.LogInActivity;
+import com.parkingapp.homeactivity.R;
 import com.parkingapp.homeactivity.SigninActivity;
 
 import Server.Callback;
@@ -56,11 +58,13 @@ public class AsyncTaskLoginActivity extends AsyncTask<String, String, Object> {
 
                     Log.i("GET ASYNC LOGIN:", result.toString());
 
-                    LogInActivity.ritornoDaAsyncTask(true);
-
                     Variabili.salvaUsernamePassword(context, strings);
                     Variabili.salvaRicordaUtente(context, checkBox.isChecked());
                     Variabili.aggiornaPosizione(context);
+
+                    //Il passaggio di activity lo faccio nell'async task perchè se no ho notato che l'utente deve premere due volte il pulsante
+                    Intent i = new Intent(context.getString(R.string.MAIN_TO_HOME));
+                    context.startActivity(i);
 
                 }
                 @Override

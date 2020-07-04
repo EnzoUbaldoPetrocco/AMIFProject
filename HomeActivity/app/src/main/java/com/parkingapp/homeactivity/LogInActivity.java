@@ -37,7 +37,6 @@ public class LogInActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login);
 
-        codice=false;//Inizializzo a false dentro l'override per evitare falsi positivi
 
         Intent i= getIntent();
         bttBack=findViewById(R.id.bttBackLogin_to_LoginSignin); //Per tornare indiero alla schermata scelta login/signin
@@ -64,11 +63,7 @@ public class LogInActivity extends Activity {
                    String parametri[]={username, password};
                    asyncTaskLoginActivity.execute(parametri);
 
-                if(codice) {
-
-                    Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                    startActivity(i);
-                }
+                   //Il passaggio di activity lo faccio nell'async task perchè se no ho notato che l'utente deve premere due volte il pulsante
 
              }
                else
@@ -88,8 +83,5 @@ public class LogInActivity extends Activity {
             }
         });
     }
-    public static void ritornoDaAsyncTask(boolean valore)
-    {
-        codice=valore;
-    }
+
 }

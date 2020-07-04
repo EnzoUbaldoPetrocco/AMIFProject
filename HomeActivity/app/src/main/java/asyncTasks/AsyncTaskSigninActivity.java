@@ -75,13 +75,16 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
 
                    Log.i("POST ASYNC SINGNIN:", result.toString());
 
-                   SigninActivity.ritornoDaAsyncTask(true);
 
                    //Inizializzo tutte le variabili che voglio per un account nuovo
                    Variabili.salvaUsernamePassword(context, strings);
                    Variabili.salvaPromemoriaNotifica(context, "1 ora");
                    Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
                    Variabili.salvaOrarioParcheggio(context, "");
+
+                   //Il passaggio di activity lo faccio nell'async task perchè se no ho notato che l'utente deve premere due volte il pulsante
+                   Intent i = new Intent(context.getString(R.string.MAIN_TO_HOME));
+                   context.startActivity(i);
                }
 
                @Override//Non restituisce numeri, ma la gestice così

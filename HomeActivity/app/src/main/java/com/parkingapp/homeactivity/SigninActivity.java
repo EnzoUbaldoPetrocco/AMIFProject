@@ -37,7 +37,6 @@ public class SigninActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
 
-        codice=false;//Inizializzo a false dentro l'override per evitare falsi positivi
 
         Intent i= getIntent();
 
@@ -81,11 +80,7 @@ public class SigninActivity extends Activity {
                             String parametri[]={username, password};
                             asyncTaskSigninActivity.execute(parametri);
 
-                            if(codice==true)
-                            {
-                                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                                startActivity(i);
-                            }
+                            //Il passaggio di activity lo faccio nell'async task perchè se no ho notato che l'utente deve premere due volte il pulsante
 
                         }
                         else
@@ -111,8 +106,4 @@ public class SigninActivity extends Activity {
         });
     }
 
-    public static void ritornoDaAsyncTask(boolean valore)
-{
-    codice=valore;
-}
 }

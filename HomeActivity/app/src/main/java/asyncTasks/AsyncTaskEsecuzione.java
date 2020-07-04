@@ -1,6 +1,7 @@
 package asyncTasks;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -8,6 +9,7 @@ import android.widget.Button;
 
 
 import com.parkingapp.homeactivity.Esecuzione;
+import com.parkingapp.homeactivity.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,8 +45,9 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onPreExecute() {
         super.onPreExecute();
 
-        //Gli faccio aggiornare la posizione prendendone almeno una nota
-        posizione.aggiornaGPS(500, 1);
+        //Il GPS si aggiorna ogni 10 minuti e dopo almeno 400 metri di distanza
+        posizione.aggiornaGPS(600000, 400);
+
         posizione.prendiPosizione();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
@@ -59,8 +62,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         boolean esecuzione_sensore=true;
 
 
-        //Il GPS si aggiorna ogni 10 minuti e dopo almeno 400 metri di distanza
-        posizione.aggiornaGPS(600000, 400);
 
         Accelerometro accelerometro= new Accelerometro();
 
@@ -79,7 +80,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         };
 
         
-
+/*
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
       while (esecuzione_città)
       {
@@ -156,8 +157,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
       }
 
 
-
-
+ */
 
 
      int k=2;
@@ -176,7 +176,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onCancelled() {
         super.onCancelled();
 
-
     }
 
 
@@ -185,6 +184,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     protected void onPostExecute(Object o) {
         super.onPostExecute(o);
         posizione.fermaAggiornamentoGPS();
+
     }
 
 }
