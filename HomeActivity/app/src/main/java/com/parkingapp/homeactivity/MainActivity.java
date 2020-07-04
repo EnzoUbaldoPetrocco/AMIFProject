@@ -16,6 +16,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
+
 import mist.Variabili;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -57,9 +59,13 @@ public class MainActivity extends AppCompatActivity {
                    } else {
 
                        //Aggiorno i  parametri andando a prendeere dal server
-                       if(Variabili.aggiornaPosizione(context)) {
-                           Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
-                           startActivity(i);
+                       try {
+                           if(Variabili.aggiornaPosizione(context)) {
+                               Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                               startActivity(i);
+                           }
+                       } catch (JSONException e) {
+                           e.printStackTrace();
                        }
                    }
                }

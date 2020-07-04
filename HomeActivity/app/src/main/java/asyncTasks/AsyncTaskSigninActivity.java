@@ -10,13 +10,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+
+import com.androidnetworking.error.ANError;
 import com.parkingapp.homeactivity.HomeActivity;
 import com.parkingapp.homeactivity.R;
 import com.parkingapp.homeactivity.SigninActivity;
@@ -26,9 +21,8 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.lang.ref.WeakReference;
-import java.util.Map;
 
-import Server.VolleyCallback;
+import Server.Callback;
 
 import Server.Server;
 import Server.CreazioneJson;
@@ -67,50 +61,57 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
         String password = strings[1];
 
         String nomiJson[]={"_id"};
-       Map<String, String> oggettoJson= CreazioneJson.createJson(nomiJson, username+"_"+password);
+        JSONObject oggettoJson= null;
+        try {
+            oggettoJson = CreazioneJson.createJSONObject(nomiJson, username+"_"+password);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
-         Server.makePost(url, new VolleyCallback() {
-            @Override
-            public void onSuccess(JSONObject result) throws JSONException {
+        try {
+            Server.Post(url, new Callback() {
+               @Override
+               public void onSuccess(JSONObject result) throws JSONException {
 
-                Log.i("POST ASYNC SINGNIN:", result.toString());
+                   Log.i("POST ASYNC SINGNIN:", result.toString());
 
-                SigninActivity.ritornoDaAsyncTask(true);
+                   SigninActivity.ritornoDaAsyncTask(true);
 
-                //Inizializzo tutte le variabili che voglio per un account nuovo
-                Variabili.salvaUsernamePassword(context, strings);
-                Variabili.salvaPromemoriaNotifica(context, "1 ora");
-                Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
-                Variabili.salvaOrarioParcheggio(context, "");
-            }
+                   //Inizializzo tutte le variabili che voglio per un account nuovo
+                   Variabili.salvaUsernamePassword(context, strings);
+                   Variabili.salvaPromemoriaNotifica(context, "1 ora");
+                   Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
+                   Variabili.salvaOrarioParcheggio(context, "");
+               }
 
-            @Override//Non restituisce numeri, ma la gestice così
-            public void onError(VolleyError error) throws Exception
-            {
-                Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
-                if(error instanceof ServerError || error instanceof AuthFailureError)
-                {
-                    messaggioErrore.setText("Username già in uso, prova con un altro");
-                    messaggioErrore.setVisibility(View.VISIBLE);
+               @Override//Non restituisce numeri, ma la gestice così
+               public void onError(ANError error) throws Exception
+               {
+                   Log.e("CALLBACK MAKE POST", "ERRORE NELLA CALL BACK DELLA MAKE POST, In Signin Activity");
+                   if(error.getErrorCode()==400)
+                   {
+                       messaggioErrore.setText("Username già in uso, prova con un altro");
+                       messaggioErrore.setVisibility(View.VISIBLE);
+                   }
+
+                   else if(error.getErrorDetail().equals("connectionError"))
+                   {
+                       messaggioErrore.setText("Connessione ad internet assente");
+                       messaggioErrore.setVisibility(View.VISIBLE);
+                   }
+
+                 else  {
+                       messaggioErrore.setText("Si è verificato un errore, riprova");
+                       messaggioErrore.setVisibility(View.VISIBLE);
+                    Log.e("ParseError", "Errore server asyncTask signin activity");
                 }
 
-                else if(error instanceof TimeoutError || error instanceof NoConnectionError)
-                {
-                    messaggioErrore.setText("Connessione ad internet assente");
-                    messaggioErrore.setVisibility(View.VISIBLE);
-                }
-                else if(error instanceof NetworkError)
-                {
-                    messaggioErrore.setText("Errore di connessione, riprova");
-                    messaggioErrore.setVisibility(View.VISIBLE);
-                }
 
-              else if (error instanceof ParseError) {
-                 Log.e("ParseError", "Errore server asyncTask signin activity");
-             }
-
-            }
-        }, this.context, oggettoJson);
+               }
+           }, this.context, oggettoJson);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return  0;
     }

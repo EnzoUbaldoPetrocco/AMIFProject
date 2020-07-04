@@ -14,7 +14,6 @@ import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 
-import com.android.volley.VolleyError;
 
 import com.androidnetworking.error.ANError;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -35,7 +34,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import Server.Server;
-import Server.VolleyCallback;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
@@ -112,7 +110,7 @@ public class Posizione {
        // final String[] città_via = {null, null, null};
         prendiPosizione();
 
-        Server.reverseGeocoding(this.coordinate, new Callback() {
+        Server.reverseGeocoding( this.context, this.coordinate, new Callback() {
 
             @Override
             public void onSuccess(JSONObject response) throws JSONException {
@@ -142,7 +140,7 @@ public class Posizione {
 
                 Log.e("Città chiamata API", errore.toString());
             }
-        }, this.context);
+        });
 
       //  return città_via;
     }

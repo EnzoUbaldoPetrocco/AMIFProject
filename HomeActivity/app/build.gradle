@@ -37,7 +37,6 @@ dependencies {
     implementation 'androidx.mediarouter:mediarouter:1.0.0'
 
     implementation files('libs/dtw.jar')
-    implementation 'com.android.volley:volley:1.1.1' //Per implementare API
     implementation 'com.amitshekhar.android:android-networking:1.0.2'//Nuovo per API
     //implementation com.google.android.gms:play-services:11.0.1  Per ottenere geolocalizzazione
     implementation 'com.google.android.gms:play-services-location:16.0.0'

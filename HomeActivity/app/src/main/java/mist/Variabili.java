@@ -8,18 +8,13 @@ import android.preference.PreferenceScreen;
 import android.util.Log;
 import android.view.View;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Server.VolleyCallback;
+import Server.Callback;
 
 import Server.Server;
 
@@ -108,15 +103,14 @@ public class Variabili {
 
     //METODI PER AGGIORNARE I DATI IN MEMORIA IN BASE AI VALORI DEL SERVER
 
-    public static boolean aggiornaPosizione(final Context context)
-    {
+    public static boolean aggiornaPosizione(final Context context) throws JSONException {
         String urlp1="/v1/measurements?filter={\"thing\":\"";
         String urlp2="\"}&limit=10&page=1";
 
          SharedPreferences sharedPreferences =context.getSharedPreferences("USERNAME_PASSWORD", Context.MODE_PRIVATE);
         String username=sharedPreferences.getString("USERNAME", "")+"_"+sharedPreferences.getString("PASSWORD", "");
 
-         Server.makeGet(urlp1 + username + urlp2, new VolleyCallback() {
+         Server.Get(urlp1 + username + urlp2, new Callback() {
             @Override
             public void onSuccess(JSONObject result) throws JSONException {
 
@@ -139,7 +133,7 @@ public class Variabili {
                     double[] coordinate_salvate = {Double.parseDouble(coordinate_salvate_s[0]), Double.parseDouble(coordinate_salvate_s[1])};
 
                     if (coordinate_salvate[0] != coordinate[0] && coordinate_salvate[1]!=coordinate[1]) {
-                        Server.callReverseGeocoding(context, coordinate, new VolleyCallback() {
+                        Server.reverseGeocoding(context, coordinate, new Callback() {
                             @Override
                             public void onSuccess(JSONObject response) throws JSONException {
                                 JSONArray results = response.getJSONArray("results");
@@ -152,7 +146,7 @@ public class Variabili {
                             }
 
                             @Override
-                            public void onError(VolleyError error) throws Exception {
+                            public void onError(ANError error) throws Exception {
 
                                 Log.e("REVERSE GEOCODING", "Errore nel reverse geocoding dell'aggiornamento Posizione in Variabili");
                             }
@@ -167,13 +161,13 @@ public class Variabili {
 
             //Se succede un errore carichiamo il dato dalla memoria e accettiamo di non aggiornarlo
             @Override
-            public void onError(VolleyError error) throws Exception {
-                if(error instanceof ServerError || error instanceof AuthFailureError)
+            public void onError(ANError error) throws Exception {
+                if(error.getErrorCode()==400)
                 {
                     Log.e("CARICAMENTO POSIZIONE", "utente non trovato");
                 }
 
-                else if(error instanceof TimeoutError || error instanceof NetworkError)
+                else if(error.getErrorDetail().equals("connectionError"))
                 {
                     Log.e("CARICAMENTO POSIZIONE", "errore internet");
                 }

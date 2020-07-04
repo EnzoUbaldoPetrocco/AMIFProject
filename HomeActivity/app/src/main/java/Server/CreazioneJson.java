@@ -29,14 +29,6 @@ public class CreazioneJson {
         return  jsonObject;
     }
 
-    public static Map<String, String> createJson(String[] nomi, String...strings)
-    {
-        Map<String, String> post= new HashMap<>();
-        for (int i=0; i<strings.length; i++) {
-            post.put(nomi[i], strings[i]);
-        }
-        return  post;
-    }
 
     public static JSONObject createJSONObject(String[] nomi, Object...objects) throws JSONException {
         JSONObject post= new JSONObject();

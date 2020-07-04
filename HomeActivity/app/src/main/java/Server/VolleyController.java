@@ -1,11 +1,8 @@
 package Server;
 
 import android.content.Context;
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.ImageLoader;
-import com.android.volley.toolbox.Volley;
 
+/*
 public class VolleyController    {
     private static VolleyController mInstance;
     private RequestQueue mRequestQueue;
@@ -29,7 +26,7 @@ public class VolleyController    {
             //getApplicationContext() è la chiave. Non devorebbe essere il context di un'activity
             // o altrimenti RequestQueque non durerà per tutto il tempo di vita dell'app
 
-            mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
+          //  mRequestQueue = Volley.newRequestQueue(mCtx.getApplicationContext());
         }
         return mRequestQueue;
     }
@@ -38,4 +35,7 @@ public class VolleyController    {
         getRequestQueue().add(req);
     }
 
+
+
 }
+        */

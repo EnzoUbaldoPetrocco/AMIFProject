@@ -24,7 +24,6 @@ public class SigninActivity extends Activity {
     Button btRegistrati=null;
     EditText etUsername=null;
     EditText etPassword=null;
-    EditText etCittàProvenienza=null;
     EditText etPasswordConferma=null;
     ImageButton imBackBottone=null;
     ProgressBar pbProgressBarSignin=null;
@@ -45,7 +44,6 @@ public class SigninActivity extends Activity {
         btRegistrati=findViewById(R.id.bttRegistrati);
         etPassword=findViewById(R.id.etSignin_Password);
         etPasswordConferma=findViewById(R.id.etSignin_Password_Conferma);
-        etCittàProvenienza=findViewById(R.id.etCittàProvenienza);
         imBackBottone=findViewById(R.id.bttBackSignin_to_LoginSignin);
         pbProgressBarSignin=findViewById(R.id.pbSignin);
         etUsername= findViewById(R.id.etSignin_Username);

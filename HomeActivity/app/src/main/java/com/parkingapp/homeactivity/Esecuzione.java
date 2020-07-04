@@ -28,7 +28,6 @@ import java.io.IOException;
 
 import Accelerometro.Accelerometro;
 import Posizione.Posizione;
-import Server.VolleyCallback;
 
 import Server.CreazioneJson;
 import Server.Server;

@@ -6,7 +6,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Button;
 
-import com.android.volley.VolleyError;
+
 import com.parkingapp.homeactivity.Esecuzione;
 
 import org.json.JSONException;
@@ -15,7 +15,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import Server.VolleyCallback;
 
 import Accelerometro.Accelerometro;
 import Posizione.Posizione;

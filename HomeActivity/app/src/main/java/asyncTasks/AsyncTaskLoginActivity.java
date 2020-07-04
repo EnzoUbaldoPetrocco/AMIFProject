@@ -9,20 +9,16 @@ import android.widget.CheckBox;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.android.volley.AuthFailureError;
-import com.android.volley.NetworkError;
-import com.android.volley.NoConnectionError;
-import com.android.volley.ParseError;
-import com.android.volley.ServerError;
-import com.android.volley.TimeoutError;
-import com.android.volley.VolleyError;
+import com.androidnetworking.error.ANError;
 import com.parkingapp.homeactivity.LogInActivity;
 import com.parkingapp.homeactivity.SigninActivity;
+
+import Server.Callback;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import Server.VolleyCallback;
+
 import mist.Variabili;
 
 public class AsyncTaskLoginActivity extends AsyncTask<String, String, Object> {
@@ -53,44 +49,45 @@ public class AsyncTaskLoginActivity extends AsyncTask<String, String, Object> {
       final String username= strings[0];
       final String password = strings[1];
 
-      Server.Server.makeGet("/v1/things/"+username+"_"+password, new VolleyCallback() {
-          @Override
-          public void onSuccess(JSONObject result) throws JSONException {
+        try {
+            Server.Server.Get("/v1/things/"+username+"_"+password, new Callback() {
+                @Override
+                public void onSuccess(JSONObject result) throws JSONException {
 
-              Log.i("GET ASYNC LOGIN:", result.toString());
+                    Log.i("GET ASYNC LOGIN:", result.toString());
 
-              LogInActivity.ritornoDaAsyncTask(true);
+                    LogInActivity.ritornoDaAsyncTask(true);
 
-              Variabili.salvaUsernamePassword(context, strings);
-              Variabili.salvaRicordaUtente(context, checkBox.isChecked());
-              Variabili.aggiornaPosizione(context);
+                    Variabili.salvaUsernamePassword(context, strings);
+                    Variabili.salvaRicordaUtente(context, checkBox.isChecked());
+                    Variabili.aggiornaPosizione(context);
 
-          }
-          @Override
-          public void onError(VolleyError error) throws Exception {
+                }
+                @Override
+                public void onError(ANError error) throws Exception {
 
-              Log.e("CALLBACK MAKE GET", "ERRORE NELLA CALL BACK DELLA MAKE GET, In Login Activity");
-              if(error instanceof ServerError || error instanceof AuthFailureError)
-              {
-                  messaggioErrore.setText("Username/Password errati");
-                  messaggioErrore.setVisibility(View.VISIBLE);
-              }
+                    Log.e("CALLBACK MAKE GET", "ERRORE NELLA CALL BACK DELLA MAKE GET, In Login Activity");
+                    if(error.getErrorCode()==404)
+                    {
+                        messaggioErrore.setText("Username/Password errati");
+                        messaggioErrore.setVisibility(View.VISIBLE);
+                    }
 
-              else if(error instanceof TimeoutError || error instanceof NoConnectionError)
-              {
-                  messaggioErrore.setText("Connessione ad internet assente");
-                  messaggioErrore.setVisibility(View.VISIBLE);
-              }
-              else if(error instanceof NetworkError)
-              {
-                  messaggioErrore.setText("Errore di connessione, riprova");
-                  messaggioErrore.setVisibility(View.VISIBLE);
-              }
-
-              else if (error instanceof ParseError) {
-              }
-          }
-      }, context);
+                    else if(error.getErrorDetail().equals("connectionError"))
+                    {
+                        messaggioErrore.setText("Connessione ad internet assente");
+                        messaggioErrore.setVisibility(View.VISIBLE);
+                    }
+                    else
+                    {
+                        messaggioErrore.setText("Si è verificato un errore, riprova");
+                        messaggioErrore.setVisibility(View.VISIBLE);
+                    }
+                }
+            }, context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         return null;
     }
