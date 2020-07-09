@@ -3,10 +3,15 @@ package asyncTasks;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.provider.FontsContract;
 import android.util.Log;
 import android.widget.Button;
 
+
+import androidx.annotation.RequiresApi;
 
 import com.parkingapp.homeactivity.Esecuzione;
 import com.parkingapp.homeactivity.R;
@@ -17,6 +22,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Supplier;
 
 import Accelerometro.Accelerometro;
 import Posizione.Posizione;
@@ -54,6 +62,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         città_destinazione = sharedPreferences.getString("DESTINAZIONE_VIAGGIO", "");
     }
 
+
     @Override
     protected Object doInBackground(Object[] objects) {
 
@@ -63,11 +72,11 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
 
 
-        Accelerometro accelerometro= new Accelerometro();
+        Accelerometro accelerometro= new Accelerometro(context);
 
         //0:nome intero, 1 città, 2 via
         String[] posizione_via_città={null, null, null};
-        String città_attuale;
+        String[] città_attuale={null};
 
 
         //Utilizzo un timer per tenere il tempo che devo aspetare prima di nuovi controlli
@@ -80,18 +89,23 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         };
 
         
-/*
+
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
       while (esecuzione_città)
       {
-          posizione.nomeViaECittà();
-          città_attuale=posizione.nomeCittà_via[1];
+          try {
+              posizione_via_città=posizione.nomeViaECittà();
+          } catch (InterruptedException e) {
+              e.printStackTrace();
+          }
 
-          if(città_attuale.equals(città_destinazione))
+          città_attuale[0] = posizione_via_città[1];
+          assert città_attuale[0] != null;
+          if(città_attuale[0].equals(città_destinazione))
           {
               //Aggiorno il GPS ogni trenta secondi e dopo almeno un metro di distanza
               posizione.fermaAggiornamentoGPS();
-              posizione.aggiornaGPS(30000, 1);
+              posizione.aggiornaGPS(60000, 7);
 
               //Secondo step: verifichiamo che la macchina sia ferma
               while (esecuzione_fermo)
@@ -103,7 +117,12 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                       {
                           if(accelerometro.esegui()&&posizione.èFermo())
                           {
-                              posizione.nomeViaECittà();
+                              try {
+                                  posizione.nomeViaECittà();
+                              } catch (InterruptedException e) {
+                                  e.printStackTrace();
+                              }
+
                               posizione_via_città=posizione.nomeCittà_via;
 
                               //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
@@ -156,8 +175,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
       }
 
-
- */
 
 
      int k=2;

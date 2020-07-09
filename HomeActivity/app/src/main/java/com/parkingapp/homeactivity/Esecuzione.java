@@ -142,7 +142,7 @@ public class Esecuzione extends AppCompatActivity {
                 try {
                     Server.Post("/v1/measurements ", new Callback() {
                         @Override
-                        public void onSuccess(JSONObject result) throws JSONException, IOException {
+                        public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
 
                             posizione.fermaAggiornamentoGPS();
                             posizione.nomeViaECittà();

@@ -2,6 +2,7 @@ package Server;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -39,7 +40,7 @@ public class Server {
                         try {
                             callback.onSuccess(response);
                             Log.i("TOKEN", response.toString());
-                        } catch (JSONException | IOException e) {
+                        } catch (JSONException | IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     }
@@ -78,7 +79,7 @@ public class Server {
                                 try {
                                     callback.onSuccess(response);
                                     Log.i("Risposta Post", response.toString());
-                                } catch (JSONException | IOException e) {
+                                } catch (JSONException | IOException | InterruptedException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -127,7 +128,7 @@ public class Server {
                                 try {
                                     callback.onSuccess(response);
                                     Log.i("Risposta Get", response.toString());
-                                } catch (JSONException | IOException e) {
+                                } catch (JSONException | IOException | InterruptedException e) {
                                     e.printStackTrace();
                                 }
                             }
@@ -170,7 +171,7 @@ public class Server {
                         try {
                             callback.onSuccess(response);
                             Log.i("Ritorno Geocoding", response.toString());
-                        } catch (JSONException | IOException e) {
+                        } catch (JSONException | IOException | InterruptedException e) {
                             e.printStackTrace();
                         }
                     }

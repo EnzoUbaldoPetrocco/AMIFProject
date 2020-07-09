@@ -1,5 +1,6 @@
 package Accelerometro;
 
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -18,7 +19,17 @@ public class Accelerometro implements SensorEventListener {
     private int counter=0;
     private SensorManager sensorManager=null; //Tutti i sensori
     private Sensor accelerometer=null;
-    private SensorEventListener sel= null;
+    private SensorEventListener sel= this;
+    private Context context;
+
+    public Accelerometro(Context context)
+    {
+        this.context=context;
+        this.sensorManager=(SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
+            this.accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        }
+    }
 
     private double[] valoreRiferimento= {3.629945, 4.7222466, 3.8489187, 3.847166, 3.9240105, 3.90592, 3.8509967, 3.830742, 3.8745177, 3.8638394, 3.8468213, 3.8541284, 3.89754, 3.0880797, 3.2788496,
                                         4.4670825, 2.0428765, 7.126476, 6.4707613, 1.4708443, -0.91515964, -3.2301805, -5.3027353, -7.8721066, -9.816314, -9.699457, -9.642139, -9.272217, -12.216041, -8.217302, -9.822078,
@@ -33,10 +44,12 @@ public class Accelerometro implements SensorEventListener {
     //sull'utilizzo di questo metodo: ho paura che mi cancelli anche i dati
 
     private void onStop() {
+
         sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
     }
 
     private void onStart() {
+
         sensorManager.registerListener(sel, accelerometer, SensorManager.SENSOR_DELAY_NORMAL);
     }
 

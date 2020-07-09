@@ -9,6 +9,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 
 public interface Callback {
-    void onSuccess(JSONObject result) throws JSONException, IOException;
+    void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException;
     void onError(ANError error) throws Exception;
 }

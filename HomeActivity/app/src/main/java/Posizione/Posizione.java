@@ -1,7 +1,6 @@
 package Posizione;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -17,22 +16,15 @@ import androidx.core.app.ActivityCompat;
 
 
 import com.androidnetworking.error.ANError;
-import com.google.android.gms.location.FusedLocationProviderClient;
+
 import android.location.LocationListener;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.parkingapp.homeactivity.Esecuzione;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import Server.Callback;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.concurrent.CompletableFuture;
 
 import Server.Server;
 
@@ -79,7 +71,7 @@ public class Posizione {
 
 
     public void prendiPosizione() {
-        requestPermission();//Richiedo permesso localizzazione all'utente
+        //requestPermission();//Richiedo permesso localizzazione all'utente
 
         locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
 
@@ -115,9 +107,10 @@ public class Posizione {
 
 
     //Il metodo è in grado di restituire una stringa in formato  "formatted_address": "Via Magenta, 42, 16043 Chiavari GE, Italy"
-    public void nomeViaECittà() {
-       // final String[] città_via = {null, null, null};
+    public String[] nomeViaECittà() throws InterruptedException {
+        final String[] città_via = {null, null, null};
         prendiPosizione();
+       // Thread.sleep(2000);
 
         Server.reverseGeocoding( this.context, this.coordinate, new Callback() {
 
@@ -127,20 +120,20 @@ public class Posizione {
                 //Prendo nome intero
                 JSONArray results = response.getJSONArray("results");
                 JSONObject formatted_address = results.getJSONObject(1);
-                nomeCittà_via[0] = formatted_address.getString("formatted_address");
-                Log.i("NOME CITTA_VIA", nomeCittà_via[0]);
+                città_via[0] = formatted_address.getString("formatted_address");
+                Log.i("NOME CITTA_VIA", città_via[0]);
 
                 //Prendo nome Città
                 JSONObject oggetto_riposta = results.getJSONObject(0);
                 JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
                 JSONObject città = address_components.getJSONObject(2);
-                nomeCittà_via[1] = città.getString("long_name");
-                Log.i("NOME CITTA", nomeCittà_via[1]);
+                città_via[1] = città.getString("long_name");
+                Log.i("NOME CITTA", città_via[1]);
 
                 //Prendo nome Via
                 JSONObject via = address_components.getJSONObject(1);
-                nomeCittà_via[2] = via.getString("long_name");
-                Log.i("NOME VIA", nomeCittà_via[2]);
+                città_via[2] = via.getString("long_name");
+                Log.i("NOME VIA", città_via[2]);
 
             }
 
@@ -151,7 +144,9 @@ public class Posizione {
             }
         });
 
-      //  return città_via;
+        Thread.sleep(1000);
+
+        return città_via;
     }
 
 
