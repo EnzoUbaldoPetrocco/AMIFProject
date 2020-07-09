@@ -17,6 +17,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 
+import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.WebSocket;
@@ -196,8 +197,17 @@ public class Server {
                 });
     }
 
+    //La classe dovrebbe supporta il ws per le notifiche push che ci avvisano di
+    //impedimenti, parcheggio che sta per scadere e via dicendo
+    //é quindi fondamentale che la classe funzioni, altrimenti l'app non ha senso
+
     public class WSApi extends WebSocketListener {
+
+
         private static final int NORMAL_CLOSURE_STATUS = 1000;
+
+        public String tokenToConvert;
+
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
             webSocket.send("Hello, it's SSaurel !");
@@ -222,9 +232,44 @@ public class Server {
         public void onFailure(WebSocket webSocket, Throwable t, Response response) {
 
         }
+
+        public String createUrl() {
+            return "wss://" +  "http://students.atmosphere.tools"  +  "/v1/streams?thing=city&token=" + tokenToConvert ;
+        }
+
+    } //end class WSApi Listener
+
+    public void startWS(Context context) throws JSONException {
+        Token( new Callback() {
+
+            @Override
+            public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
+
+                //La chiama all'API si fa tramite il token convertito in stringa
+                //si costruisce l'url tramite cui si fa l'accesso usando il token ricevuto
+                String risposta=result.toString();
+
+
+                //Verifica che sia passato per di qua
+                Log.i("WS onSuccess", "siamo riusciti a farci dare il token");
+
+                //Ora comincia l'apertura del ws
+                OkHttpClient client = new OkHttpClient();
+                WSApi listener = new WSApi();
+                listener.tokenToConvert=risposta.substring(10, risposta.indexOf("}")-1);
+                Request request = new Request.Builder().url(listener.createUrl()).build();
+                WebSocket ws = client.newWebSocket(request, listener);
+
+
+            }
+
+            @Override
+            public void onError(ANError error) throws Exception {
+                Log.e("WS on Error", error.toString());
+                Log.e("Ws on Error" , "non siamo riusciti a farci dare il token");
+            }
+        } ,context);
     }
-
-
 
 
 }
