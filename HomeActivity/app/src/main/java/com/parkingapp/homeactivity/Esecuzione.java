@@ -57,7 +57,7 @@ public class Esecuzione extends AppCompatActivity {
         tvErrore = findViewById(R.id.tvEsecuzione);
 
       //  this.context=getApplicationContext();
-        Variabili.salvaDestinazione(this.context, "Chiavari");
+        Variabili.salvaDestinazione(this.context, "Lavagna");
         final Posizione posizione = new Posizione(this.context);
         //Gli faccio prendere la posizione almeno una volta
         posizione.aggiornaGPS(500, 1);
@@ -138,6 +138,11 @@ public class Esecuzione extends AppCompatActivity {
                 }
 
                 Toast.makeText(context, coordinate[0]+","+coordinate[1], Toast.LENGTH_LONG).show();
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
 
                 try {
                     Server.Post("/v1/measurements ", new Callback() {
@@ -145,14 +150,16 @@ public class Esecuzione extends AppCompatActivity {
                         public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
 
                             posizione.fermaAggiornamentoGPS();
-                            posizione.nomeViaECittà();
-                            String[] nomeCittà_via=posizione.nomeCittà_via;
+                            String[] nomeCittà_via=posizione.nomeViaECittà();
                             if(nomeCittà_via[0]!=null) {
                                 Variabili.salvaParcheggio(context, nomeCittà_via[0]);
                                 Variabili.salvaCoordinate(context, coordinate);
 
+                                Thread.sleep(100);
+
                                 Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
                                 startActivity(i);
+
                             }
                         }
 

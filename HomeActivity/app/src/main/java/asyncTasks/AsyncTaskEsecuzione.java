@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Vibrator;
 import android.provider.FontsContract;
 import android.util.Log;
 import android.widget.Button;
@@ -79,20 +80,23 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         String[] città_attuale={null};
 
 
-        //Utilizzo un timer per tenere il tempo che devo aspetare prima di nuovi controlli
-        Timer myTimer= new Timer();
-        TimerTask timerTask=new TimerTask() {
-            @Override
-            public void run() {
-                //Non faccio nulla
-            }
-        };
 
+
+        //Per far vibrare il cellulare quando registra il parcheggio
+        Vibrator vibrazione=(Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+
+        //Utilizzo un timer per tenere il tempo che devo aspetare prima di nuovi controlli
+        Timer myTimer = new Timer();
         
 
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
       while (esecuzione_città)
       {
+          if(isCancelled())
+          {
+              this.cancel(true);
+             break;
+          }
           try {
               posizione_via_città=posizione.nomeViaECittà();
           } catch (InterruptedException e) {
@@ -110,11 +114,23 @@ public class AsyncTaskEsecuzione extends AsyncTask{
               //Secondo step: verifichiamo che la macchina sia ferma
               while (esecuzione_fermo)
               {
+                  if(isCancelled())
+                  {
+                      this.cancel(true);
+                      break;
+                  }
+
                   if(posizione.èFermo())
                   {
                       //Ultimo step: verifico che il sensore accelerometrico mi dica se mi sono alzato
                       while (esecuzione_sensore)
                       {
+                          if(isCancelled())
+                          {
+                              this.cancel(true);
+                              break;
+                          }
+
                           if(accelerometro.esegui()&&posizione.èFermo())
                           {
                               try {
@@ -123,7 +139,11 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                   e.printStackTrace();
                               }
 
-                              posizione_via_città=posizione.nomeCittà_via;
+                              try {
+                                  posizione_via_città=posizione.nomeViaECittà();
+                              } catch (InterruptedException e) {
+                                  e.printStackTrace();
+                              }
 
                               //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
                               //per avere un sistema più robusto
@@ -141,6 +161,14 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                   esecuzione_città=false;
                                   esecuzione_fermo=false;
                                   esecuzione_sensore=false;
+
+                                  //Faccio vibrare il cellulare per dare conferma che ho registrato il parcheggio
+                                  assert vibrazione != null;
+                                  vibrazione.vibrate(700);
+
+                                  //Passo all'activity finale in cui mostro il parcheggio sulla mappa
+                                  Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                                  context.startActivity(i);
                               }
                               else
                               {
@@ -160,7 +188,24 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
                  else if(esecuzione_fermo)
                   {
-                      myTimer.scheduleAtFixedRate(timerTask, 30000, 500);
+                      for (int i=0; i<60; i++) {
+
+                          if(isCancelled())
+                          {
+                              break;
+                          }
+
+                          TimerTask timerTask=new TimerTask() {
+                              @Override
+                              public void run() {
+                                  //Non faccio nulla
+
+                              }
+                          };
+
+                          //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo s eblocco l'asyncTask premendo il pulsante
+                          myTimer.scheduleAtFixedRate(timerTask, 500, 1);
+                      }
                   }
 
               }
@@ -169,19 +214,30 @@ public class AsyncTaskEsecuzione extends AsyncTask{
           //Se non siamo nella città giusta faccio attendere il sistema per una decina di minuti
         else if(esecuzione_città)//Il controllo è obbligatorio perché se ho finito non devo aspettare a caso
           {
-              myTimer.scheduleAtFixedRate(timerTask, 10000, 1000);
+
+              for (int i = 0; i < 1200; i++)
+              {
+                  if (isCancelled()) {
+                      break;
+                  }
+
+
+              TimerTask timerTask = new TimerTask() {
+                  @Override
+                  public void run() {
+                      //Non faccio nulla
+
+                  }
+              };
+
+                  //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo s eblocco l'asyncTask premendo il pulsante
+              myTimer.scheduleAtFixedRate(timerTask, 500, 1);
               Log.i("TIMER esecuzione_città", "Timer concluso");
+          }
           }
 
       }
 
-
-
-     int k=2;
-     while(k!=1)
-        {
-            k++;
-        }
 
         return null;
 

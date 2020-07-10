@@ -98,7 +98,7 @@ public class Parcheggio extends Fragment {
 
                 if(luogo_parcheggio.equals("Nessun parcheggio salvato"))
                 {
-                    Toast.makeText(getContext(), "Nessun parcheggio salvato", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Nessun parcheggio salvato", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Intent i = new Intent(getString(R.string.ELIMINA_PARCHEGGIO));
@@ -113,7 +113,7 @@ public class Parcheggio extends Fragment {
 
                 if(luogo_parcheggio.equals("Nessun parcheggio salvato"))
                 {
-                    Toast.makeText(getContext(), "Nessun parcheggio da mostrare", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getContext(), "Nessun parcheggio da mostrare", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));

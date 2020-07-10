@@ -38,7 +38,6 @@ public class Posizione {
     public double[] coordinate = new double[2];
     public Context context;
     public LocationManager locationManager=null;
-    public String[] nomeCittà_via={null, null, null};
 
 
     //Generico modo per aggiornare le coordinate
@@ -110,7 +109,7 @@ public class Posizione {
     public String[] nomeViaECittà() throws InterruptedException {
         final String[] città_via = {null, null, null};
         prendiPosizione();
-       // Thread.sleep(2000);
+       final boolean[] finito={false};
 
         Server.reverseGeocoding( this.context, this.coordinate, new Callback() {
 
@@ -135,6 +134,9 @@ public class Posizione {
                 città_via[2] = via.getString("long_name");
                 Log.i("NOME VIA", città_via[2]);
 
+
+                finito[0]=true;
+
             }
 
             @Override
@@ -144,7 +146,10 @@ public class Posizione {
             }
         });
 
-        Thread.sleep(1000);
+        while (!finito[0])
+        {
+            Thread.sleep(500);
+        }
 
         return città_via;
     }
