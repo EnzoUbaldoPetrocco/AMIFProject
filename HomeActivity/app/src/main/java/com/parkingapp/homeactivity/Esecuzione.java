@@ -56,8 +56,6 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio = findViewById(R.id.bttSalvaParcheggio);
         tvErrore = findViewById(R.id.tvEsecuzione);
 
-      //  this.context=getApplicationContext();
-        Variabili.salvaDestinazione(this.context, "Lavagna");
         final Posizione posizione = new Posizione(this.context);
         //Gli faccio prendere la posizione almeno una volta
         posizione.aggiornaGPS(500, 1);
@@ -102,6 +100,8 @@ public class Esecuzione extends AppCompatActivity {
                 posizione.prendiPosizione();
                 final double[] coordinate = posizione.coordinate;
                 asyncTaskEsecuzione.cancel(true);
+
+                Toast.makeText(context, "Salvataggio in corso", Toast.LENGTH_LONG).show();
 
 
                 Log.i("esecuzioneSalva", posizione.coordinate[0] + "spazio" + posizione.coordinate[1]);
@@ -150,17 +150,46 @@ public class Esecuzione extends AppCompatActivity {
                         public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
 
                             posizione.fermaAggiornamentoGPS();
-                            String[] nomeCittà_via=posizione.nomeViaECittà();
-                            if(nomeCittà_via[0]!=null) {
-                                Variabili.salvaParcheggio(context, nomeCittà_via[0]);
-                                Variabili.salvaCoordinate(context, coordinate);
 
-                                Thread.sleep(100);
+                            Server.reverseGeocoding(context, coordinate, new Callback() {
+                                @Override
+                                public void onSuccess(JSONObject response) throws JSONException, IOException, InterruptedException {
 
-                                Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
-                                startActivity(i);
 
-                            }
+                                    JSONArray results = response.getJSONArray("results");
+                                    JSONObject formatted_address = results.getJSONObject(1);
+                                    String città_via = formatted_address.getString("formatted_address");
+                                    Log.i("NOME CITTA_VIA", città_via);
+
+                                        Variabili.salvaParcheggio(context, città_via);
+                                        Variabili.salvaCoordinate(context, coordinate);
+
+
+                                        Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                                        startActivity(i);
+
+                                }
+
+                                @Override
+                                public void onError(ANError error) throws Exception {
+
+                                    Log.e("Recupero Geocoding", "Errore recupero informazioni dal reverse geocoding col pulsante salva parcheggio");
+
+                                    if(error.getErrorCode()==400 || error.getErrorCode()==403)
+                                    {
+                                        tvErrore.setText("Si è verificato un errore, riprova");
+                                        Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
+                                    }
+                                    else if(error.getErrorCode()==500)
+                                    {
+                                        tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
+                                        Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
+                                    }
+                                }
+                            });
+
+
+
                         }
 
                         @Override

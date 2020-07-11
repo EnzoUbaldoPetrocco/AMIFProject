@@ -19,12 +19,18 @@ import android.provider.Settings;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parkingapp.homeactivity.R;
+
+import java.util.ArrayList;
+
+import mist.Variabili;
 
 import static mist.Variabili.salvaDestinazione;
 
@@ -101,19 +107,54 @@ public class HomeFragment extends Fragment {
         lvCittàDestinazione=view.findViewById(R.id.lvListaCittàDestinazione);
         btMenu=view.findViewById(R.id.btMenuCittàDestinazioneHomeFragment);
 
+
+        SharedPreferences sharedPreferences = getActivity().getSharedPreferences("DESTINAZIONE_VIAGGIO", Context.MODE_PRIVATE);
+        String orario=sharedPreferences.getString("DESTINAZIONE_VIAGGIO", " ----");
+        tvScegliCittà.setText(orario);
+
+        final ArrayList<String> arrayList= new ArrayList<>();
+
+        String città_Server[] = getResources().getStringArray(R.array.Città_Server);
+
+        for(int i=0; i<città_Server.length; i++)
+        {
+            arrayList.add(città_Server[i]);
+        }
+
+        //Adatto il formato della lista alla mia schermata
+        ArrayAdapter arrayAdapter=new ArrayAdapter(view.getContext(), android.R.layout.simple_list_item_1, arrayList);
+        lvCittàDestinazione.setAdapter(arrayAdapter);
+
+        lvCittàDestinazione.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                tvScegliCittà.setText("  "+arrayList.get(position) );
+                btMenu.setBackgroundResource(R.drawable.menu_orari);
+                lvCittàDestinazione.setVisibility(View.INVISIBLE); //Dopo aver premuto la lista torna invisibile
+                bttAvvia.setVisibility(View.VISIBLE);
+                Variabili.salvaDestinazione(getContext(), arrayList.get(position)); //Salvo la destinazione
+            }
+        });
+
+
         //Gestisco la visibilità menu a tendina con le città da scegliere
         btMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(premuto==false)
+                if(!premuto)
                 {
+                    bttAvvia.setVisibility(View.INVISIBLE);
                     lvCittàDestinazione.setVisibility(View.VISIBLE);
                     premuto=true;
+                    btMenu.setBackgroundResource(R.drawable.menu_orari_up);
+
                 }
                 else
                 {
+                    bttAvvia.setVisibility(View.VISIBLE);
                     lvCittàDestinazione.setVisibility(View.INVISIBLE);
                     premuto=false;
+                    btMenu.setBackgroundResource(R.drawable.menu_orari);
                 }
             }
         });

@@ -107,9 +107,10 @@ public class AsyncTaskEsecuzione extends AsyncTask{
           assert città_attuale[0] != null;
           if(città_attuale[0].equals(città_destinazione))
           {
-              //Aggiorno il GPS ogni trenta secondi e dopo almeno un metro di distanza
+              //Aggiorno il GPS ogni minuto e dopo almeno 150 metri di distanza
+              //(Soglia di 9 km/h sotto la quale avendo sempre le stesse coordinate, guardo il sensore accelertometrico)
               posizione.fermaAggiornamentoGPS();
-              posizione.aggiornaGPS(60000, 7);
+              posizione.aggiornaGPS(60000, 150);
 
               //Secondo step: verifichiamo che la macchina sia ferma
               while (esecuzione_fermo)
@@ -203,8 +204,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                               }
                           };
 
-                          //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo s eblocco l'asyncTask premendo il pulsante
-                          myTimer.scheduleAtFixedRate(timerTask, 500, 1);
+                          //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
+                          myTimer.scheduleAtFixedRate(timerTask, 600, 1);
                       }
                   }
 
@@ -230,8 +231,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                   }
               };
 
-                  //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo s eblocco l'asyncTask premendo il pulsante
-              myTimer.scheduleAtFixedRate(timerTask, 500, 1);
+                  //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
+              myTimer.scheduleAtFixedRate(timerTask, 600, 1);
               Log.i("TIMER esecuzione_città", "Timer concluso");
           }
           }

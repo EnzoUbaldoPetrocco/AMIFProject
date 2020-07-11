@@ -24,5 +24,17 @@
     <string name="API_KEY" translatable="false">AIzaSyA09MsWgTgGZvMh8KDjyNtxm8ovRYoq1Dg</string>
 
 
+    <!--Città salvate sul Server-->
+
+    <string-array name="Città_Server">
+        <item>Chiavari</item>
+        <item>Genova</item>
+        <item>Lavagna</item>
+        <item>Rapallo</item>
+
+
+    </string-array>
+
+
 
 </resources>
