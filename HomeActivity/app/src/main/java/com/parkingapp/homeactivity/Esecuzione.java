@@ -56,6 +56,8 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio = findViewById(R.id.bttSalvaParcheggio);
         tvErrore = findViewById(R.id.tvEsecuzione);
 
+        bttSalvaParcheggio.setEnabled(true);//Nel dubbio inizializzo il bottone per renderelo premibile, visto che da altre parti disabilito la cosa
+
         final Posizione posizione = new Posizione(this.context);
         //Gli faccio prendere la posizione almeno una volta
         posizione.aggiornaGPS(500, 1);
@@ -93,6 +95,10 @@ public class Esecuzione extends AppCompatActivity {
         bttSalvaParcheggio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                //Ho notato che ci mette un po' ad eseguire, quando è premuto non voglio che l'utente lo prema di nuovo interrompendo
+                //l'algoritmo solo perchè sembra troppo lento
+                bttSalvaParcheggio.setEnabled(false);
 
                 tvErrore.setVisibility(View.INVISIBLE);//Inizializzo sempre il mio log di errore a invisible
 
@@ -164,7 +170,6 @@ public class Esecuzione extends AppCompatActivity {
                                         Variabili.salvaParcheggio(context, città_via);
                                         Variabili.salvaCoordinate(context, coordinate);
 
-
                                         Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
                                         startActivity(i);
 
@@ -173,6 +178,8 @@ public class Esecuzione extends AppCompatActivity {
                                 @Override
                                 public void onError(ANError error) throws Exception {
 
+                                    bttSalvaParcheggio.setEnabled(true);//Dato che non è andato a buon fine lo faccio premere di nuovo
+
                                     Log.e("Recupero Geocoding", "Errore recupero informazioni dal reverse geocoding col pulsante salva parcheggio");
 
                                     if(error.getErrorCode()==400 || error.getErrorCode()==403)
@@ -180,11 +187,12 @@ public class Esecuzione extends AppCompatActivity {
                                         tvErrore.setText("Si è verificato un errore, riprova");
                                         Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
                                     }
-                                    else if(error.getErrorCode()==500)
+                                    else if(error.getErrorCode()==500 || error.getErrorDetail().equals("connectionError"))
                                     {
                                         tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
                                         Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
                                     }
+                                    tvErrore.setVisibility(View.VISIBLE);
                                 }
                             });
 
@@ -195,16 +203,19 @@ public class Esecuzione extends AppCompatActivity {
                         @Override
                         public void onError(ANError error) throws Exception {
 
+                            bttSalvaParcheggio.setEnabled(true);//Dato che non è andato a buon fine lo faccio premere di nuovo
+
                             if(error.getErrorCode()==400 || error.getErrorCode()==403)
                             {
                                 tvErrore.setText("Si è verificato un errore, riprova");
                                 Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
                             }
-                            else if(error.getErrorCode()==500)
+                            else if(error.getErrorCode()==500 || error.getErrorDetail().equals("connectionError"))
                             {
                                 tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
                                 Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
                             }
+                            tvErrore.setVisibility(View.VISIBLE);
                         }
                     }, context, postJson);
                 } catch (JSONException e) {
