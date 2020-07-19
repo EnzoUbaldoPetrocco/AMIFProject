@@ -24,6 +24,9 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
+import static android.content.Context.MODE_PRIVATE;
+import android.content.SharedPreferences;
+
 
 public class Server {
 
@@ -210,13 +213,31 @@ public class Server {
 
         @Override
         public void onOpen(WebSocket webSocket, Response response) {
-            webSocket.send("Hello, it's SSaurel !");
+            /* webSocket.send("Hello, it's SSaurel !");
             webSocket.send("What's up ?");
             webSocket.send(ByteString.decodeHex("deadbeef"));
+
+             */
             webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !");
         }
         @Override
         public void onMessage(WebSocket webSocket, String text) {
+
+            //Estrapolo la città
+        String[] subStringsToCollect = text.split(":");
+        String messageReceived = subStringsToCollect[1].substring(0,subStringsToCollect[1].indexOf("}") -1);
+
+        Context context=null;
+        context = context.getApplicationContext();
+        //Recupero la città dove ho parcheggiato
+            SharedPreferences sharedPreferences=  context.getSharedPreferences("PARCHEGGIO", MODE_PRIVATE);
+        String viaAttuale= sharedPreferences.getString("PARCHEGGIO", "" );
+
+        if(messageReceived.compareTo(viaAttuale)==0){
+            //invia notifica push
+        }
+
+
 
         }
         @Override
