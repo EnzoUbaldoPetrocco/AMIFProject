@@ -224,8 +224,17 @@ public class Server {
         public void onMessage(WebSocket webSocket, String text) {
 
             //Estrapolo la città
+            //MI arriva un JSON, quindi se divido con : avrò sempre i campi e il precedente valore nello stessa stringa.
+            //A me serve l'ultimo valore dell'ultimo campo. quindi son fortunato
+            //da questo devo estrapolare l'informazione sul luogo, orario città ecc
+            //Il filtraggio per città dovrà essere fatto prima
+            //Il filtraggio per zona verrà fatto dopo
         String[] subStringsToCollect = text.split(":");
-        String messageReceived = subStringsToCollect[1].substring(0,subStringsToCollect[1].indexOf("}") -1);
+        String stringToBeSubstringed = subStringsToCollect[subStringsToCollect.length - 1];
+
+
+        String messageReceived = stringToBeSubstringed.substring(stringToBeSubstringed.indexOf(","),stringToBeSubstringed.indexOf("}") -1);
+        messageReceived = messageReceived.substring(messageReceived.indexOf(","),messageReceived.indexOf("]") -1);
 
         Context context=null;
         context = context.getApplicationContext();
