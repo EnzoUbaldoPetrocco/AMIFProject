@@ -1,6 +1,7 @@
 package asyncTasks;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
@@ -80,12 +81,12 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
 
 
-        PowerManager powerManager =(PowerManager) context.getSystemService(context.POWER_SERVICE);
+      /* { PowerManager powerManager =(PowerManager) context.getSystemService(context.POWER_SERVICE);
         assert powerManager != null;
         wakeLock =powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ParkingAdvisor:wakelock");
-        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+      wakeLock.acquire(10*60*1000L /*10 minutes*/  //);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = new NotificationCompat.Builder(context, Notifica.CHANNEL_ID)
                     .setContentTitle("Parking Advisor")
                     .setContentText("Esecuzione...")
@@ -94,7 +95,9 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
            // startForeground(1, notification);
 
-        }
+
+
+        }*/
 
 
 
@@ -164,54 +167,54 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                               break;
                           }
 
-                          if(accelerometro.esegui()&&posizione.èFermo())
-                          {
-                              try {
-                                  posizione.nomeViaECittà();
-                              } catch (InterruptedException e) {
-                                  e.printStackTrace();
-                              }
+                          if(posizione.èFermo()) {
+                              if (accelerometro.esegui()) {
+                                  try {
+                                      posizione.nomeViaECittà();
+                                  } catch (InterruptedException e) {
+                                      e.printStackTrace();
+                                  }
 
-                              try {
-                                  posizione_via_città=posizione.nomeViaECittà();
-                              } catch (InterruptedException e) {
-                                  e.printStackTrace();
-                              }
+                                  try {
+                                      posizione_via_città = posizione.nomeViaECittà();
+                                  } catch (InterruptedException e) {
+                                      e.printStackTrace();
+                                  }
 
-                              //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
-                              //per avere un sistema più robusto
-                              if(posizione_via_città[1].equals(città_destinazione)) {
+                                  //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
+                                  //per avere un sistema più robusto
+                                  if (posizione_via_città[1].equals(città_destinazione)) {
 
-                                  //Ora che ho superato tutti i controlli salvo il parchegio
-                                  double[] coordinate = posizione.coordinate;
-                                  Variabili.salvaCoordinate(context, coordinate);
+                                      //Ora che ho superato tutti i controlli salvo il parchegio
+                                      double[] coordinate = posizione.coordinate;
+                                      Variabili.salvaCoordinate(context, coordinate);
 
-                                  Variabili.salvaParcheggio(context, posizione_via_città[0]);
+                                      Variabili.salvaParcheggio(context, posizione_via_città[0]);
 
-                                  //IMPLEMENTARE LA PARTE IN CUI RECUPERO L'ORARIO DEL LAVAGGIO
+                                      //IMPLEMENTARE LA PARTE IN CUI RECUPERO L'ORARIO DEL LAVAGGIO
 
-                                  //Concludo mettendo a false tutti i loop
-                                  esecuzione_città=false;
-                                  esecuzione_fermo=false;
-                                  esecuzione_sensore=false;
+                                      //Concludo mettendo a false tutti i loop
+                                      esecuzione_città = false;
+                                      esecuzione_fermo = false;
+                                      esecuzione_sensore = false;
 
-                                  //Faccio vibrare il cellulare per dare conferma che ho registrato il parcheggio
-                                  assert vibrazione != null;
-                                  vibrazione.vibrate(700);
+                                      //Faccio vibrare il cellulare per dare conferma che ho registrato il parcheggio
+                                      assert vibrazione != null;
+                                      vibrazione.vibrate(700);
 
-                                  //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
-                                  Notifica.creaNotifica(context, "Parcheggio: "+posizione_via_città[2],"Parcheggio salvato");
+                                      //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
+                                      Notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
+                                      Notifica.creaNotifica(context, "Parcheggio: " + posizione_via_città[2], "Parcheggio salvato");
 
-                                  //Passo all'activity finale in cui mostro il parcheggio sulla mappa
-                                  Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
-                                  context.startActivity(i);
-                              }
-                              else
-                              {
-                                  //Se non sono nella città giusta torno al primo step
-                                  esecuzione_città=true;
-                                  posizione.aggiornaGPS(600000, 400);
-                                  break;
+                                      //Passo all'activity finale in cui mostro il parcheggio sulla mappa
+                                      Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                                      context.startActivity(i);
+                                  } else {
+                                      //Se non sono nella città giusta torno al primo step
+                                      esecuzione_città = true;
+                                      posizione.aggiornaGPS(600000, 400);
+                                      break;
+                                  }
                               }
                           }
                           //Faccio nuovamente la verifica perché se fosse ripartito torno al ciclo precedente

@@ -67,7 +67,7 @@ public class ServiceEsecuzione extends Service {
         wakeLock =powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ParkingAdvisor:wakelock");
         wakeLock.acquire(10*60*1000L /*10 minutes*/);
 
-        Notifica.createNotificationChannel(context);
+        Notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_LOW);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = new NotificationCompat.Builder(context, Notifica.CHANNEL_ID)

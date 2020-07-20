@@ -20,7 +20,7 @@ public class Notifica extends Application {
 
 
 //Notifica che appare per l'esecuzione di un processo in background
-    public static void createNotificationChannel(Context context)
+    public static void createNotificationChannel(Context context, int importance)
     {
 
         if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O)
@@ -28,10 +28,10 @@ public class Notifica extends Application {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID,
                     "Park Tracking",
-                    NotificationManager.IMPORTANCE_LOW
+                    importance
             );
 
-            NotificationManager notificationManager =(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+          NotificationManager  notificationManager =(NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
             assert notificationManager != null;
             notificationManager.createNotificationChannel(notificationChannel);
         }
@@ -54,6 +54,7 @@ public class Notifica extends Application {
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         notificationManager.notify(0, notification);
     }
+
 }
 
 

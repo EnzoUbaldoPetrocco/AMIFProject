@@ -24,16 +24,16 @@ public class Accelerometro implements SensorEventListener {
 
     public Accelerometro(Context context)
     {
-        this.context=context;
-        this.sensorManager=(SensorManager) context.getSystemService(Context.SENSOR_SERVICE);
+        this.context=context.getApplicationContext();
+        this.sensorManager=(SensorManager) this.context.getSystemService(Context.SENSOR_SERVICE);
         if (sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER) != null) {
             this.accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         }
     }
 
     private double[] valoreRiferimento= { //3.629945, 4.7222466, 3.8489187, 3.847166, 3.9240105, 3.90592, 3.8509967, 3.830742, 3.8745177, 3.8638394, 3.8468213, 3.8541284, 3.89754, 3.0880797, 3.2788496,
-                                        4.4670825, 2.0428765, 7.126476, 6.4707613, 1.4708443, -0.91515964, -3.2301805, -5.3027353, -7.8721066, -9.816314, -9.699457, -9.642139, -9.272217, -12.216041};//, -8.217302, -9.822078,
-                                        // -9.822892, -9.54507, -9.380654, -9.367784, -9.400335, -9.371432, -9.239703, -9.43598, -9.321077};
+                                        10*4.4670825, 10*2.0428765, 10*7.126476, 10*6.4707613, 10*1.4708443, 10*0.91515964, 10*3.2301805, 10*5.3027353, 10*7.8721066, 10*9.816314, 10*9.699457, 10*9.642139, 10*9.272217, 10*12.216041};//, -8.217302, -9.822078,
+                                        // -9.822892, -9.54507, -9.380654, -9.367784, -9.400335, -9.371432, -9.239703, -9.43598, -9.321077};  Da 1.4 in avanti
 
 
 //sarebbe da implementare uno stop, in maniera tale che il sensori si fermi per pochi ms per eseguire la media e il match
@@ -45,7 +45,7 @@ public class Accelerometro implements SensorEventListener {
 
     private void onStop() {
 
-        sensorManager.unregisterListener(this, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER));
+        sensorManager.unregisterListener(sel, accelerometer);
     }
 
     private void onStart() {
@@ -66,7 +66,7 @@ public class Accelerometro implements SensorEventListener {
 
     public boolean esegui(){
         onStart();
-        if(distanza()<500)
+        if(distanza()<380)
         {
             onStop();
             return true;
@@ -82,7 +82,7 @@ public class Accelerometro implements SensorEventListener {
     public void onSensorChanged(SensorEvent event) {
 
         double y;
-        y= (double)event.values[1];
+        y= Math.abs(10*(double)event.values[1]);
 
         if (counter >=30)
         {

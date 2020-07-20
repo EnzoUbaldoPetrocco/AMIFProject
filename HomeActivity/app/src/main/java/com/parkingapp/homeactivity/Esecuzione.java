@@ -33,6 +33,7 @@ import Posizione.Posizione;
 
 import Server.CreazioneJson;
 import Server.Server;
+import asyncTasks.AsyncTaskEsecuzione;
 import mist.Variabili;
 import Server.Callback;
 
@@ -73,23 +74,22 @@ public class Esecuzione extends AppCompatActivity {
 
         timerAggiornamento.scheduleAtFixedRate(timerTaskAggiornamento, 1000, 1000);
         posizione.prendiPosizione();
-       // final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
+        final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
 
         Intent intent = new Intent(this, ServiceEsecuzione.class);
 
         intent.putExtra("posizione", posizione);
-        startForegroundService(intent);
-        // asyncTaskEsecuzione.onStartCommand(new Intent(context, this.getClass()), 0, 0);
+      //  startForegroundService(intent);
+       //  asyncTaskEsecuzione.onStartCommand(new Intent(context, this.getClass()), 0, 0);
 
-      //  asyncTaskEsecuzione.execute();
+        asyncTaskEsecuzione.execute();
 
         bttAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-              //  asyncTaskEsecuzione.cancel(true);
+                asyncTaskEsecuzione.cancel(true);
 
                 stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
-                ContextCompat.startForegroundService(context, intent);
                 //Smetto di aggiornare costantemente la mia posizione
                 posizione.fermaAggiornamentoGPS();
 
@@ -113,9 +113,8 @@ public class Esecuzione extends AppCompatActivity {
                 //Salvo i dati prima di cancellare l'async task
                 posizione.prendiPosizione();
                 final double[] coordinate = posizione.coordinate;
-               // asyncTaskEsecuzione.cancel(true);
-                stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
-                ContextCompat.startForegroundService(context, intent);
+                asyncTaskEsecuzione.cancel(true);
+              //  stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
 
                 Toast.makeText(context, "Salvataggio in corso", Toast.LENGTH_LONG).show();
 
