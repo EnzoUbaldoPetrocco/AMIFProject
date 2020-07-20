@@ -46,6 +46,8 @@ public class HomeActivity extends AppCompatActivity {
 
         Intent i= getIntent();
 
+        setTitle("Home"); //Esplicito il titolo altrimenti comparirebbe 'HomeActivity'
+
         drawerLayout =(DrawerLayout) findViewById(R.id.drawer);
         mToggle= new ActionBarDrawerToggle(this, drawerLayout, R.string.Open, R.string.Close);
         drawerLayout.addDrawerListener(mToggle);

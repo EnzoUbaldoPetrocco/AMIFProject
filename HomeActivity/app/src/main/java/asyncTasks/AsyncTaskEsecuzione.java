@@ -1,11 +1,14 @@
 package asyncTasks;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.PowerManager;
 import android.os.Vibrator;
 import android.provider.FontsContract;
 import android.util.Log;
@@ -13,6 +16,7 @@ import android.widget.Button;
 
 
 import androidx.annotation.RequiresApi;
+import androidx.core.app.NotificationCompat;
 
 import com.parkingapp.homeactivity.Esecuzione;
 import com.parkingapp.homeactivity.R;
@@ -28,12 +32,18 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Supplier;
 
 import Accelerometro.Accelerometro;
+import Notifica.Notifica;
 import Posizione.Posizione;
 import Server.Server;
 import mist.Variabili;
 
 
 public class AsyncTaskEsecuzione extends AsyncTask{
+
+
+    private PowerManager.WakeLock wakeLock;
+
+
 
     Context context;
     Button annulla;
@@ -64,8 +74,30 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected Object doInBackground(Object[] objects) {
+
+
+
+        PowerManager powerManager =(PowerManager) context.getSystemService(context.POWER_SERVICE);
+        assert powerManager != null;
+        wakeLock =powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ParkingAdvisor:wakelock");
+        wakeLock.acquire(10*60*1000L /*10 minutes*/);
+
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification notification = new NotificationCompat.Builder(context, Notifica.CHANNEL_ID)
+                    .setContentTitle("Parking Advisor")
+                    .setContentText("Esecuzione...")
+                    .setSmallIcon(R.drawable.logo_app)
+                    .build();
+
+           // startForeground(1, notification);
+
+        }
+
+
+
 
         boolean esecuzione_città=true;
         boolean esecuzione_fermo=true;
@@ -166,6 +198,9 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                   //Faccio vibrare il cellulare per dare conferma che ho registrato il parcheggio
                                   assert vibrazione != null;
                                   vibrazione.vibrate(700);
+
+                                  //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
+                                  Notifica.creaNotifica(context, "Parcheggio: "+posizione_via_città[2],"Parcheggio salvato");
 
                                   //Passo all'activity finale in cui mostro il parcheggio sulla mappa
                                   Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));

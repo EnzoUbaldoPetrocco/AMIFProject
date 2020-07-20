@@ -10,6 +10,8 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
@@ -24,6 +26,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import Server.Callback;
 
+import java.io.Serializable;
 import java.util.concurrent.CompletableFuture;
 
 import Server.Server;
@@ -31,13 +34,13 @@ import Server.Server;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 
-public class Posizione {
+public class Posizione implements Parcelable {
 
     //Indirizzo per il reverse geocoding (latlng=40.714224,-73.961452&key=)
 
     public double[] coordinate = new double[2];
-    public Context context;
-    public LocationManager locationManager=null;
+    public Context context=null;
+     LocationManager locationManager=null;
 
 
     //Generico modo per aggiornare le coordinate
@@ -66,8 +69,25 @@ public class Posizione {
 
     public Posizione(Context context) {
         this.context = context;
+        this.coordinate=new double[]{0, 0};
+        this.locationManager=null;
     }
 
+
+    protected Posizione(Parcel in) {
+    }
+
+    public static final Creator<Posizione> CREATOR = new Creator<Posizione>() {
+        @Override
+        public Posizione createFromParcel(Parcel in) {
+            return new Posizione(in);
+        }
+
+        @Override
+        public Posizione[] newArray(int size) {
+            return new Posizione[size];
+        }
+    };
 
     public void prendiPosizione() {
         //requestPermission();//Richiedo permesso localizzazione all'utente
@@ -192,5 +212,16 @@ public class Posizione {
         locationManager.removeUpdates(locationListener);
     }
 
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+        dest.writeDoubleArray(coordinate);
+    }
 
 }

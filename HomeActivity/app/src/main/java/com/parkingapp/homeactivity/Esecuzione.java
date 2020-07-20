@@ -1,11 +1,11 @@
 package com.parkingapp.homeactivity;
 
-import android.app.Activity;
-import android.app.PendingIntent;
+import android.annotation.SuppressLint;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -14,8 +14,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 
 import com.androidnetworking.error.ANError;
 
@@ -28,12 +29,10 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
-import Accelerometro.Accelerometro;
 import Posizione.Posizione;
 
 import Server.CreazioneJson;
 import Server.Server;
-import asyncTasks.AsyncTaskEsecuzione;
 import mist.Variabili;
 import Server.Callback;
 
@@ -45,6 +44,8 @@ public class Esecuzione extends AppCompatActivity {
     Context context=this;
 
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,16 +73,23 @@ public class Esecuzione extends AppCompatActivity {
 
         timerAggiornamento.scheduleAtFixedRate(timerTaskAggiornamento, 1000, 1000);
         posizione.prendiPosizione();
-        final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
-         asyncTaskEsecuzione.execute();
+       // final AsyncTaskEsecuzione asyncTaskEsecuzione = new AsyncTaskEsecuzione(this.context, bttAnnulla, bttSalvaParcheggio, posizione);
 
+        Intent intent = new Intent(this, ServiceEsecuzione.class);
 
+        intent.putExtra("posizione", posizione);
+        startForegroundService(intent);
+        // asyncTaskEsecuzione.onStartCommand(new Intent(context, this.getClass()), 0, 0);
+
+      //  asyncTaskEsecuzione.execute();
 
         bttAnnulla.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  Variabili.annullaOSalvaParcheggio(context, false);
-                asyncTaskEsecuzione.cancel(true);
+              //  asyncTaskEsecuzione.cancel(true);
+
+                stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
+                ContextCompat.startForegroundService(context, intent);
                 //Smetto di aggiornare costantemente la mia posizione
                 posizione.fermaAggiornamentoGPS();
 
@@ -105,7 +113,9 @@ public class Esecuzione extends AppCompatActivity {
                 //Salvo i dati prima di cancellare l'async task
                 posizione.prendiPosizione();
                 final double[] coordinate = posizione.coordinate;
-                asyncTaskEsecuzione.cancel(true);
+               // asyncTaskEsecuzione.cancel(true);
+                stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
+                ContextCompat.startForegroundService(context, intent);
 
                 Toast.makeText(context, "Salvataggio in corso", Toast.LENGTH_LONG).show();
 
@@ -187,15 +197,19 @@ public class Esecuzione extends AppCompatActivity {
                                         tvErrore.setText("Si è verificato un errore, riprova");
                                         Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
                                     }
-                                    else if(error.getErrorCode()==500 || error.getErrorDetail().equals("connectionError"))
+                                    else if(error.getErrorCode()==0 || error.getErrorCode()==500)
+                                    {
+                                        tvErrore.setText("Salvataggio non riuscito, il server non risponde");
+                                        Log.e("ESECUZIONE.errore", "Erroe di Server");
+                                    }
+                                    else if(error.getErrorDetail().equals("connectionError"))
                                     {
                                         tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
-                                        Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
+                                        Log.e("ESECUZIONE.errore", "Erroe di connessione");
                                     }
                                     tvErrore.setVisibility(View.VISIBLE);
                                 }
                             });
-
 
 
                         }
@@ -210,10 +224,15 @@ public class Esecuzione extends AppCompatActivity {
                                 tvErrore.setText("Si è verificato un errore, riprova");
                                 Log.e("ESECUZIONE.errore", "Richiesta mal formulata");
                             }
-                            else if(error.getErrorCode()==500 || error.getErrorDetail().equals("connectionError"))
+                            else if(error.getErrorCode()==0 || error.getErrorCode()==500)
+                            {
+                                tvErrore.setText("Salvataggio non riuscito, il server non risponde");
+                                Log.e("ESECUZIONE.errore", "Erroe di Server");
+                            }
+                            else if( error.getErrorDetail().equals("connectionError"))
                             {
                                 tvErrore.setText("Salvataggio non riuscito, verifica la connessione");
-                                Log.e("ESECUZIONE.errore", "Erroe di Server/connessione");
+                                Log.e("ESECUZIONE.errore", "Erroe di connessione");
                             }
                             tvErrore.setVisibility(View.VISIBLE);
                         }

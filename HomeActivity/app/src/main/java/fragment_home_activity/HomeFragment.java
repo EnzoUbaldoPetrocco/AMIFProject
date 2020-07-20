@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
         lvCittàDestinazione.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                tvScegliCittà.setText("  "+arrayList.get(position) );
+                tvScegliCittà.setText(""+arrayList.get(position) );
                 btMenu.setBackgroundResource(R.drawable.menu_orari);
                 lvCittàDestinazione.setVisibility(View.INVISIBLE); //Dopo aver premuto la lista torna invisibile
                 bttAvvia.setVisibility(View.VISIBLE);
