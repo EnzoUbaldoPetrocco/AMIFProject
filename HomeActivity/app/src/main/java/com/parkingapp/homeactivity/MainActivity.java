@@ -13,11 +13,22 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
-import org.json.JSONException;
+import com.androidnetworking.error.ANError;
 
+import Server.Callback;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+
+import Server.Server;
+import Server.WSComunication;
 import mist.Variabili;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -37,6 +48,47 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         bttMain=findViewById(R.id.bttMain);
+
+        try {
+            Server.Get("/v1/measurements?filter={\"thing\":\"city\"}&limit=10&page=1", new Callback() {
+                @Override
+                public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
+                    JSONArray docs= result.getJSONArray("docs");
+                    String[] impedimenti=new String[docs.length()];
+                    String[] data_inizio= new String[docs.length()];
+                    String[] data_fine= new String[docs.length()];
+                    double[][] coordinate = new double[docs.length()][2];
+
+                    for (int i=0; i<docs.length(); i++) {
+                        JSONObject docsJson=docs.getJSONObject(i);
+                        JSONArray samples = docsJson.getJSONArray("samples");
+                        JSONObject samplesJson = samples.getJSONObject(0);
+                        JSONArray values = samplesJson.getJSONArray("values");
+                        impedimenti[i] = values.getString(2);
+
+                        JSONObject location=docsJson.getJSONObject("location");
+                        JSONArray coordinates = location.getJSONArray("coordinates");
+                        coordinate[i][0]= coordinates.getDouble(0);
+                        coordinate[i][1]= coordinates.getDouble(1);
+
+                        data_inizio[i]=docsJson.getString("startDate");
+                        data_fine[i]=docsJson.getString("endDate");
+
+                    }
+
+                    //IMPLLEMETARE LA NOTIFICA PER GLI IMPEDIMENTI
+
+                }
+
+                @Override
+                public void onError(ANError error) throws Exception {
+
+                    Log.e("GET impedimenti", "Errore recupero impedimenti");
+                }
+            }, context);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
         //Controllo che i permessi siano abilitati all'avvio dell'app
         ActivityCompat.requestPermissions(this, new String[]{ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE}, 1);
@@ -62,6 +114,8 @@ public class MainActivity extends AppCompatActivity {
                        try {
                            if(Variabili.aggiornaPosizione(context)) {
                                Intent i = new Intent(getString(R.string.MAIN_TO_HOME));
+                               WSComunication wsComunication = new WSComunication();
+                               wsComunication.startWS(context);
                                startActivity(i);
                            }
                        } catch (JSONException e) {

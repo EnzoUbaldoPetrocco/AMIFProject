@@ -1,6 +1,10 @@
 package Server;
 
+import android.app.AlarmManager;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -16,7 +20,17 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
+import Notifica.Notifica;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -24,6 +38,7 @@ import okhttp3.WebSocket;
 import okhttp3.WebSocketListener;
 import okio.ByteString;
 
+import static android.content.Context.ALARM_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 import android.content.SharedPreferences;
 
@@ -31,10 +46,9 @@ import android.content.SharedPreferences;
 public class Server {
 
 
-
    private static String my_URL = "http://students.atmosphere.tools";
 
-    private static void Token(final Callback callback, Context context) throws JSONException {
+    public static void Token(final Callback callback, Context context) throws JSONException {
         String url= my_URL+"/v1/login";
 
         String nomiJson[]={"username", "password"};
@@ -199,108 +213,6 @@ public class Server {
                     }
                 });
     }
-
-    //La classe dovrebbe supporta il ws per le notifiche push che ci avvisano di
-    //impedimenti, parcheggio che sta per scadere e via dicendo
-    //é quindi fondamentale che la classe funzioni, altrimenti l'app non ha senso
-
-    public class WSApi extends WebSocketListener {
-
-
-        private static final int NORMAL_CLOSURE_STATUS = 1000;
-
-        public String tokenToConvert;
-
-        @Override
-        public void onOpen(WebSocket webSocket, Response response) {
-            /* webSocket.send("Hello, it's SSaurel !");
-            webSocket.send("What's up ?");
-            webSocket.send(ByteString.decodeHex("deadbeef"));
-
-             */
-            webSocket.close(NORMAL_CLOSURE_STATUS, "Goodbye !");
-        }
-        @Override
-        public void onMessage(WebSocket webSocket, String text) {
-
-            //Estrapolo la città
-            //MI arriva un JSON, quindi se divido con : avrò sempre i campi e il precedente valore nello stessa stringa.
-            //A me serve l'ultimo valore dell'ultimo campo. quindi son fortunato
-            //da questo devo estrapolare l'informazione sul luogo, orario città ecc
-            //Il filtraggio per città dovrà essere fatto prima
-            //Il filtraggio per zona verrà fatto dopo
-        String[] subStringsToCollect = text.split(":");
-        String stringToBeSubstringed = subStringsToCollect[subStringsToCollect.length - 1];
-
-
-        String messageReceived = stringToBeSubstringed.substring(stringToBeSubstringed.indexOf(","),stringToBeSubstringed.indexOf("}") -1);
-        messageReceived = messageReceived.substring(messageReceived.indexOf(","),messageReceived.indexOf("]") -1);
-
-        Context context=null;
-        context = context.getApplicationContext();
-        //Recupero la città dove ho parcheggiato
-            SharedPreferences sharedPreferences=  context.getSharedPreferences("PARCHEGGIO", MODE_PRIVATE);
-        String viaAttuale= sharedPreferences.getString("PARCHEGGIO", "" );
-
-        if(messageReceived.compareTo(viaAttuale)==0){
-            //invia notifica push
-        }
-
-
-
-        }
-        @Override
-        public void onMessage(WebSocket webSocket, ByteString bytes) {
-
-        }
-        @Override
-        public void onClosing(WebSocket webSocket, int code, String reason) {
-            webSocket.close(NORMAL_CLOSURE_STATUS, null);
-
-        }
-        @Override
-        public void onFailure(WebSocket webSocket, Throwable t, Response response) {
-
-        }
-
-        public String createUrl() {
-            return "wss://" +  "http://students.atmosphere.tools"  +  "/v1/streams?thing=city&token=" + tokenToConvert ;
-        }
-
-    } //end class WSApi Listener
-
-    public void startWS(Context context) throws JSONException {
-        Token( new Callback() {
-
-            @Override
-            public void onSuccess(JSONObject result) throws JSONException, IOException, InterruptedException {
-
-                //La chiama all'API si fa tramite il token convertito in stringa
-                //si costruisce l'url tramite cui si fa l'accesso usando il token ricevuto
-                String risposta=result.toString();
-
-
-                //Verifica che sia passato per di qua
-                Log.i("WS onSuccess", "siamo riusciti a farci dare il token");
-
-                //Ora comincia l'apertura del ws
-                OkHttpClient client = new OkHttpClient();
-                WSApi listener = new WSApi();
-                listener.tokenToConvert=risposta.substring(10, risposta.indexOf("}")-1);
-                Request request = new Request.Builder().url(listener.createUrl()).build();
-                WebSocket ws = client.newWebSocket(request, listener);
-
-
-            }
-
-            @Override
-            public void onError(ANError error) throws Exception {
-                Log.e("WS on Error", error.toString());
-                Log.e("Ws on Error" , "non siamo riusciti a farci dare il token");
-            }
-        } ,context);
-    }
-
 
 }
 

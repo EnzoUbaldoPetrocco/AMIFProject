@@ -45,19 +45,7 @@
         android:visibility="invisible"
         android:layout_marginTop="200dp" />
 
-    <Button
-        android:id="@+id/btConfermaOrarioNotifica"
-        android:layout_width="380dp"
-        android:layout_height="wrap_content"
-        android:text="Conferma"
-        android:visibility="invisible"
-        android:layout_marginTop="500dp"
-        android:layout_centerHorizontal="true"
-        android:textSize="18dp"
-        android:background="@drawable/custom_button"
-        android:backgroundTint="#0b839f"
-        android:textColor="#ffffff"
-        />
+
 
 
 </RelativeLayout>

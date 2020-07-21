@@ -39,6 +39,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
     implementation 'androidx.mediarouter:mediarouter:1.0.0'
+    implementation 'com.squareup.okhttp3:okhttp:3.10.0'
 
     implementation files('libs/dtw.jar')
     implementation 'com.amitshekhar.android:android-networking:1.0.2'//Nuovo per API

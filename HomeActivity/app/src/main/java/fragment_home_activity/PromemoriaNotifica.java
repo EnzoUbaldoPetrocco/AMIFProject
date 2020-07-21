@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,7 +38,6 @@ public class PromemoriaNotifica extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    Button bttConferma=null;
     TextView tvOrarioNotifica=null;
     Button btOrarioNotifica=null;
     ListView  lvOrari=null;
@@ -91,7 +91,6 @@ public class PromemoriaNotifica extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        bttConferma=view.findViewById(R.id.btConfermaOrarioNotifica);
         tvOrarioNotifica=view.findViewById(R.id.tvOrarioNotifica);
         btOrarioNotifica=view.findViewById(R.id.spOrarioNotifica);
         lvOrari=view.findViewById(R.id.lvListaOrariNotifica);
@@ -117,29 +116,49 @@ public class PromemoriaNotifica extends Fragment {
                 tvOrarioNotifica.setText("  "+arrayList.get(position) );
                 btOrarioNotifica.setBackgroundResource(R.drawable.menu_orari);
                 lvOrari.setVisibility(View.INVISIBLE); //Dopo aver premuto la lista torna invisibile
-                bttConferma.setVisibility(View.VISIBLE); //Compare il bottone per chiedere conferma
-            }
-        });
-
-        bttConferma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
 
                 String orario= tvOrarioNotifica.getText().toString();
-                Variabili.salvaPromemoriaNotifica(getContext(), orario);
+                long time_millisecond;
+                switch (orario)
+                {
+                    case "  1 ora":
+                        time_millisecond= 3600000;
+                        Log.i("Tempo switch", "3600000");
+                        break;
 
-                bttConferma.setVisibility(View.INVISIBLE); //Dato che non si passa ad altre activity lo rendo di nuovo invisibile
+                    case "  2 ore":
+                        time_millisecond= 7200000;
+                        Log.i("Tempo switch", "7200000");
+                        break;
 
+                    case "  4 ore":
+                        time_millisecond= 14400000;
+                        Log.i("Tempo switch", "14400000");
+                        break;
+
+                    case "  Un giorno":
+                        time_millisecond= 86400000;
+                        Log.i("Tempo switch", "86400000");
+                        break;
+
+                    default:
+                        time_millisecond= 3600000;
+                        Log.i("Tempo switch", "3600000");
+                        break;
+
+                }
+                Variabili.salvaPromemoriaNotifica(getContext(), orario, time_millisecond);
             }
         });
+
 
         btOrarioNotifica.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if(premuto==false) {
+                if(!premuto) {
                     btOrarioNotifica.setBackgroundResource(R.drawable.menu_orari_up);
-                    lvOrari.setVisibility(View.VISIBLE); //Rendo visibile la lista con gli orari dosponibili
+                    lvOrari.setVisibility(View.VISIBLE); //Rendo visibile la lista con gli orari disponibili
                     premuto=true;
                 }
                 else

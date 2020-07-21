@@ -79,7 +79,7 @@ public class Esecuzione extends AppCompatActivity {
         Intent intent = new Intent(this, ServiceEsecuzione.class);
 
         intent.putExtra("posizione", posizione);
-      //  startForegroundService(intent);
+       // startForegroundService(intent);
        //  asyncTaskEsecuzione.onStartCommand(new Intent(context, this.getClass()), 0, 0);
 
         asyncTaskEsecuzione.execute();
@@ -89,7 +89,7 @@ public class Esecuzione extends AppCompatActivity {
             public void onClick(View v) {
                 asyncTaskEsecuzione.cancel(true);
 
-                stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
+              //  context.stopService(new Intent(context, ServiceEsecuzione.class));
                 //Smetto di aggiornare costantemente la mia posizione
                 posizione.fermaAggiornamentoGPS();
 
@@ -114,7 +114,7 @@ public class Esecuzione extends AppCompatActivity {
                 posizione.prendiPosizione();
                 final double[] coordinate = posizione.coordinate;
                 asyncTaskEsecuzione.cancel(true);
-              //  stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
+                //context.stopService(new Intent(getApplicationContext(), ServiceEsecuzione.class));
 
                 Toast.makeText(context, "Salvataggio in corso", Toast.LENGTH_LONG).show();
 
@@ -176,7 +176,14 @@ public class Esecuzione extends AppCompatActivity {
                                     String città_via = formatted_address.getString("formatted_address");
                                     Log.i("NOME CITTA_VIA", città_via);
 
-                                        Variabili.salvaParcheggio(context, città_via);
+                                    //Prendo nome Via
+                                    JSONObject oggetto_riposta = results.getJSONObject(0);
+                                    JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
+                                    JSONObject Via = address_components.getJSONObject(1);
+                                    String via = Via.getString("long_name");
+                                    Log.i("NOME VIA", via);
+
+                                        Variabili.salvaParcheggio(context, città_via, via);
                                         Variabili.salvaCoordinate(context, coordinate);
 
                                         Intent i = new Intent(getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));

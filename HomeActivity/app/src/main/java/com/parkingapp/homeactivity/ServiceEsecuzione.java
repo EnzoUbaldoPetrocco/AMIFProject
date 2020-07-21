@@ -20,15 +20,23 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 
+import com.androidnetworking.error.ANError;
 import com.parkingapp.homeactivity.Esecuzione;
 import com.parkingapp.homeactivity.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import Accelerometro.Accelerometro;
 import Notifica.Notifica;
 import Posizione.Posizione;
+import Server.Server;
+import Server.Callback;
 import mist.Variabili;
 
 public class ServiceEsecuzione extends Service {
@@ -67,7 +75,9 @@ public class ServiceEsecuzione extends Service {
         wakeLock =powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ParkingAdvisor:wakelock");
         wakeLock.acquire(10*60*1000L /*10 minutes*/);
 
-        Notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_LOW);
+         Notifica notifica= new Notifica();
+
+        notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_LOW);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             Notification notification = new NotificationCompat.Builder(context, Notifica.CHANNEL_ID)
@@ -111,6 +121,7 @@ public class ServiceEsecuzione extends Service {
         assert posizione != null;
 
         posizione.context=this.context; //Inizializzo nuovamente il contesto perché è andato perduto passandolo per l'intento
+
         posizione.aggiornaGPS(600000, 400);
 
         posizione.prendiPosizione();
@@ -119,12 +130,51 @@ public class ServiceEsecuzione extends Service {
         //Primo step: controllo in un loop infinito di trovarmi nella città giusta
         while (esecuzione_città)
         {
+            posizione_via_città= new String[]{null, null, null};
+            posizione.prendiPosizione();
 
             try {
-                posizione_via_città=posizione.nomeViaECittà();
+                Thread.sleep(5000);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
+
+
+
+
+            Server.reverseGeocoding(context, posizione.coordinate, new Callback() {
+                @Override
+                public void onSuccess(JSONObject response) throws JSONException, IOException, InterruptedException {
+                    //Prendo nome intero
+                    JSONArray results = response.getJSONArray("results");
+                    JSONObject formatted_address = results.getJSONObject(1);
+                    posizione_via_città[0] = formatted_address.getString("formatted_address");
+                    Log.i("NOME CITTA_VIA", posizione_via_città[0]);
+
+                    //Prendo nome Città
+                    JSONObject oggetto_riposta = results.getJSONObject(0);
+                    JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
+                    JSONObject città = address_components.getJSONObject(2);
+                    posizione_via_città[1] = città.getString("long_name");
+                    Log.i("NOME CITTA", posizione_via_città[1]);
+
+                    //Prendo nome Via
+                    JSONObject via = address_components.getJSONObject(1);
+                    posizione_via_città[2] = via.getString("long_name");
+                    Log.i("NOME VIA", posizione_via_città[2]);
+                }
+
+                @Override
+                public void onError(ANError errore) throws Exception {
+                    Log.e("Città chiamata API", errore.toString());
+                }
+            });
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
 
             città_attuale[0] = posizione_via_città[1];
             assert città_attuale[0] != null;
@@ -149,12 +199,6 @@ public class ServiceEsecuzione extends Service {
                             {
 
                                 try {
-                                    posizione.nomeViaECittà();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-
-                                try {
                                     posizione_via_città=posizione.nomeViaECittà();
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
@@ -168,7 +212,7 @@ public class ServiceEsecuzione extends Service {
                                     double[] coordinate = posizione.coordinate;
                                     Variabili.salvaCoordinate(context, coordinate);
 
-                                    Variabili.salvaParcheggio(context, posizione_via_città[0]);
+                                    Variabili.salvaParcheggio(context, posizione_via_città[0], posizione_via_città[2]);
 
                                     //IMPLEMENTARE LA PARTE IN CUI RECUPERO L'ORARIO DEL LAVAGGIO
 
@@ -182,11 +226,14 @@ public class ServiceEsecuzione extends Service {
                                     vibrazione.vibrate(700);
 
                                     //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
-                                    Notifica.creaNotifica(context, "Parcheggio: "+posizione_via_città[2],"Parcheggio salvato");
+                                    Notifica notifica = new Notifica();
+                                    notifica.creaNotifica(context, "Parcheggio: "+posizione_via_città[2],"Parcheggio salvato");
 
                                     //Passo all'activity finale in cui mostro il parcheggio sulla mappa
                                     Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
                                     context.startActivity(i);
+                                    stopSelf();
+                                    stopService(new Intent(context, ServiceEsecuzione.class));
                                 }
                                 else
                                 {
@@ -282,5 +329,40 @@ public class ServiceEsecuzione extends Service {
     }
 
      */
+
+    private String[] prendiPosizione(Posizione posizione)
+    {
+        final String[] città_via = {null, null, null};
+        posizione.prendiPosizione();
+
+        Server.reverseGeocoding(context, posizione.coordinate, new Callback() {
+            @Override
+            public void onSuccess(JSONObject response) throws JSONException, IOException, InterruptedException {
+                //Prendo nome intero
+                JSONArray results = response.getJSONArray("results");
+                JSONObject formatted_address = results.getJSONObject(1);
+                città_via[0] = formatted_address.getString("formatted_address");
+                Log.i("NOME CITTA_VIA", città_via[0]);
+
+                //Prendo nome Città
+                JSONObject oggetto_riposta = results.getJSONObject(0);
+                JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
+                JSONObject città = address_components.getJSONObject(2);
+                città_via[1] = città.getString("long_name");
+                Log.i("NOME CITTA", città_via[1]);
+
+                //Prendo nome Via
+                JSONObject via = address_components.getJSONObject(1);
+                città_via[2] = via.getString("long_name");
+                Log.i("NOME VIA", città_via[2]);
+            }
+
+            @Override
+            public void onError(ANError errore) throws Exception {
+                Log.e("Città chiamata API", errore.toString());
+            }
+        });
+        return città_via;
+    }
 
 }

@@ -99,6 +99,7 @@
         </activity>
 
         <service android:name=".ServiceEsecuzione"/>
+        <receiver android:name="Notifica.Notifica"/>
 
 
     </application>

@@ -189,7 +189,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       double[] coordinate = posizione.coordinate;
                                       Variabili.salvaCoordinate(context, coordinate);
 
-                                      Variabili.salvaParcheggio(context, posizione_via_città[0]);
+                                      Variabili.salvaParcheggio(context, posizione_via_città[0], posizione_via_città[2]);
 
                                       //IMPLEMENTARE LA PARTE IN CUI RECUPERO L'ORARIO DEL LAVAGGIO
 
@@ -203,8 +203,10 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       vibrazione.vibrate(700);
 
                                       //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
-                                      Notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
-                                      Notifica.creaNotifica(context, "Parcheggio: " + posizione_via_città[2], "Parcheggio salvato");
+                                      Notifica notifica=new Notifica();
+
+                                      notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
+                                      notifica.creaNotifica(context, "Parcheggio: " + posizione_via_città[2], "Parcheggio salvato");
 
                                       //Passo all'activity finale in cui mostro il parcheggio sulla mappa
                                       Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));

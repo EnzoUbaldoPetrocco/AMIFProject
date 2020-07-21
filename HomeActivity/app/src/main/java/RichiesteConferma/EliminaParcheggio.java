@@ -44,7 +44,7 @@ public class EliminaParcheggio extends Activity {
             @Override
             public void onClick(View v) {
 
-                Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
+                Variabili.salvaParcheggio(context, "Nessun parcheggio salvato", null);
                 Variabili.salvaOrarioParcheggio(context, "");
 
                 //AGGIUNGERE CHIAMATA AL SERVER PER CANCELLARE IL PARCHEGGIO

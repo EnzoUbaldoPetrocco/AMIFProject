@@ -43,12 +43,13 @@ public class Variabili {
         editor.apply();
     }
 
-    public static void salvaPromemoriaNotifica(Context context, String orario)
+    public static void salvaPromemoriaNotifica(Context context, String orario, long tempo_millisecondi)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("STATO", orario);
+        editor.putLong("TEMPO MILLI", tempo_millisecondi);
         editor.apply();
     }
 
@@ -71,12 +72,13 @@ public class Variabili {
         editor.apply();
     }
 
-    public static void salvaParcheggio(Context context, String città_via)
+    public static void salvaParcheggio(Context context, String città_via, String via)
     {
         SharedPreferences sharedPreferences = context.getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("PARCHEGGIO", città_via);
+        editor.putString("VIA PARCHEGGIO", via);
         editor.apply();
     }
 
@@ -141,7 +143,13 @@ public class Variabili {
                                 String città_via = formatted_address.getString("formatted_address");
                                 Log.i("NOME CITTA_VIA", città_via);
 
-                                Variabili.salvaParcheggio(context, città_via);
+                                JSONObject oggetto_riposta = results.getJSONObject(0);
+                                JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
+                                JSONObject via = address_components.getJSONObject(1);
+                                String viaCittà = via.getString("long_name");
+                                Log.i("NOME VIA", viaCittà);
+
+                                Variabili.salvaParcheggio(context, città_via, viaCittà);
                                 Variabili.salvaCoordinate(context, coordinate);
                             }
 
@@ -155,7 +163,7 @@ public class Variabili {
                 }
                 else
                 {
-                    Variabili.salvaParcheggio(context, "Nessun parcheggio salvato");
+                    Variabili.salvaParcheggio(context, "Nessun parcheggio salvato", null);
                 }
             }
 
