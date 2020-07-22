@@ -4,8 +4,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item android:id="@+id/btUtente" android:title="Profilo utente" android:icon="@drawable/user_icon"/>
-    <item android:id="@+id/btMappeScaricate" android:title="Mappe scaricate" android:icon="@drawable/mappe_scaricate" />
-    <item android:id="@+id/btMappeDaScaricare" android:title="Scarica Mappa" android:icon="@drawable/scarica_mappa"/>
     <item android:id="@+id/btOrario" android:title="Promemoria notifica" android:icon="@drawable/orario"/>
     <item android:id="@+id/btParcheggio" android:title="Parcheggio" android:icon="@drawable/mio_parcheggio"/>
 

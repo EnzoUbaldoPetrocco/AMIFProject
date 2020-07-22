@@ -36,7 +36,7 @@ public class Parcheggio extends Fragment {
     Button bttElimina=null;
     Button bttMostraSullaMappa=null;
     TextView tvLuogoParcheggio=null;
-    TextView tvOrarioParcheggio=null;
+    TextView tvImpedimento=null;
 
     public Parcheggio() {
         // Required empty public constructor
@@ -82,15 +82,17 @@ public class Parcheggio extends Fragment {
         bttElimina= view.findViewById(R.id.btEliminaParcheggio);
         bttMostraSullaMappa=view.findViewById(R.id.btMostraSullaMappa);
         tvLuogoParcheggio=view.findViewById(R.id.tvPosizioneParcheggio);
-        tvOrarioParcheggio=view.findViewById(R.id.tvOrarioParcheggio);
+        tvImpedimento=view.findViewById(R.id.tvOrarioParcheggio);
 
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
         final String luogo_parcheggio=sharedPreferences.getString("PARCHEGGIO", "Nessun parcheggio salvato");
-        sharedPreferences=getActivity().getSharedPreferences("ORARIO_PARCHEGGIO", Context.MODE_PRIVATE);
-        String orario_parcheggio=sharedPreferences.getString("ORARIO_PARCHEGGIO", "");
+
+        sharedPreferences =getActivity().getSharedPreferences("IMPEDIMENTO", Context.MODE_PRIVATE);
+        final String impedimento = sharedPreferences.getString("IMPEDIMENTO", "Nessun impedimento registrato");
+
 
         tvLuogoParcheggio.setText(luogo_parcheggio);
-        tvOrarioParcheggio.setText(orario_parcheggio);
+        tvImpedimento.setText(impedimento);
 
         bttElimina.setOnClickListener(new View.OnClickListener() {
             @Override

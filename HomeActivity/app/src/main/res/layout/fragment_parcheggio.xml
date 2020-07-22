@@ -29,7 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="80dp"
-        android:text=" Liberare parcheggio entro:"
+        android:text=" Impedimenti parcheggio:"
         android:textSize="30dp"
         android:visibility="visible"
         android:textColor="#00447d"
@@ -42,14 +42,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:textColor="#1186a1"
         android:layout_marginLeft="5dp"
+        android:textColor="#1186a1"
         android:textSize="23dp"
         />
 
     <Button
         android:id="@+id/btMostraSullaMappa"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:text="Mostra sulla mappa"

@@ -80,7 +80,7 @@ public class AsyncTaskSigninActivity extends AsyncTask<String, Integer, Integer>
                    Variabili.salvaUsernamePassword(context, strings);
                    Variabili.salvaPromemoriaNotifica(context, "1 ora", 3600000);
                    Variabili.salvaParcheggio(context, "Nessun parcheggio salvato", null);
-                   Variabili.salvaOrarioParcheggio(context, "");
+                   Variabili.salvaImpedimento(context, "Nessun impedimento registrato");
 
                    //Il passaggio di activity lo faccio nell'async task perchè se no ho notato che l'utente deve premere due volte il pulsante
                    Intent i = new Intent(context.getString(R.string.MAIN_TO_HOME));

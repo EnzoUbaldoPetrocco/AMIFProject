@@ -80,7 +80,6 @@ public class Esecuzione extends AppCompatActivity {
 
         intent.putExtra("posizione", posizione);
        // startForegroundService(intent);
-       //  asyncTaskEsecuzione.onStartCommand(new Intent(context, this.getClass()), 0, 0);
 
         asyncTaskEsecuzione.execute();
 

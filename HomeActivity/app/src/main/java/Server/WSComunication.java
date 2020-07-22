@@ -21,6 +21,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import Notifica.Notifica;
+import mist.Variabili;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
@@ -94,6 +95,8 @@ public class WSComunication {
                     Log.i("Campo", campi[i]);
                 }
                 Log.i("Ora da convertire", ora_convertire);
+
+                Variabili.salvaImpedimento(context, campi[1]);
 
                 Notifica notifica = new Notifica();
                // notifica.process("titolo", campi[1], ora_convertire, context);

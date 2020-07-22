@@ -82,6 +82,14 @@ public class Variabili {
         editor.apply();
     }
 
+    public static void salvaImpedimento(Context context, String impedimento)
+    {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("IMPEDIMENTO", Context.MODE_PRIVATE);
+
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("IMPEDIMENTO", impedimento);
+        editor.apply();
+    }
 
     public static void salvaCoordinate(Context context, double[] coordinate)
     {
@@ -90,15 +98,6 @@ public class Variabili {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("LATITUDINE", String.valueOf(coordinate[0]));
         editor.putString("LONGITUDINE", String.valueOf(coordinate[1]));
-        editor.apply();
-    }
-
-    public static void salvaOrarioParcheggio(Context context, String orario)
-    {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("ORARIO_PARCHEGGIO", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("ORARIO_PARCHEGGIO", orario);
         editor.apply();
     }
 

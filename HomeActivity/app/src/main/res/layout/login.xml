@@ -20,7 +20,7 @@
         android:textSize="25dp" />
 
     <TextView
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="30dp"
         android:textColor="#ffffff"
@@ -30,7 +30,7 @@
 
     <EditText
         android:id="@+id/etUsername"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#e3f2f6"
         android:singleLine="true"
@@ -39,7 +39,7 @@
         android:hint=" Inserisci Username" />
 
     <TextView
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="25dp"
         android:textColor="#ffffff"
@@ -49,13 +49,13 @@
 
     <EditText
         android:id="@+id/etPassword"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="70dp"
         android:background="#e3f2f6"
         android:backgroundTint="#e3f2f6"
         android:singleLine="true"
         android:password="true"
-        android:hint="Inserisci Password" />
+        android:hint=" Inserisci Password" />
 
     <CheckBox
         android:id="@+id/cbCheckBox_Login"
@@ -88,7 +88,7 @@
 
     <Button
         android:id="@+id/bttOkLogin"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/custom_button"
         android:textColor="#ffffff"
@@ -101,7 +101,7 @@
         android:id="@+id/bttBackLogin_to_LoginSignin"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginRight="170dp"
+        android:layout_marginRight="160dp"
         android:backgroundTint="#ffffff"
         android:scaleType="fitCenter"
         android:src="@drawable/backbtt"

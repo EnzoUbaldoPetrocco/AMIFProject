@@ -21,10 +21,8 @@ import com.parkingapp.homeactivity.HomeActivity;
 import com.parkingapp.homeactivity.R;
 
 import fragment_home_activity.HomeFragment;
-import fragment_home_activity.MappeScaricate;
 import fragment_home_activity.Parcheggio;
 import fragment_home_activity.PromemoriaNotifica;
-import fragment_home_activity.ScaricaMappa;
 import fragment_home_activity.Utente;
 import mist.Variabili;
 

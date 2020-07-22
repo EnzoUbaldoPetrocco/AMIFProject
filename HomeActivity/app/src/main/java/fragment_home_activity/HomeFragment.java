@@ -185,32 +185,11 @@ public class HomeFragment extends Fragment {
                 }
                 //Avvio l'esecuzione solo se i sensori sono attivi
                 else {
-            /*    if(mappa_scaricata=="")
-                {
-                    avviso2.setVisibility(View.VISIBLE);
-                }
 
-                else {
-
-                    salvaDestinazione(context, testo);
-
-                    //       if(!testo.equals(" ----")) //Primo controllo sulla scelta della destinazione
-                    //         {
-                    avviso1.setVisibility(View.INVISIBLE);//Se la verifica è rispettata lo rimetto invisibile
-                    //Scrivere secondo controllo non appena si gestiranno le mappe scaricate
-
-*/
                     //Passo all'activity di esecuzione
                     Intent i = new Intent(getString(R.string.HOME_FRAGMENT_TO_ESECUZIONE));
                     startActivity(i);
                 }
-            /*     else
-                {
-                    avviso1.setVisibility(View.VISIBLE);
-                }
-
-        //        }
-            }*/
             }
         });
 

@@ -143,7 +143,7 @@ public class MainActivity extends AppCompatActivity {
                     .setPositiveButton("Concedi permessi", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions((Activity)context, new String[]{ACCESS_FINE_LOCATION, WRITE_EXTERNAL_STORAGE}, 1);
+                            ActivityCompat.requestPermissions((Activity)context, new String[]{ACCESS_FINE_LOCATION}, 1);
                             permesso[0]=true;
                         }
                     })

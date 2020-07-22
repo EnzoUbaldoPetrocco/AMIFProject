@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">HomeActivity</string>
+    <string name="app_name">Parking Advisor</string>
     <string name="MAIN_TO_HOME">DaMainAHomeActivity</string>
     <string name="MAIN_TO_LOGSIGN">DaMainALoginOrSignin</string>
     <string name="LOGINSIGNIN_TO_LOGIN">DaLoginOrSigninALogin</string>
@@ -34,7 +34,6 @@
 
 
     </string-array>
-
 
 
 </resources>

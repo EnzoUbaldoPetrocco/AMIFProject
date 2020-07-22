@@ -1,18 +1,11 @@
 package com.parkingapp.homeactivity;
 
-import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Network;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 
 import androidx.annotation.NonNull;
@@ -22,16 +15,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
-import com.parkingapp.homeactivity.R;
 
 import fragment_home_activity.HomeFragment;
-import fragment_home_activity.MappeScaricate;
 import fragment_home_activity.Parcheggio;
 import fragment_home_activity.PromemoriaNotifica;
-import fragment_home_activity.ScaricaMappa;
 import fragment_home_activity.Utente;
 
 public class HomeActivity extends AppCompatActivity {
@@ -80,8 +69,6 @@ public class HomeActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).commit();
 
-
-
     }
 
     //Associo ad ogni item la classe a cui deve fare riferimento quando premo
@@ -92,13 +79,6 @@ public class HomeActivity extends AppCompatActivity {
 
         switch (menuItem.getItemId())
         {
-            case R.id.btMappeDaScaricare:
-                fragmentClass= ScaricaMappa.class;
-                break;
-
-            case R.id.btMappeScaricate:
-                fragmentClass= MappeScaricate.class;
-                break;
 
             case R.id.btParcheggio:
                 fragmentClass= Parcheggio.class;
@@ -153,7 +133,6 @@ public class HomeActivity extends AppCompatActivity {
         if(mToggle.onOptionsItemSelected(item)) {
             return true;
         }
-       // return super.onOptionsItemSelected(item); //Per ora non ci serve
         return  false;
     }
 

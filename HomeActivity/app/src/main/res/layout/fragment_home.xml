@@ -60,7 +60,6 @@
         android:layout_marginLeft="10dp"
         android:layout_marginTop="350dp"
         android:visibility="invisible"
-        android:text="La città scelta non è ancora stata scaricata. Per scaricarla vai su menu -> scarica mappa (obbligatorio per avviare l'applicazione)"
         android:textColor="#A50101"
         android:textSize="20dp" />
 

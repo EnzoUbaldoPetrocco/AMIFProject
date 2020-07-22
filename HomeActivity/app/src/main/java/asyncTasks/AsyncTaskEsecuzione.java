@@ -17,32 +17,19 @@ import android.widget.Button;
 
 
 import androidx.annotation.RequiresApi;
-import androidx.core.app.NotificationCompat;
-
-import com.parkingapp.homeactivity.Esecuzione;
 import com.parkingapp.homeactivity.R;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Supplier;
 
 import Accelerometro.Accelerometro;
 import Notifica.Notifica;
 import Posizione.Posizione;
-import Server.Server;
 import mist.Variabili;
 
 
 public class AsyncTaskEsecuzione extends AsyncTask{
 
-
-    private PowerManager.WakeLock wakeLock;
 
 
 
@@ -78,29 +65,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
     protected Object doInBackground(Object[] objects) {
-
-
-
-      /* { PowerManager powerManager =(PowerManager) context.getSystemService(context.POWER_SERVICE);
-        assert powerManager != null;
-        wakeLock =powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ParkingAdvisor:wakelock");
-      wakeLock.acquire(10*60*1000L /*10 minutes*/  //);
-
-        /*if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            Notification notification = new NotificationCompat.Builder(context, Notifica.CHANNEL_ID)
-                    .setContentTitle("Parking Advisor")
-                    .setContentText("Esecuzione...")
-                    .setSmallIcon(R.drawable.logo_app)
-                    .build();
-
-           // startForeground(1, notification);
-
-
-
-        }*/
-
-
-
 
         boolean esecuzione_città=true;
         boolean esecuzione_fermo=true;
@@ -181,10 +145,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       e.printStackTrace();
                                   }
 
-                                  //Già che ho anche il nome della città faccio un'ultima verifica per vedere se mi trovo nella città giusta
-                                  //per avere un sistema più robusto
-                                  if (posizione_via_città[1].equals(città_destinazione)) {
-
                                       //Ora che ho superato tutti i controlli salvo il parchegio
                                       double[] coordinate = posizione.coordinate;
                                       Variabili.salvaCoordinate(context, coordinate);
@@ -211,12 +171,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       //Passo all'activity finale in cui mostro il parcheggio sulla mappa
                                       Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
                                       context.startActivity(i);
-                                  } else {
-                                      //Se non sono nella città giusta torno al primo step
-                                      esecuzione_città = true;
-                                      posizione.aggiornaGPS(600000, 400);
-                                      break;
-                                  }
+
                               }
                           }
                           //Faccio nuovamente la verifica perché se fosse ripartito torno al ciclo precedente
@@ -278,7 +233,6 @@ public class AsyncTaskEsecuzione extends AsyncTask{
           }
 
       }
-
 
         return null;
 

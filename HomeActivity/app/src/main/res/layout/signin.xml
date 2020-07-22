@@ -21,7 +21,7 @@
         android:textSize="25dp" />
 
     <TextView
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#1d8ca6"
         android:backgroundTint="#1d8ca6"
@@ -32,7 +32,7 @@
 />
     <EditText
         android:id="@+id/etSignin_Username"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#e3f2f6"
         android:backgroundTint="#e3f2f6"
@@ -41,7 +41,7 @@
         android:textSize="15dp"
         />
     <TextView
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#1d8ca6"
         android:backgroundTint="#1d8ca6"
@@ -53,7 +53,7 @@
 
     <EditText
         android:id="@+id/etSignin_Password"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#e3f2f6"
         android:backgroundTint="#e3f2f6"
@@ -63,11 +63,11 @@
         android:password="true"
         />
     <TextView
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="40dp"
         android:background="#1d8ca6"
         android:backgroundTint="#1d8ca6"
-        android:text="Conferma Password"
+        android:text=" Conferma Password"
         android:layout_marginTop="10dp"
         android:textColor="#ffffff"
         android:textSize="20dp"
@@ -75,7 +75,7 @@
 
     <EditText
         android:id="@+id/etSignin_Password_Conferma"
-        android:layout_width="380dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="#e3f2f6"
         android:backgroundTint="#e3f2f6"
@@ -106,7 +106,7 @@
         android:visibility="invisible" />
     <Button
         android:id="@+id/bttRegistrati"
-        android:layout_width="400dp"
+        android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_marginTop="5dp"
         android:text="Registrati"
@@ -121,7 +121,7 @@
         android:id="@+id/bttBackSignin_to_LoginSignin"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginRight="170dp"
+        android:layout_marginRight="150dp"
         android:backgroundTint="#ffffff"
         android:scaleType="fitCenter"
         android:src="@drawable/backbtt"

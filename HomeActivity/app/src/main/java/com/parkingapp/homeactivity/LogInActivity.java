@@ -3,7 +3,6 @@ package com.parkingapp.homeactivity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 
 import asyncTasks.AsyncTaskLoginActivity;
-import asyncTasks.AsyncTaskSigninActivity;
-import mist.Variabili;
 
 public class LogInActivity extends Activity {
 
