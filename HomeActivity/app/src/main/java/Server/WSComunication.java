@@ -96,7 +96,35 @@ public class WSComunication {
                 Log.i("Ora da convertire", ora_convertire);
 
                 Notifica notifica = new Notifica();
-                notifica.process("Impedimento", campi[1], ora_convertire ,context);
+               // notifica.process("titolo", campi[1], ora_convertire, context);
+                notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
+
+                Intent intent = new Intent(context, Notifica.class);
+                intent.putExtra("titolo", "impedimento");
+                intent.putExtra("messaggio", campi[1]);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+                long tempo_adesso = System.currentTimeMillis();
+
+                // String string = "20-7-2020 21&00&00";
+                DateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ITALIAN);
+                Date date = new Date();
+                try {
+                    date = format.parse(ora_convertire);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                SharedPreferences sharedPreferences = context.getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
+                long millisecondi_sottrarre=sharedPreferences.getLong("TEMPO MILLI", 3600000);
+
+                Log.i("tempo millisecondi", String.valueOf(date.getTime()-millisecondi_sottrarre-tempo_adesso));
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP,
+                        date.getTime()-millisecondi_sottrarre-tempo_adesso,
+                        pendingIntent);
 
             }
 

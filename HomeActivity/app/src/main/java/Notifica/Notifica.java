@@ -87,6 +87,7 @@ public class Notifica extends android.content.BroadcastReceiver {
                 .setContentTitle(intent.getStringExtra("titolo"))
                 .setContentText(intent.getStringExtra("messaggio"))
                 .setSmallIcon(R.drawable.logo_app)
+                .setStyle(new NotificationCompat.BigTextStyle())
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context1);
@@ -94,9 +95,9 @@ public class Notifica extends android.content.BroadcastReceiver {
         notificationManagerCompat.notify(rand.nextInt(100), builder.build());
     }
 
-    public void process(String titolo, String messaggio, String ora_convertire,Context context)
+  /*  public void process(String titolo, String messaggio, String ora_convertire,Context context)
     {
-        
+
         createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
 
         Intent intent = new Intent(context, Notifica.class);
@@ -126,6 +127,8 @@ public class Notifica extends android.content.BroadcastReceiver {
                 date.getTime()-millisecondi_sottrarre-tempo_adesso,
                 pendingIntent);
     }
+
+   */
 }
 
 
