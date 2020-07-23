@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
            public void onClick(View v) {
 
                //Se i permessi non ci sono li richiedo ogni volta che prova a far iniziare l'app
-               if(requestPermission(ACCESS_FINE_LOCATION)&&requestPermission(WRITE_EXTERNAL_STORAGE)) {
+               if(requestPermission(ACCESS_FINE_LOCATION)) {
                    //La scelta per capire se richiedere di identificarsi o no sta sella checkbox, salvata alla voce STATO
                    SharedPreferences sharedPreferences = getSharedPreferences("RICORDAMI", Context.MODE_PRIVATE);
                    boolean stato = sharedPreferences.getBoolean("STATO", false);

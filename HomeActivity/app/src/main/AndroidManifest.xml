@@ -100,13 +100,12 @@
 
         <service android:name=".ServiceEsecuzione"/>
         <receiver android:name="Notifica.Notifica"/>
-
+        <receiver android:name="Notifica.NotificaBroadcastReceiver"/>
 
     </application>
 
     <!--permessi-->
     <uses-permission android:name="android.permission.INTERNET"/>
-   <!-- <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/> -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />

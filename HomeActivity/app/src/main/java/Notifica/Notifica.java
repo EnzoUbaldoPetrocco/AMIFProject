@@ -6,6 +6,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.content.pm.ApplicationInfo;
 import android.os.Build;
 import android.util.Log;
 
+import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -27,9 +29,10 @@ import java.util.Random;
 
 import static android.content.Context.ALARM_SERVICE;
 
-public class Notifica extends android.content.BroadcastReceiver {
+public class Notifica extends BroadcastReceiver {
 
-    public static final String CHANNEL_ID ="ServiceEsecuzione";
+    public static final String CHANNEL_ID ="ID notifica";
+    public static String NOTIFICATION_ID = "notification-id";
 
   public   String titolo;
    public String messaggio;
@@ -47,7 +50,7 @@ public class Notifica extends android.content.BroadcastReceiver {
         {
             NotificationChannel notificationChannel = new NotificationChannel(
                     CHANNEL_ID,
-                    "Park Tracking",
+                    "Parking Advisor",
                     importance
             );
 
@@ -80,19 +83,23 @@ public class Notifica extends android.content.BroadcastReceiver {
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onReceive(Context context1, Intent intent) {
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context1, CHANNEL_ID)
+        createNotificationChannel(context1, NotificationManager.IMPORTANCE_DEFAULT);
+
+        Notification.Builder builder = new Notification.Builder(context1, CHANNEL_ID)
                 .setContentTitle(intent.getStringExtra("titolo"))
                 .setContentText(intent.getStringExtra("messaggio"))
                 .setSmallIcon(R.drawable.logo_app)
-                .setStyle(new NotificationCompat.BigTextStyle())
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+                .setStyle(new Notification.BigTextStyle())
+                .setPriority(Notification.PRIORITY_DEFAULT);
 
-        NotificationManagerCompat notificationManagerCompat = NotificationManagerCompat.from(context1);
-        Random rand = new Random(); //Genero un id a caso per la notifica
-        notificationManagerCompat.notify(rand.nextInt(100), builder.build());
+        NotificationManager notificationManager = (NotificationManager)context1.getSystemService(Context.NOTIFICATION_SERVICE);
+      //  Random rand = new Random(); //Genero un id a caso per la notifica
+        int id=intent.getIntExtra(NOTIFICATION_ID, 0);
+        notificationManager.notify(id, builder.build());
     }
 
   /*  public void process(String titolo, String messaggio, String ora_convertire,Context context)

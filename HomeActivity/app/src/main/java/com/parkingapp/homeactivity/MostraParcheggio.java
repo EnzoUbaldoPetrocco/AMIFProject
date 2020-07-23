@@ -1,6 +1,7 @@
 package com.parkingapp.homeactivity;
 
 import android.Manifest;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -27,6 +28,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
+import Notifica.Notifica;
+
 public class MostraParcheggio extends FragmentActivity implements OnMapReadyCallback {
 
 
@@ -52,6 +55,16 @@ public class MostraParcheggio extends FragmentActivity implements OnMapReadyCall
         //Per farvedere solo la parte con il parcheggio, ingrandisce in automatico su quella parte
        fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(this);
        fetchLastLocation();
+
+       String via= i.getStringExtra("Via");
+
+        //Creo la notifica per avvisare l'utente che il parcheggio è stato registrato
+        //Se via==null, allora questa activity l'ho raggiunta dal Fragment parcheggio e non devo mandare notifiche
+       if(via!=null) {
+           Notifica notifica = new Notifica();
+           notifica.createNotificationChannel(this, NotificationManager.IMPORTANCE_DEFAULT);
+           notifica.creaNotifica(this, via, "Via");
+       }
 
        SharedPreferences sharedPreferences = getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
 

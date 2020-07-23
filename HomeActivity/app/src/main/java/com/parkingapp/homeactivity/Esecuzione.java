@@ -79,7 +79,7 @@ public class Esecuzione extends AppCompatActivity {
         Intent intent = new Intent(this, ServiceEsecuzione.class);
 
         intent.putExtra("posizione", posizione);
-       // startForegroundService(intent);
+      //  startForegroundService(intent);
 
         asyncTaskEsecuzione.execute();
 
@@ -88,7 +88,7 @@ public class Esecuzione extends AppCompatActivity {
             public void onClick(View v) {
                 asyncTaskEsecuzione.cancel(true);
 
-              //  context.stopService(new Intent(context, ServiceEsecuzione.class));
+                //context.stopService(new Intent(context, ServiceEsecuzione.class));
                 //Smetto di aggiornare costantemente la mia posizione
                 posizione.fermaAggiornamentoGPS();
 

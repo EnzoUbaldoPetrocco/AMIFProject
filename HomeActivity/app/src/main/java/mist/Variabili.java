@@ -1,12 +1,8 @@
 package mist;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.icu.util.LocaleData;
-import android.preference.PreferenceScreen;
 import android.util.Log;
-import android.view.View;
 
 import com.androidnetworking.error.ANError;
 
@@ -60,15 +56,6 @@ public class Variabili {
 
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("DESTINAZIONE_VIAGGIO", città);
-        editor.apply();
-    }
-
-    public static void salvaMappa(Context context, String città)
-    {
-        SharedPreferences sharedPreferences = context.getSharedPreferences("MAPPE_SCARICATE", Context.MODE_PRIVATE);
-
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(città, città);
         editor.apply();
     }
 

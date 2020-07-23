@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Handler;
+import android.os.SystemClock;
 import android.util.Log;
 
 import com.androidnetworking.error.ANError;
@@ -17,10 +19,14 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import Notifica.Notifica;
+import Notifica.NotificaBroadcastReceiver;
 import mist.Variabili;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -100,14 +106,16 @@ public class WSComunication {
 
                 Notifica notifica = new Notifica();
                // notifica.process("titolo", campi[1], ora_convertire, context);
-                notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
+              //  notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
 
-                Intent intent = new Intent(context, Notifica.class);
-                intent.putExtra("titolo", "impedimento");
+                Intent intent = new Intent(context, NotificaBroadcastReceiver.class);
+                intent.putExtra("titolo", "Impedimento");
                 intent.putExtra("messaggio", campi[1]);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+                intent.putExtra(Notifica.NOTIFICATION_ID, 1);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(ALARM_SERVICE);
+
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
                 long tempo_adesso = System.currentTimeMillis();
 
@@ -125,11 +133,33 @@ public class WSComunication {
 
                 Log.i("tempo millisecondi", String.valueOf(date.getTime()-millisecondi_sottrarre-tempo_adesso));
 
-                alarmManager.set(AlarmManager.RTC_WAKEUP,
-                        date.getTime()-millisecondi_sottrarre-tempo_adesso,
-                        pendingIntent);
+                long tempo_in_notifica=date.getTime();
 
+                Timer myTimer = new Timer();
+                TimerTask timerTask=new TimerTask() {
+                    @Override
+                    public void run() {
+                        //Non faccio nulla
+
+
+                        Log.i("Timer finito", "Timer finito");
+                        notifica.creaNotifica(context, campi[1], "Impedimento");
+                        myTimer.cancel();
+                        return;
+                    }
+                };
+                myTimer.scheduleAtFixedRate(timerTask, tempo_in_notifica-millisecondi_sottrarre-tempo_adesso, 1);
+
+
+/*
+               long tempo_millisecondi=tempo_in_notifica-millisecondi_sottrarre-tempo_adesso;
+
+                alarmManager.set(AlarmManager.RTC_WAKEUP,
+                        tempo_millisecondi,
+                        pendingIntent); */
             }
+
+
 
 
          Log.i("Messaggio ricevuto", text);

@@ -70,12 +70,13 @@ public class AsyncTaskEsecuzione extends AsyncTask{
         boolean esecuzione_fermo=true;
         boolean esecuzione_sensore=true;
 
+        final boolean[] esecuzioneTimerTask = {false};
 
 
         Accelerometro accelerometro= new Accelerometro(context);
 
         //0:nome intero, 1 città, 2 via
-        String[] posizione_via_città={null, null, null};
+        final String[][] posizione_via_città = {{null, null, null}};
         String[] città_attuale={null};
 
 
@@ -86,6 +87,12 @@ public class AsyncTaskEsecuzione extends AsyncTask{
 
         //Utilizzo un timer per tenere il tempo che devo aspetare prima di nuovi controlli
         Timer myTimer = new Timer();
+
+        try {
+            posizione_via_città[0] =posizione.nomeViaECittà();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         
 
       //Primo step: controllo in un loop infinito di trovarmi nella città giusta
@@ -96,13 +103,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
               this.cancel(true);
              break;
           }
-          try {
-              posizione_via_città=posizione.nomeViaECittà();
-          } catch (InterruptedException e) {
-              e.printStackTrace();
-          }
 
-          città_attuale[0] = posizione_via_città[1];
+          città_attuale[0] = posizione_via_città[0][1];
           assert città_attuale[0] != null;
           if(città_attuale[0].equals(città_destinazione))
           {
@@ -110,6 +112,8 @@ public class AsyncTaskEsecuzione extends AsyncTask{
               //(Soglia di 9 km/h sotto la quale avendo sempre le stesse coordinate, guardo il sensore accelertometrico)
               posizione.fermaAggiornamentoGPS();
               posizione.aggiornaGPS(60000, 150);
+
+              final boolean[] fermo = {posizione.èFermo()};
 
               //Secondo step: verifichiamo che la macchina sia ferma
               while (esecuzione_fermo)
@@ -120,7 +124,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                       break;
                   }
 
-                  if(posizione.èFermo())
+                  if(fermo[0])
                   {
                       //Ultimo step: verifico che il sensore accelerometrico mi dica se mi sono alzato
                       while (esecuzione_sensore)
@@ -140,7 +144,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                   }
 
                                   try {
-                                      posizione_via_città = posizione.nomeViaECittà();
+                                      posizione_via_città[0] = posizione.nomeViaECittà();
                                   } catch (InterruptedException e) {
                                       e.printStackTrace();
                                   }
@@ -149,7 +153,7 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       double[] coordinate = posizione.coordinate;
                                       Variabili.salvaCoordinate(context, coordinate);
 
-                                      Variabili.salvaParcheggio(context, posizione_via_città[0], posizione_via_città[2]);
+                                      Variabili.salvaParcheggio(context, posizione_via_città[0][0], posizione_via_città[0][2]);
 
                                       //IMPLEMENTARE LA PARTE IN CUI RECUPERO L'ORARIO DEL LAVAGGIO
 
@@ -162,14 +166,9 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                                       assert vibrazione != null;
                                       vibrazione.vibrate(700);
 
-                                      //Creo la notifica per avvisare l'avvenuto salvataggio del parcheggio
-                                      Notifica notifica=new Notifica();
-
-                                      notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
-                                      notifica.creaNotifica(context, "Parcheggio: " + posizione_via_città[2], "Parcheggio salvato");
-
                                       //Passo all'activity finale in cui mostro il parcheggio sulla mappa
                                       Intent i = new Intent(context.getString(R.string.FRAGMENT_PARCHEGGIO_TO_MOSTRA_SULLA_MAPPA));
+                                      i.putExtra("Via", posizione_via_città[0][2]);
                                       context.startActivity(i);
 
                               }
@@ -177,59 +176,74 @@ public class AsyncTaskEsecuzione extends AsyncTask{
                           //Faccio nuovamente la verifica perché se fosse ripartito torno al ciclo precedente
                           else if(!posizione.èFermo())
                           {
+                              fermo[0]=false;
                               break;
                           }
                       }
                   }
 
-                 else if(esecuzione_fermo)
+                 else if(esecuzione_fermo && !esecuzioneTimerTask[0])
                   {
-                      for (int i=0; i<60; i++) {
 
-                          if(isCancelled())
-                          {
-                              break;
-                          }
-
+                      esecuzioneTimerTask[0]=true;
                           TimerTask timerTask=new TimerTask() {
                               @Override
                               public void run() {
-                                  //Non faccio nulla
-
+                                  if(isCancelled())
+                                  {
+                                      esecuzioneTimerTask[0]=false;
+                                      myTimer.cancel();
+                                  }
+                                  fermo[0] =posizione.èFermo();
                               }
                           };
 
                           //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
-                          myTimer.scheduleAtFixedRate(timerTask, 600, 1);
+                          myTimer.scheduleAtFixedRate(timerTask, 36000, 1);
+
+                      if(isCancelled())
+                      {
+                          break;
                       }
                   }
 
               }
           }
 
-          //Se non siamo nella città giusta faccio attendere il sistema per una decina di minuti
-        else if(esecuzione_città)//Il controllo è obbligatorio perché se ho finito non devo aspettare a caso
+          //Se non siamo nella città giusta faccio attendere il sistema per 5 minuti
+        else if(esecuzione_città && !esecuzioneTimerTask[0])//Il controllo è obbligatorio perché se ho finito non devo aspettare a caso
           {
 
-              for (int i = 0; i < 1200; i++)
-              {
-                  if (isCancelled()) {
-                      break;
-                  }
-
+              esecuzioneTimerTask[0] =true;
 
               TimerTask timerTask = new TimerTask() {
                   @Override
                   public void run() {
                       //Non faccio nulla
+                      try {
+
+                          if (isCancelled()) {
+                              esecuzioneTimerTask[0] =false;
+                              myTimer.cancel();
+                              Log.i("TIMER esecuzione_città", "Timer concluso");
+                          }
+
+                          posizione_via_città[0] =posizione.nomeViaECittà();
+                          esecuzioneTimerTask[0] =false;
+                      } catch (InterruptedException e) {
+                          e.printStackTrace();
+                      }
 
                   }
               };
 
-                  //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
-              myTimer.scheduleAtFixedRate(timerTask, 600, 1);
-              Log.i("TIMER esecuzione_città", "Timer concluso");
-          }
+              myTimer.scheduleAtFixedRate(timerTask, 300000, 1);
+
+
+              if (isCancelled()) {
+                  break;
+              }
+
           }
 
       }

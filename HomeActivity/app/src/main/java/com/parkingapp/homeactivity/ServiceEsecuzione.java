@@ -126,6 +126,16 @@ public class ServiceEsecuzione extends Service {
 
         posizione.prendiPosizione();
 
+        /*
+        try {
+            posizione_via_città=posizione.nomeViaECittà();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+
+         */
+        posizione_via_città[1]="Francolano";
 
         //Primo step: controllo in un loop infinito di trovarmi nella città giusta
         while (esecuzione_città)
@@ -133,48 +143,8 @@ public class ServiceEsecuzione extends Service {
             posizione_via_città= new String[]{null, null, null};
             posizione.prendiPosizione();
 
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
-
-
-
-            Server.reverseGeocoding(context, posizione.coordinate, new Callback() {
-                @Override
-                public void onSuccess(JSONObject response) throws JSONException, IOException, InterruptedException {
-                    //Prendo nome intero
-                    JSONArray results = response.getJSONArray("results");
-                    JSONObject formatted_address = results.getJSONObject(1);
-                    posizione_via_città[0] = formatted_address.getString("formatted_address");
-                    Log.i("NOME CITTA_VIA", posizione_via_città[0]);
-
-                    //Prendo nome Città
-                    JSONObject oggetto_riposta = results.getJSONObject(0);
-                    JSONArray address_components=oggetto_riposta.getJSONArray("address_components");
-                    JSONObject città = address_components.getJSONObject(2);
-                    posizione_via_città[1] = città.getString("long_name");
-                    Log.i("NOME CITTA", posizione_via_città[1]);
-
-                    //Prendo nome Via
-                    JSONObject via = address_components.getJSONObject(1);
-                    posizione_via_città[2] = via.getString("long_name");
-                    Log.i("NOME VIA", posizione_via_città[2]);
-                }
-
-                @Override
-                public void onError(ANError errore) throws Exception {
-                    Log.e("Città chiamata API", errore.toString());
-                }
-            });
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
+            String[] città_attuale=new String[]{null};
 
             città_attuale[0] = posizione_via_città[1];
             assert città_attuale[0] != null;
@@ -185,11 +155,13 @@ public class ServiceEsecuzione extends Service {
                 posizione.fermaAggiornamentoGPS();
                 posizione.aggiornaGPS(60000, 150);
 
+                final boolean[] fermo = {posizione.èFermo()};
+
                 //Secondo step: verifichiamo che la macchina sia ferma
                 while (esecuzione_fermo)
                 {
 
-                    if(posizione.èFermo())
+                    if(fermo[0])
                     {
                         //Ultimo step: verifico che il sensore accelerometrico mi dica se mi sono alzato
                         while (esecuzione_sensore)
@@ -246,6 +218,7 @@ public class ServiceEsecuzione extends Service {
                             //Faccio nuovamente la verifica perché se fosse ripartito torno al ciclo precedente
                             else if(!posizione.èFermo())
                             {
+                                fermo[0]=false;
                                 break;
                             }
                         }
@@ -254,45 +227,44 @@ public class ServiceEsecuzione extends Service {
 
                     else if(esecuzione_fermo)
                     {
-                        for (int i=0; i<60; i++) {
-
 
                             TimerTask timerTask=new TimerTask() {
                                 @Override
                                 public void run() {
-                                    //Non faccio nulla
 
+                                    fermo[0] =posizione.èFermo();
                                 }
+
                             };
 
                             //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
-                            myTimer.scheduleAtFixedRate(timerTask, 600, 1);
-                        }
+                            myTimer.scheduleAtFixedRate(timerTask, 36000, 1);
                     }
 
                 }
             }
 
 
-            //Se non siamo nella città giusta faccio attendere il sistema per una decina di minuti
+            //Se non siamo nella città giusta faccio attendere il sistema per 5 minuti
             else if(esecuzione_città)//Il controllo è obbligatorio perché se ho finito non devo aspettare a caso
             {
-
-                for (int i = 0; i < 1200; i++)
-                {
 
                     TimerTask timerTask = new TimerTask() {
                         @Override
                         public void run() {
                             //Non faccio nulla
-
+                            try {
+                                posizione_via_città=posizione.nomeViaECittà();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     };
 
                     //Riduco il ritardo e gli faccio fare più giri così da tenere sempre sotto controllo se blocco l'asyncTask premendo il pulsante
-                    myTimer.scheduleAtFixedRate(timerTask, 600, 1);
+                    myTimer.scheduleAtFixedRate(timerTask, 300000, 1);
                     Log.i("TIMER esecuzione_città", "Timer concluso");
-                }
+
             }
 
         }
