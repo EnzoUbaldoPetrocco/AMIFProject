@@ -98,7 +98,7 @@ public class Parcheggio extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if(luogo_parcheggio.equals("Nessun parcheggio salvato"))
+                if(luogo_parcheggio.equals("Nessun parcheggio salvato") && impedimento.equals("Nessun impedimento registrato"))
                 {
                     Toast.makeText(getContext(), "Nessun parcheggio salvato", Toast.LENGTH_SHORT).show();
                 }

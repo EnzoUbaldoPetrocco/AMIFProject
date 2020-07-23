@@ -78,7 +78,7 @@ public class WSComunication {
 
             Log.i("messaggio ricevuto", messageReceived);
 
-            if(filtroVicinanza(messageReceived, context)){
+            if(filtroVicinanza(messageReceived, context)) {
                 //invia notifica push
 
             /*
@@ -93,62 +93,67 @@ public class WSComunication {
 
           */
 
-                String[] campi=messageReceived.split(";");
-              //  String ora_convertire=campi[0].substring(1, 13)+":"+campi[0].substring(15, 16)+":"+campi[0].substring(18, 19);
+                String[] campi = messageReceived.split(";");
+                //  String ora_convertire=campi[0].substring(1, 13)+":"+campi[0].substring(15, 16)+":"+campi[0].substring(18, 19);
                 String ora_convertire = campi[0].replace("&", ":");
 
-                for (int i=0; i<campi.length; i++) {
+                for (int i = 0; i < campi.length; i++) {
                     Log.i("Campo", campi[i]);
                 }
                 Log.i("Ora da convertire", ora_convertire);
 
-                Variabili.salvaImpedimento(context, campi[1]);
+                SharedPreferences sharedPreferences = context.getSharedPreferences("PARCHEGGIO", Context.MODE_PRIVATE);
+                String parcheggio = sharedPreferences.getString("PARCHEGGIO", "Nessun parcheggio salvato");
 
-                Notifica notifica = new Notifica();
-               // notifica.process("titolo", campi[1], ora_convertire, context);
-              //  notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
+                //Immagino che se l'utetne ha cancellato il parcheggio non voglia sapere nulla su eventuali impedimenti
+                if (!parcheggio.equals("Nessun parcheggio salvato")) {
+                    Variabili.salvaImpedimento(context, campi[1]);
 
-                Intent intent = new Intent(context, NotificaBroadcastReceiver.class);
-                intent.putExtra("titolo", "Impedimento");
-                intent.putExtra("messaggio", campi[1]);
-                intent.putExtra(Notifica.NOTIFICATION_ID, 1);
-                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
+                    Notifica notifica = new Notifica();
+                    // notifica.process("titolo", campi[1], ora_convertire, context);
+                    //  notifica.createNotificationChannel(context, NotificationManager.IMPORTANCE_DEFAULT);
 
-
-                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-
-                long tempo_adesso = System.currentTimeMillis();
-
-                // String string = "20-7-2020 21&00&00";
-                DateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ITALIAN);
-                Date date = new Date();
-                try {
-                    date = format.parse(ora_convertire);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-
-                SharedPreferences sharedPreferences = context.getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
-                long millisecondi_sottrarre=sharedPreferences.getLong("TEMPO MILLI", 3600000);
-
-                Log.i("tempo millisecondi", String.valueOf(date.getTime()-millisecondi_sottrarre-tempo_adesso));
-
-                long tempo_in_notifica=date.getTime();
-
-                Timer myTimer = new Timer();
-                TimerTask timerTask=new TimerTask() {
-                    @Override
-                    public void run() {
-                        //Non faccio nulla
+                    Intent intent = new Intent(context, NotificaBroadcastReceiver.class);
+                    intent.putExtra("titolo", "Impedimento");
+                    intent.putExtra("messaggio", campi[1]);
+                    intent.putExtra(Notifica.NOTIFICATION_ID, 1);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, intent, PendingIntent.FLAG_ONE_SHOT);
 
 
-                        Log.i("Timer finito", "Timer finito");
-                        notifica.creaNotifica(context, campi[1], "Impedimento");
-                        myTimer.cancel();
-                        return;
+                    AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+                    long tempo_adesso = System.currentTimeMillis();
+
+                    // String string = "20-7-2020 21&00&00";
+                    DateFormat format = new SimpleDateFormat("dd-M-yyyy hh:mm:ss", Locale.ITALIAN);
+                    Date date = new Date();
+                    try {
+                        date = format.parse(ora_convertire);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                };
-                myTimer.scheduleAtFixedRate(timerTask, tempo_in_notifica-millisecondi_sottrarre-tempo_adesso, 1);
+
+                    sharedPreferences = context.getSharedPreferences("PROMEMORIA_NOTIFICA", Context.MODE_PRIVATE);
+                    long millisecondi_sottrarre = sharedPreferences.getLong("TEMPO MILLI", 3600000);
+
+                    Log.i("tempo millisecondi", String.valueOf(date.getTime() - millisecondi_sottrarre - tempo_adesso));
+
+                    long tempo_in_notifica = date.getTime();
+
+                    Timer myTimer = new Timer();
+                    TimerTask timerTask = new TimerTask() {
+                        @Override
+                        public void run() {
+                            //Non faccio nulla
+
+
+                            Log.i("Timer finito", "Timer finito");
+                            notifica.creaNotifica(context, campi[1], "Impedimento");
+                            myTimer.cancel();
+                            return;
+                        }
+                    };
+                    myTimer.scheduleAtFixedRate(timerTask, tempo_in_notifica - millisecondi_sottrarre - tempo_adesso, 1);
 
 
 /*
@@ -157,6 +162,7 @@ public class WSComunication {
                 alarmManager.set(AlarmManager.RTC_WAKEUP,
                         tempo_millisecondi,
                         pendingIntent); */
+                }
             }
 
 
